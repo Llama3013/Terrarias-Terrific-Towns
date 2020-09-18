@@ -10,17 +10,17 @@ const houses = [
     name: "House 1",
     biome: "Forest",
     npcs: [
-      { id: 0, type: "Guide" },
-      { id: 1, type: "Zoo" },
+      { id: 0, type: "Guide", happy: 0 },
+      { id: 1, type: "Zoo", happy: 0 },
     ],
   },
   {
     id: 1,
     name: "House 2",
-    biome: "Desert",
+    biome: "Hallow",
     npcs: [
-      { id: 0, type: "Golfer" },
-      { id: 1, type: "Wizard" },
+      { id: 0, type: "Golfer", happy: 0 },
+      { id: 1, type: "Wizard", happy: 0 },
     ],
   },
 ];
