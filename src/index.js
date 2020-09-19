@@ -4,30 +4,9 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-const houses = [
-  {
-    id: 0,
-    name: "House 1",
-    biome: "Forest",
-    npcs: [
-      { id: 0, type: "Guide", happy: 0 },
-      { id: 1, type: "Zoo", happy: 0 },
-    ],
-  },
-  {
-    id: 1,
-    name: "House 2",
-    biome: "Hallow",
-    npcs: [
-      { id: 0, type: "Golfer", happy: 0 },
-      { id: 1, type: "Wizard", happy: 0 },
-    ],
-  },
-];
-
 ReactDOM.render(
   <React.StrictMode>
-    <App houses={houses}/>
+    <App/>,
   </React.StrictMode>,
   document.getElementById('root')
 );

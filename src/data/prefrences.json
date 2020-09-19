@@ -1,0 +1,242 @@
+[
+    {
+      "type": "Guide",
+      "biome": { "loves": "", "likes": "Forest", "dislikes": "Ocean", "hates": "" },
+      "neighbour": {
+        "loves": [],
+        "likes": ["Clothier", "Zoologist"],
+        "dislikes": ["Steampunker"],
+        "hates": ["Painter"]
+      }
+    },
+    {
+      "type": "Merchant",
+      "biome": { "loves": "", "likes": "Forest", "dislikes": "Desert", "hates": "" },
+      "neighbour": {
+        "loves": [],
+        "likes": ["Golfer", "Nurse"],
+        "dislikes": ["Tax Collector"],
+        "hates": ["Angler"]
+      }
+    },
+    {
+      "type": "Zoologist",
+      "biome": { "loves": "", "likes": "Forest", "dislikes": "Desert", "hates": "" },
+      "neighbour": {
+        "loves": ["Witch"],
+        "likes": ["Golfer"],
+        "dislikes": ["Angler"],
+        "hates": ["Arms"]
+      }
+    },
+    {
+      "type": "Golfer",
+      "biome": { "loves": "", "likes": "Forest", "dislikes": "Underground", "hates": "" },
+      "neighbour": {
+        "loves": ["Angler"],
+        "likes": ["Painter", "Zoologist"],
+        "dislikes": ["Pirate"],
+        "hates": ["Merchant"]
+      }
+    },
+    {
+      "type": "Nurse",
+      "biome": { "loves": "", "likes": "Hallow", "dislikes": "Snow", "hates": "" },
+      "neighbour": {
+        "loves": ["Arms Dealer"],
+        "likes": ["Wizard"],
+        "dislikes": ["Dryad", "Party Girl"],
+        "hates": ["Zoologist"]
+      }
+    },
+    {
+      "type": "Tavernkeep",
+      "biome": { "loves": "", "likes": "Hallow", "dislikes": "Snow", "hates": "" },
+      "neighbour": {
+        "loves": ["Demolitionist"],
+        "likes": ["Goblin Tinkerer"],
+        "dislikes": ["Guide"],
+        "hates": ["Dye Trader"]
+      }
+    },
+    {
+      "type": "Party Girl",
+      "biome": { "loves": "", "likes": "Hallow", "dislikes": "Underground", "hates": "" },
+      "neighbour": {
+        "loves": ["Wizard", "Zoologist"],
+        "likes": ["Stylist"],
+        "dislikes": ["Merchant"],
+        "hates": ["Tax Collector"]
+      }
+    },
+    {
+      "type": "Wizard",
+      "biome": { "loves": "", "likes": "Hallow", "dislikes": "Ocean", "hates": "" },
+      "neighbour": {
+        "loves": ["Golfer"],
+        "likes": ["Merchant"],
+        "dislikes": ["Witch"],
+        "hates": ["Cyborg"]
+      }
+    },
+    {
+      "type": "Demolitionist",
+      "biome": { "loves": "", "likes": "Underground", "dislikes": "Ocean", "hates": "" },
+      "neighbour": {
+        "loves": ["Tavernkeep"],
+        "likes": ["Mechanic"],
+        "dislikes": ["Arms Dealer", "Goblin Tinkerer"],
+        "hates": []
+      }
+    },
+    {
+      "type": "Goblin Tinkerer",
+      "biome": { "loves": "", "likes": "Underground", "dislikes": "Jungle", "hates": "" },
+      "neighbour": {
+        "loves": ["Mechanic"],
+        "likes": ["Dye Trader"],
+        "dislikes": ["Clothier"],
+        "hates": ["Stylist"]
+      }
+    },
+    {
+      "type": "Dye Trader",
+      "biome": { "loves": "", "likes": "Desert", "dislikes": "Forest", "hates": "" },
+      "neighbour": {
+        "loves": [],
+        "likes": ["Arms Dealer", "Painter"],
+        "dislikes": ["Steampunker"],
+        "hates": ["Pirate"]
+      }
+    },
+    {
+      "type": "Arms Dealer",
+      "biome": { "loves": "", "likes": "Desert", "dislikes": "Snow", "hates": "" },
+      "neighbour": {
+        "loves": ["Nurse"],
+        "likes": ["Steampunker"],
+        "dislikes": ["golfer"],
+        "hates": ["demolitionist"]
+      }
+    },
+    {
+      "type": "Steampunker",
+      "biome": { "loves": "", "likes": "Desert", "dislikes": "Jungle", "hates": "" },
+      "neighbour": {
+        "loves": ["Cyborg"],
+        "likes": ["Painter"],
+        "dislikes": ["Dyrad", "Wizard", "Party Girl"],
+        "hates": []
+      }
+    },
+    {
+      "type": "Dyrad",
+      "biome": { "loves": "", "likes": "Jungle", "dislikes": "Desert", "hates": "" },
+      "neighbour": {
+        "loves": [],
+        "likes": ["Witch Doctor", "Truffle"],
+        "dislikes": ["Angler"],
+        "hates": ["Golfer"]
+      }
+    },
+    {
+      "type": "Painter",
+      "biome": { "loves": "", "likes": "Jungle", "dislikes": "Forest", "hates": "" },
+      "neighbour": {
+        "loves": ["Dryad"],
+        "likes": ["Party Girl"],
+        "dislikes": ["Truffle", "Cyborg"],
+        "hates": []
+      }
+    },
+    {
+      "type": "Witch Doctor",
+      "biome": { "loves": "", "likes": "Jungle", "dislikes": "Hallow", "hates": "" },
+      "neighbour": {
+        "loves": [],
+        "likes": ["Dyrad", "Guide"],
+        "dislikes": ["Nurse"],
+        "hates": ["Truffle"]
+      }
+    },
+    {
+      "type": "Stylist",
+      "biome": { "loves": "", "likes": "Ocean", "dislikes": "Snow", "hates": "" },
+      "neighbour": {
+        "loves": ["Dye Trader"],
+        "likes": ["Pirate"],
+        "dislikes": ["Tavernkeep"],
+        "hates": ["Goblin Tinkerer"]
+      }
+    },
+    {
+      "type": "Angler",
+      "biome": { "loves": "", "likes": "Ocean", "dislikes": "Desert", "hates": "" },
+      "neighbour": {
+        "loves": [],
+        "likes": ["Demolitionist", "Party Girl", "Tax Collector"],
+        "dislikes": [],
+        "hates": ["Tavernkeep"]
+      }
+    },
+    {
+      "type": "Pirate",
+      "biome": { "loves": "", "likes": "Ocean", "dislikes": "Underground", "hates": "" },
+      "neighbour": {
+        "loves": ["Angler"],
+        "likes": ["Tavernkeep"],
+        "dislikes": ["Stylist"],
+        "hates": ["Guide"]
+      }
+    },
+    {
+      "type": "Mechanic",
+      "biome": { "loves": "", "likes": "Snow", "dislikes": "Underground", "hates": "" },
+      "neighbour": {
+        "loves": ["Goblin Tinkerer"],
+        "likes": ["Cyborg"],
+        "dislikes": ["Arms Dealer"],
+        "hates": ["Clothier"]
+      }
+    },
+    {
+      "type": "Tax Collector",
+      "biome": { "loves": "", "likes": "Snow", "dislikes": "Hallow", "hates": "" },
+      "neighbour": {
+        "loves": ["Merchant"],
+        "likes": ["Party Girl"],
+        "dislikes": ["Demolitionist", "Mechanic"],
+        "hates": ["Santa Claus"]
+      }
+    },
+    {
+      "type": "Cyborg",
+      "biome": { "loves": "", "likes": "Snow", "dislikes": "Jungle", "hates": "" },
+      "neighbour": {
+        "loves": [],
+        "likes": ["Steampunker", "Pirate", "Stylist"],
+        "dislikes": ["Zoologist"],
+        "hates": ["Wizard"]
+      }
+    },
+    {
+      "type": "Santa Claus",
+      "biome": { "loves": "Snow", "hates": "Desert" },
+      "neighbour": {
+        "loves": [],
+        "likes": [],
+        "dislikes": [],
+        "hates": ["Tax Collector"]
+      }
+    },
+    {
+      "type": "Truffle",
+      "biome": { "loves": "", "likes": "Mushroom", "dislikes": "", "hates": "" },
+      "neighbour": {
+        "loves": ["Guide"],
+        "likes": ["Dyrad"],
+        "dislikes": ["Clothier"],
+        "hates": ["Witch Doctor"]
+      }
+    }
+  ]

@@ -1,5 +1,8 @@
 import React from "react";
 import "./App.css";
+import preferences from "./data/prefrences.json";
+import prices from "./data/prices.json";
+import sample from "./data/sample.json";
 
 class NPCType extends React.Component {
   render() {
@@ -41,12 +44,6 @@ class HouseRow extends React.Component {
 class HouseTable extends React.Component {
   render() {
     const houses = this.props.houses;
-    let x, y;
-    for (x = 0; x < houses.length; x++) {
-      for (y = 0; y < houses[x].npcs.length; y++) {
-        houses[x].npcs[y].happy = happiness(houses, x, y);
-      }
-    }
     const houseRows = [];
     houses.forEach((house) => {
       houseRows.push(<HouseRow house={house} key={house.id}></HouseRow>);
@@ -71,13 +68,25 @@ class HouseTable extends React.Component {
 }
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    sample.forEach((house) => {
+      house.npcs.forEach((npc) => {
+        npc.happy = happiness(house, npc);
+      });
+    })
+    this.state = {
+      houses: sample,
+    };
+  }
+
   render() {
     return (
       <div className="App">
         <header className="App-header">
           <p>Terraria House Project</p>
         </header>
-        <HouseTable houses={this.props.houses}></HouseTable>
+        <HouseTable houses={this.state.houses}></HouseTable>
       </div>
     );
   }
@@ -92,98 +101,63 @@ class App extends React.Component {
  * @param {*} houseIndex This is the index of the current house
  * @param {*} npcIndex This is the index of the current npc
  */
-function happiness(houses, houseIndex, npcIndex) {
+function happiness(house, npc) {
   let happinessValue = 1;
-  const currentNPCType = houses[houseIndex].npcs[npcIndex].type;
-  const npcPrefs = preferences.find(
+  const currentNPCType = npc.type;
+  let npcPrefs = preferences.find(
     (preference) => preference.type === currentNPCType
   );
-  const houseBiome = houses[houseIndex].biome;
-  if (houseBiome === npcPrefs.biome.loves) {
-    happinessValue *= prices.loves;
-  } else if (houseBiome === npcPrefs.biome.likes) {
-    happinessValue *= prices.likes;
-  } else if (houseBiome === npcPrefs.biome.dislikes) {
-    happinessValue *= prices.dislikes;
-  } else if (houseBiome === npcPrefs.biome.hates) {
-    happinessValue *= prices.hates;
+  if (npcPrefs === undefined) {
+    console.warn("npcPref for " + currentNPCType + " is " + npcPrefs);
+    npcPrefs = {
+      type: currentNPCType,
+      biome: { loves: "", likes: "", dislikes: "", hates: "" },
+      neighbour: {
+        loves: [],
+        likes: [],
+        dislikes: [],
+        hates: [],
+      },
+    };
   }
-  let i = 0;
-  for (i = 0; i < houses[houseIndex].npcs.length; i++) {
-    if (npcPrefs.neighbour.loves.includes(houses[houseIndex].npcs[i].type)) {
-      happinessValue *= prices.loves;
-    } else if (
-      npcPrefs.neighbour.likes.includes(houses[houseIndex].npcs[i].type)
-    ) {
-      happinessValue *= prices.likes;
-    } else if (
-      npcPrefs.neighbour.dislikes.includes(houses[houseIndex].npcs[i].type)
-    ) {
-      happinessValue *= prices.dislikes;
-    } else if (
-      npcPrefs.neighbour.hates.includes(houses[houseIndex].npcs[i].type)
-    ) {
-      happinessValue *= prices.hates;
+
+  //Still need to add a checkbox or something for if more than 3 npcs
+  //are within 120 blocks (not including the NPC's within 120 tiles)
+  //So for now it is going to just check if there are only 2 npcs in the house
+  const npcAmount = house.npcs.length;
+  if (npcAmount === 2) {
+    happinessValue *= prices.couple;
+  } else if (npcAmount >= 3) {
+    for (let i = 3; i <= npcAmount; i++) {
+      happinessValue *= prices.extra;
     }
   }
-  //Need to add tick boxes for Two or more other NPCs within 25 tiles (for each additional NPC)
-  //and another for No more than one other NPC within 25 tiles and no more than three other NPCs
-  //(not counting the NPCs within 25 tiles) within 120 tiles
+
+  const houseBiome = house.biome;
+  happinessValue *=
+    houseBiome === npcPrefs.biome.loves
+      ? prices.loves
+      : houseBiome === npcPrefs.biome.likes
+      ? prices.likes
+      : houseBiome === npcPrefs.biome.dislikes
+      ? prices.dislikes
+      : houseBiome === npcPrefs.biome.hates
+      ? prices.hates
+      : 1;
+
+  house.npcs.forEach((npc) => {
+    happinessValue *= npcPrefs.neighbour.loves.includes(npc.type)
+      ? prices.loves
+      : npcPrefs.neighbour.likes.includes(npc.type)
+      ? prices.likes
+      : npcPrefs.neighbour.dislikes.includes(npc.type)
+      ? prices.dislikes
+      : npcPrefs.neighbour.hates.includes(npc.type)
+      ? prices.hates
+      : 1;
+  });
+
   return happinessValue;
 }
-
-//Need to move this somewhere cleaner
-const prices = {
-  loves: 0.9,
-  likes: 0.95,
-  dislikes: 1.05,
-  hate: 1.1,
-  extra: 1.04,
-  couple: 0.9,
-};
-
-//Need to move this somewhere cleaner
-const preferences = [
-  {
-    type: "Guide",
-    biome: { likes: "Forest", dislikes: "Ocean" },
-    neighbour: {
-      loves: [],
-      likes: ["Clothier", "Zoo"],
-      dislikes: ["Steampunker"],
-      hates: ["Painter"],
-    },
-  },
-  {
-    type: "Zoo",
-    biome: { likes: "Forest", dislikes: "Desert" },
-    neighbour: {
-      loves: ["Witch"],
-      likes: ["Golfer"],
-      dislikes: ["Angler"],
-      hates: ["Arms"],
-    },
-  },
-  {
-    type: "Golfer",
-    biome: { likes: "Forest", dislikes: "Underground" },
-    neighbour: {
-      loves: ["Angler"],
-      likes: ["Painter", "Zoo"],
-      dislikes: ["Pirate"],
-      hates: ["Merchant"],
-    },
-  },
-  {
-    type: "Wizard",
-    biome: { likes: "Hallow", dislikes: "Ocean" },
-    neighbour: {
-      loves: ["Golfer"],
-      likes: ["Merchant"],
-      dislikes: ["Witch"],
-      hates: ["Cyborg"],
-    },
-  },
-];
 
 export default App;
