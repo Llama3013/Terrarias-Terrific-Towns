@@ -1,0 +1,13 @@
+[
+    {"priority": 1, "type": "Dungeon", "image": "./data/images/biomes/Dungeon.png"},
+    {"priority": 2, "type": "Corruption", "image": "./data/images/biomes/Corruption.png"},
+    {"priority": 3, "type": "Crimson", "image": "./data/images/biomes/Crimson.png"},
+    {"priority": 4, "type": "Mushroom", "image": "./data/images/biomes/Mushroom.png"},
+    {"priority": 5, "type": "Hallow", "image": "./data/images/biomes/Hallow.png"},
+    {"priority": 6, "type": "Jungle", "image": "./data/images/biomes/Jungle.png"},
+    {"priority": 7, "type": "Snow", "image": "./data/images/biomes/Snow.png"},
+    {"priority": 8, "type": "Ocean", "image": "./data/images/biomes/Ocean.png"},
+    {"priority": 9, "type": "Desert", "image": "./data/images/biomes/Desert.png"},
+    {"priority": 10, "type": "Underground", "image": "./data/images/biomes/Underground.png"},
+    {"priority": 11, "type": "Forest", "image": "./data/images/biomes/Forest.png"}
+]
