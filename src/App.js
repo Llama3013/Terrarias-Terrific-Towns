@@ -2,160 +2,43 @@ import React from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
 
-import preferences from "./data/json/prefrences.json";
-import prices from "./data/json/prices.json";
-import sample from "./data/json/sample.json";
-import biomeList from "./data/json/biome.json";
-
-class NPCType extends React.Component {
-  render() {
-    const npc = this.props.npc;
-    const npcRows = [];
-    preferences.forEach((npcPref) => {
-      npcRows.push(<option key={npcPref.type}>{npcPref.type}</option>);
-    });
-    return (
-      <div>
-        <select
-          value={npc.type}
-          onChange={(npcType) =>
-            this.props.onNPCChange(npc.id, npcType.target.value)
-          }
-        >
-          {npcRows}
-        </select>
-        <button onClick={() => this.props.delNPC(npc.id)}>Delete NPC</button>
-      </div>
-    );
-  }
-}
-
-class Happiness extends React.Component {
-  render() {
-    const happiness = this.props.happiness;
-    return <p>{happiness}</p>;
-  }
-}
-
-class Biome extends React.Component {
-  render() {
-    const biomeRows = [];
-    biomeList.forEach((biome) => {
-      biomeRows.push(
-        <option src={biome.image} value={biome.type} key={biome.priority}>
-          {biome.type}
-        </option>
-      );
-    });
-    return (
-      <select
-        value={this.props.house.biome}
-        onChange={(biome) =>
-          this.props.onBiomeChange(this.props.house.id, biome.target.value)
-        }
-      >
-        {biomeRows}
-      </select>
-    );
-  }
-}
-
-class HouseRow extends React.Component {
-  onNPCChange(npcId, npc) {
-    return this.props.onNPCChange(this.props.house.id, npcId, npc);
-  }
-
-  delNPC(npcId) {
-    return this.props.delNPC(this.props.house.id, npcId);
-  }
-
-  render() {
-    const house = this.props.house;
-    const npcTypeRows = [];
-    const npcHappinessRows = [];
-    house.npcs.forEach((npc) => {
-      npcTypeRows.push(
-        <NPCType
-          delNPC={(id) => this.delNPC(id)}
-          onNPCChange={(npcId, npc) => this.onNPCChange(npcId, npc)}
-          key={npc.id}
-          npc={npc}
-        ></NPCType>
-      );
-      npcHappinessRows.push(
-        <Happiness key={npc.id} happiness={npc.happy}></Happiness>
-      );
-    });
-    return (
-      <tr className="House-row">
-        <td>{house.name}</td>
-        <td>
-          <Biome
-            onBiomeChange={(houseId, biome) =>
-              this.props.onBiomeChange(houseId, biome)
-            }
-            house={house}
-          ></Biome>
-        </td>
-        <td>{npcTypeRows}</td>
-        <td>{npcHappinessRows}</td>
-        <td>
-          <button onClick={() => this.props.delHouse(house.id)}>
-            Delete House
-          </button>
-          <button onClick={() => this.props.addNPC(house.id)}>Add NPC</button>
-        </td>
-      </tr>
-    );
-  }
-}
-
-class HouseTable extends React.Component {
-  render() {
-    const houses = this.props.houses;
-    const houseRows = [];
-    houses.forEach((house) => {
-      houseRows.push(
-        <HouseRow
-          delHouse={(id) => this.props.delHouse(id)}
-          addNPC={(id) => this.props.addNPC(id)}
-          delNPC={(houseId, npcId) => this.props.delNPC(houseId, npcId)}
-          onNPCChange={(houseId, npcId, npc) =>
-            this.props.onNPCChange(houseId, npcId, npc)
-          }
-          onBiomeChange={(houseId, biome) =>
-            this.props.onBiomeChange(houseId, biome)
-          }
-          house={house}
-          key={house.id}
-        ></HouseRow>
-      );
-    });
-    return (
-      <div className="House-table">
-        <table>
-          <thead>
-            <tr>
-              <th> Name </th>
-              <th> Biome </th>
-              <th> Npc Type </th>
-              <th> Happiness Value </th>
-              <th> House Options</th>
-            </tr>
-          </thead>
-          <tbody>{houseRows}</tbody>
-        </table>
-      </div>
-    );
-  }
-}
+import HouseTable from "./Components/House.js";
+import preferences from "./Components/data/json/prefrences.json";
+import prices from "./Components/data/json/prices.json";
+import sample from "./Components/data/json/sample.json";
 
 class NewHouse extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "",
+    };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    this.setState({ value: e.target.value });
+  }
+
+  newHouse() {
+    const value = this.state.value;
+    this.setState({ value: "" });
+    return this.props.newHouse(value);
+  }
+
   render() {
     return (
       <div className="Add-house">
-        <input type="text" placeholder="New House"></input>
-        <button onClick={() => this.props.newHouse()}>Add House</button>
+        <input
+          value={this.state.value}
+          onChange={this.handleChange}
+          type="text"
+          placeholder="New House"
+        ></input>
+        <button id="new" onClick={() => this.newHouse()}>
+          Add House
+        </button>
       </div>
     );
   }
@@ -166,7 +49,7 @@ class App extends React.Component {
     super(props);
     sample.forEach((house) => {
       house.npcs.forEach((npc) => {
-        npc.happy = this.happiness(house, npc);
+        npc.price = this.priceCalc(house, npc);
       });
     });
     this.state = {
@@ -176,15 +59,15 @@ class App extends React.Component {
 
   /**
    * This is probably confusing and probably needs a rework.
-   * This checks the current npc's happiness value by checking
+   * This checks the current npc's price modifier by checking
    * if they have a preference in their current biome and if they
    * have a preference on what npcs are in the same area as them
    * @param {*} houses This is the state of the houses
    * @param {*} houseIndex This is the index of the current house
    * @param {*} npcIndex This is the index of the current npc
    */
-  happiness(house, npc) {
-    let happinessValue = 1;
+  priceCalc(house, npc) {
+    let priceModifier = 1;
     const currentNPCType = npc.type;
     let npcPrefs = preferences.find(
       (preference) => preference.type === currentNPCType
@@ -214,18 +97,18 @@ class App extends React.Component {
     }
 
     //Still need to add a checkbox or something for if more than 3 npcs
-    //are within 120 blocks (not including the NPC's within 120 tiles)
+    //are within 120 blocks (not including the NPC's within 25 tiles)
     //So for now it is going to just check if there are only 2 npcs in the house
     const npcAmount = house.npcs.length;
     if (npcAmount <= 2) {
-      happinessValue *= prices.couple;
+      priceModifier *= prices.couple;
     } else if (npcAmount >= 3) {
       for (let i = 3; i <= npcAmount; i++) {
-        happinessValue *= prices.extra;
+        priceModifier *= prices.extra;
       }
     }
 
-    happinessValue *=
+    priceModifier *=
       houseBiome === npcPrefs.biome.loves
         ? prices.loves
         : houseBiome === npcPrefs.biome.likes
@@ -237,7 +120,7 @@ class App extends React.Component {
         : 1;
 
     house.npcs.forEach((npc) => {
-      happinessValue *= npcPrefs.neighbour.loves.includes(npc.type)
+      priceModifier *= npcPrefs.neighbour.loves.includes(npc.type)
         ? prices.loves
         : npcPrefs.neighbour.likes.includes(npc.type)
         ? prices.likes
@@ -248,8 +131,19 @@ class App extends React.Component {
         : 1;
     });
 
-    happinessValue = this.roundFive(happinessValue);
-    return happinessValue;
+    priceModifier = this.roundFive(priceModifier);
+    if (priceModifier >= 1.5) {
+      return 1.5;
+    } else if (priceModifier <= 0.75) {
+      console.log(
+        "price modifier is " +
+          priceModifier +
+          ". This shouldn't be this low, probably calculation issue."
+      );
+      return 0.75;
+    } else {
+      return priceModifier;
+    }
   }
 
   /**
@@ -262,72 +156,73 @@ class App extends React.Component {
 
   biomeChange(houseId, newBiome) {
     const houseIndex = this.state.houses.findIndex((ids) => ids.id === houseId);
-    const newHouses = this.state.houses;
+    const newHouses = [...this.state.houses];
     newHouses[houseIndex].biome = newBiome;
     newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.happy = this.happiness(newHouses[houseIndex], npc);
+      npc.price = this.priceCalc(newHouses[houseIndex], npc);
     });
     this.setState({ houses: newHouses });
   }
 
   npcChange(houseId, npcId, npcType) {
-    const newHouses = this.state.houses;
     const houseIndex = this.state.houses.findIndex((ids) => ids.id === houseId);
     const npcIndex = this.state.houses[houseIndex].npcs.findIndex(
       (ids) => ids.id === npcId
     );
+    const newHouses = [...this.state.houses];
     newHouses[houseIndex].npcs[npcIndex].type = npcType;
     newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.happy = this.happiness(newHouses[houseIndex], npc);
+      npc.price = this.priceCalc(newHouses[houseIndex], npc);
     });
     this.setState({ houses: newHouses });
   }
 
-  newHouse() {
-    const newHouses = this.state.houses;
+  newHouse(house) {
+    house = house ? house : "New House";
+    const newHouses = [...this.state.houses];
     newHouses.push({
       id: nanoid(),
-      name: "House 1",
+      name: house,
       biome: "Forest",
-      npcs: [{ id: nanoid(), type: "Guide", happy: 0 }],
+      npcs: [{ id: nanoid(), type: "Guide", p: 0 }],
     });
     const latestHouse = newHouses.length - 1;
     newHouses[latestHouse].npcs.forEach((npc) => {
-      npc.happy = this.happiness(newHouses[latestHouse], npc);
+      npc.price = this.priceCalc(newHouses[latestHouse], npc);
     });
     this.setState({ houses: newHouses });
   }
 
   delHouse(id) {
-    const newHouses = this.state.houses;
     const houseIndex = this.state.houses.findIndex((ids) => ids.id === id);
+    const newHouses = [...this.state.houses];
     newHouses.splice(houseIndex, 1);
     this.setState({ houses: newHouses });
   }
 
   addNPC(id) {
-    const newHouses = this.state.houses;
     const houseIndex = this.state.houses.findIndex((ids) => ids.id === id);
+    const newHouses = [...this.state.houses];
     newHouses[houseIndex].npcs.push({
       id: nanoid(),
       type: "Guide",
-      happy: 0,
+      price: 0,
     });
     newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.happy = this.happiness(newHouses[houseIndex], npc);
+      npc.price = this.priceCalc(newHouses[houseIndex], npc);
     });
     this.setState({ houses: newHouses });
   }
 
   delNPC(houseId, npcId) {
-    const newHouses = this.state.houses;
     const houseIndex = this.state.houses.findIndex((ids) => ids.id === houseId);
     const npcIndex = this.state.houses[houseIndex].npcs.findIndex(
       (ids) => ids.id === npcId
     );
+    const newHouses = [...this.state.houses];
     newHouses[houseIndex].npcs.splice(npcIndex, 1);
     newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.happy = this.happiness(newHouses[houseIndex], npc);
+      npc.price = this.priceCalc(newHouses[houseIndex], npc);
     });
     this.setState({ houses: newHouses });
   }
@@ -338,7 +233,7 @@ class App extends React.Component {
         <header className="App-header">
           <p>Terraria House Project</p>
         </header>
-        <NewHouse newHouse={() => this.newHouse()}></NewHouse>
+        <NewHouse newHouse={(house) => this.newHouse(house)}></NewHouse>
         <HouseTable
           delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
           onBiomeChange={(houseId, biome) => this.biomeChange(houseId, biome)}
