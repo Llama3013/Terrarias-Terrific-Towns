@@ -1,8 +1,7 @@
 import React from "react";
 import { nanoid } from "nanoid";
 import "./App.css";
-
-import HouseTable from "./Components/House.js";
+import Houses from "./Components/Houses.js";
 import preferences from "./Components/data/json/prefrences.json";
 import prices from "./Components/data/json/prices.json";
 import sample from "./Components/data/json/sample.json";
@@ -44,7 +43,7 @@ class NewHouse extends React.Component {
   }
 }
 
-class App extends React.Component {
+export default class App extends React.Component {
   constructor(props) {
     super(props);
     sample.forEach((house) => {
@@ -234,7 +233,7 @@ class App extends React.Component {
           <p>Terraria House Project</p>
         </header>
         <NewHouse newHouse={(house) => this.newHouse(house)}></NewHouse>
-        <HouseTable
+        <Houses
           delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
           onBiomeChange={(houseId, biome) => this.biomeChange(houseId, biome)}
           onNPCChange={(houseId, npcId, npc) =>
@@ -243,10 +242,8 @@ class App extends React.Component {
           addNPC={(id) => this.addNPC(id)}
           delNPC={(houseId, npcId) => this.delNPC(houseId, npcId)}
           houses={this.state.houses}
-        ></HouseTable>
+        ></Houses>
       </div>
     );
   }
 }
-
-export default App;
