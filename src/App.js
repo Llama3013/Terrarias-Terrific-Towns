@@ -1,7 +1,9 @@
 import React from "react";
 import { nanoid } from "nanoid";
+import { Button, TextField, Typography } from "@material-ui/core";
 import "./App.css";
 import Houses from "./Components/Houses.js";
+
 import preferences from "./Components/data/json/prefrences.json";
 import prices from "./Components/data/json/prices.json";
 import sample from "./Components/data/json/sample.json";
@@ -29,15 +31,18 @@ class NewHouse extends React.Component {
   render() {
     return (
       <div className="Add-house">
-        <input
+        <TextField
+          id="new-house-name"
+          size="small"
+          label="New House"
+          defaultValue="New House"
           value={this.state.value}
           onChange={this.handleChange}
-          type="text"
-          placeholder="New House"
-        ></input>
-        <button id="new" onClick={() => this.newHouse()}>
+          variant="outlined"
+        />
+        <Button variant="contained" size="small" onClick={() => this.newHouse()}>
           Add House
-        </button>
+        </Button>
       </div>
     );
   }
@@ -229,9 +234,9 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <p>Terraria House Project</p>
-        </header>
+        <Typography variant="h1" className="App-header">
+          Terraria House Project
+        </Typography>
         <NewHouse newHouse={(house) => this.newHouse(house)}></NewHouse>
         <Houses
           delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}

@@ -150,6 +150,21 @@
     }
   },
   {
+    "type": "Clothier",
+    "biome": {
+      "loves": "",
+      "likes": "Underground",
+      "dislikes": "Hallow",
+      "hates": ""
+    },
+    "neighbour": {
+      "loves": ["Truffle"],
+      "likes": ["Tax Collector"],
+      "dislikes": ["Nurse"],
+      "hates": ["Mechanic"]
+    }
+  },
+  {
     "type": "Dye Trader",
     "biome": {
       "loves": "",
@@ -195,7 +210,7 @@
     }
   },
   {
-    "type": "Dyrad",
+    "type": "Dryad",
     "biome": {
       "loves": "",
       "likes": "Jungle",

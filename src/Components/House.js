@@ -1,34 +1,85 @@
 import React from "react";
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Collapse,
+  IconButton,
+  Button,
+  Typography,
+  ExpandMoreIcon,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Collapse from "@material-ui/core/Collapse";
-import IconButton from "@material-ui/core/IconButton";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import NPCs from "./NPCs";
+
 import biomeList from "./data/json/biome.json";
+import corrupt from "./data/images/biomes/Corruption.png";
+import crimson from "./data/images/biomes/Crimson.png";
+import desert from "./data/images/biomes/Desert.png";
+import dungeon from "./data/images/biomes/Dungeon.png";
+import hallow from "./data/images/biomes/Hallow.png";
+import jungle from "./data/images/biomes/Jungle.png";
+import mushroom from "./data/images/biomes/Mushroom.png";
+import ocean from "./data/images/biomes/Ocean.png";
+import snow from "./data/images/biomes/Snow.png";
+import forest from "./data/images/biomes/Surface.png";
+import under from "./data/images/biomes/Underground.png";
 
 function Biome(props) {
+  const curBiome = props.house.biome;
   const biomeRows = [];
   biomeList.forEach((biome) => {
+    const biomeImage =
+      biome.type === "Dungeon"
+        ? dungeon
+        : biome.type === "Corruption"
+        ? corrupt
+        : biome.type === "Crimson"
+        ? crimson
+        : biome.type === "Mushroom"
+        ? mushroom
+        : biome.type === "Hallow"
+        ? hallow
+        : biome.type === "Jungle"
+        ? jungle
+        : biome.type === "Snow"
+        ? snow
+        : biome.type === "Ocean"
+        ? ocean
+        : biome.type === "Desert"
+        ? desert
+        : biome.type === "Underground"
+        ? under
+        : forest;
     biomeRows.push(
-      <option src={biome.image} value={biome.type} key={biome.priority}>
+      <MenuItem value={biome.type} key={biome.priority}>
+        <img src={biomeImage} alt=""></img>
         {biome.type}
-      </option>
+      </MenuItem>
     );
   });
   return (
-    <select
-      value={props.house.biome}
-      onChange={(biome) =>
-        props.onBiomeChange(props.house.id, biome.target.value)
-      }
-    >
-      {biomeRows}
-    </select>
+    <FormControl variant="outlined">
+      <InputLabel htmlFor="biome-select">Biome</InputLabel>
+      <Select
+        value={curBiome}
+        onChange={(biome) =>
+          props.onBiomeChange(props.house.id, biome.target.value)
+        }
+        label="Biome"
+        inputProps={{
+          name: "biome",
+          id: "biome-select",
+        }}
+      >
+        {biomeRows}
+      </Select>
+    </FormControl>
   );
 }
 
@@ -82,7 +133,13 @@ export default function House(props) {
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography color="textSecondary" gutterBottom>
-          {house.name}
+          <TextField
+            size="small"
+            id="house-name"
+            label="House Name"
+            defaultValue={house.name}
+            variant="outlined"
+          />
         </Typography>
         <Typography variant="h5" component="h2">
           <Biome
@@ -109,8 +166,8 @@ export default function House(props) {
           <ExpandMoreIcon />
         </IconButton>
       </CardActions>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        {npcRows}
+      <Collapse in={expanded} timeout="auto">
+        <CardContent>{npcRows}</CardContent>
       </Collapse>
     </Card>
   );
