@@ -5,7 +5,7 @@ import House from "./House";
 export default function Houses(props) {
   const houses = props.houses;
   return (
-    <Grid container spacing={10} style={{ padding: "24px" }}>
+    <Grid container style={{ padding: "12px" }}>
       {houses.map((house) => (
         <Grid item xs={12} sm={8} md={6} lg={5} xl={4} className="House-table" key={house.id}>
           <House
