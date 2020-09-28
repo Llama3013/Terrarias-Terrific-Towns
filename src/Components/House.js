@@ -7,13 +7,13 @@ import {
   IconButton,
   Button,
   Typography,
-  ExpandMore,
   FormControl,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@material-ui/core/";
+import { ExpandMore } from "@material-ui/icons"
 import { makeStyles } from "@material-ui/core/styles";
 import NPCs from "./NPCs";
 
