@@ -7,7 +7,7 @@ import {
   IconButton,
   Button,
   Typography,
-  ExpandMoreIcon,
+  ExpandMore,
   FormControl,
   InputLabel,
   MenuItem,
@@ -163,7 +163,7 @@ export default function House(props) {
           aria-expanded={expanded}
           aria-label="show more"
         >
-          <ExpandMoreIcon />
+          <ExpandMore />
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto">
