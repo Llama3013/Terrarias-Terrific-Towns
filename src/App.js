@@ -1,7 +1,7 @@
 import React from "react";
 import { nanoid } from "nanoid";
 import { Button, TextField, Typography } from "@material-ui/core";
-import "./App.css";
+import "./App.scss";
 import Houses from "./Components/Houses.js";
 
 import preferences from "./Components/data/json/prefrences.json";
@@ -15,17 +15,17 @@ class NewHouse extends React.Component {
       value: "",
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleNewHouse = this.handleNewHouse.bind(this);
   }
 
-  handleChange(e) {
+  handleNewHouse(e) {
     this.setState({ value: e.target.value });
   }
 
-  newHouse() {
+  createHouse() {
     const value = this.state.value;
     this.setState({ value: "" });
-    return this.props.newHouse(value);
+    return this.props.createHouse(value);
   }
 
   render() {
@@ -37,10 +37,10 @@ class NewHouse extends React.Component {
           label="New House"
           defaultValue="New House"
           value={this.state.value}
-          onChange={this.handleChange}
+          onChange={this.handleNewHouse}
           variant="outlined"
         />
-        <Button variant="contained" size="small" onClick={() => this.newHouse()}>
+        <Button variant="contained" size="small" onClick={() => this.createHouse()}>
           Add House
         </Button>
       </div>
@@ -181,7 +181,7 @@ export default class App extends React.Component {
     this.setState({ houses: newHouses });
   }
 
-  newHouse(house) {
+  createHouse(house) {
     house = house ? house : "New House";
     const newHouses = [...this.state.houses];
     newHouses.push({
@@ -237,7 +237,7 @@ export default class App extends React.Component {
         <Typography variant="h1" className="App-header">
           Terraria House Project
         </Typography>
-        <NewHouse newHouse={(house) => this.newHouse(house)}></NewHouse>
+        <NewHouse createHouse={(house) => this.createHouse(house)}></NewHouse>
         <Houses
           delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
           onBiomeChange={(houseId, biome) => this.biomeChange(houseId, biome)}

@@ -83,26 +83,27 @@ function Biome(props) {
   );
 }
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    minWidth: 275,
+    margin: theme.spacing(1),
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: "rotate(180deg)",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+}));
+
 export default function House(props) {
-  const useStyles = makeStyles((theme) => ({
-    root: {
-      minWidth: 275,
-      margin: theme.spacing(1),
-    },
-    expand: {
-      transform: "rotate(0deg)",
-      marginLeft: "auto",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: "rotate(180deg)",
-      transition: theme.transitions.create("transform", {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-  }));
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
@@ -167,7 +168,15 @@ export default function House(props) {
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout="auto">
-        <CardContent>{npcRows}</CardContent>
+        <CardContent>
+          {npcRows}
+          <TextField
+            size="large"
+            id="notes"
+            label="notes"
+            variant="outlined"
+          />
+        </CardContent>
       </Collapse>
     </Card>
   );
