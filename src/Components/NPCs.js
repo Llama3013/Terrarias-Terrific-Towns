@@ -1,5 +1,15 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select, Card, CardActions, CardContent, Button, Typography } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Card,
+  CardActions,
+  CardContent,
+  Button,
+  Typography,
+} from "@material-ui/core";
 
 import preferences from "./data/json/prefrences.json";
 import iconAngler from "./data/images/npcs/Icon_Angler.png";
@@ -112,38 +122,32 @@ function Price(props) {
   return <p>{price}</p>;
 }
 
-export default class NPCRow extends React.Component {
-  onNPCChange(npcId, npc) {
-    return this.props.onNPCChange(this.props.houseId, npcId, npc);
-  }
-
-  delNPC(npcId) {
-    return this.props.delNPC(this.props.houseId, npcId);
-  }
-
-  render() {
-    const npc = this.props.npc;
-    return (
-      <Card variant="outlined">
-        <CardContent>
-          <Typography color="textSecondary" gutterBottom>
-            <NPCType
-              delNPC={(npcId) => this.delNPC(npcId)}
-              onNPCChange={(npcId, npc) => this.onNPCChange(npcId, npc)}
-              key={npc.id}
-              npc={npc}
-            ></NPCType>
-          </Typography>
-          <Typography variant="h5" component="h2">
-            <Price key={npc.id} price={npc.price}></Price>
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="small" onClick={() => this.delNPC(npc.id)}>
-            Delete NPC
-          </Button>
-        </CardActions>
-      </Card>
-    );
-  }
+export default function NPCRow(props) {
+  const delNPC = (npcId) => {
+    return props.delNPC(props.houseId, npcId);
+  };
+  const onNPCChange = (npcId, npcType) => {
+    return props.onNPCChange(props.houseId, npcId, npcType);
+  };
+  const npc = props.npc;
+  return (
+    <Card variant="outlined">
+      <CardContent>
+        <NPCType
+          delNPC={(npcId) => delNPC(npcId)}
+          onNPCChange={(npcId, npcType) => onNPCChange(npcId, npcType)}
+          key={npc.id}
+          npc={npc}
+        ></NPCType>
+        <Typography variant="h5" component="h2">
+          <Price key={npc.id} price={npc.price}></Price>
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" onClick={() => delNPC(npc.id)}>
+          Delete NPC
+        </Button>
+      </CardActions>
+    </Card>
+  );
 }

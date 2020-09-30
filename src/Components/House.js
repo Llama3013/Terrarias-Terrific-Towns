@@ -6,82 +6,14 @@ import {
   Collapse,
   IconButton,
   Button,
-  Typography,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
+  FormControlLabel,
+  Checkbox,
 } from "@material-ui/core/";
-import { ExpandMore } from "@material-ui/icons"
+import { ExpandMore } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import NPCs from "./NPCs";
-
-import biomeList from "./data/json/biome.json";
-import corrupt from "./data/images/biomes/Corruption.png";
-import crimson from "./data/images/biomes/Crimson.png";
-import desert from "./data/images/biomes/Desert.png";
-import dungeon from "./data/images/biomes/Dungeon.png";
-import hallow from "./data/images/biomes/Hallow.png";
-import jungle from "./data/images/biomes/Jungle.png";
-import mushroom from "./data/images/biomes/Mushroom.png";
-import ocean from "./data/images/biomes/Ocean.png";
-import snow from "./data/images/biomes/Snow.png";
-import forest from "./data/images/biomes/Surface.png";
-import under from "./data/images/biomes/Underground.png";
-
-function Biome(props) {
-  const curBiome = props.house.biome;
-  const biomeRows = [];
-  biomeList.forEach((biome) => {
-    const biomeImage =
-      biome.type === "Dungeon"
-        ? dungeon
-        : biome.type === "Corruption"
-        ? corrupt
-        : biome.type === "Crimson"
-        ? crimson
-        : biome.type === "Mushroom"
-        ? mushroom
-        : biome.type === "Hallow"
-        ? hallow
-        : biome.type === "Jungle"
-        ? jungle
-        : biome.type === "Snow"
-        ? snow
-        : biome.type === "Ocean"
-        ? ocean
-        : biome.type === "Desert"
-        ? desert
-        : biome.type === "Underground"
-        ? under
-        : forest;
-    biomeRows.push(
-      <MenuItem value={biome.type} key={biome.priority}>
-        <img src={biomeImage} alt=""></img>
-        {biome.type}
-      </MenuItem>
-    );
-  });
-  return (
-    <FormControl variant="outlined">
-      <InputLabel htmlFor="biome-select">Biome</InputLabel>
-      <Select
-        value={curBiome}
-        onChange={(biome) =>
-          props.onBiomeChange(props.house.id, biome.target.value)
-        }
-        label="Biome"
-        inputProps={{
-          name: "biome",
-          id: "biome-select",
-        }}
-      >
-        {biomeRows}
-      </Select>
-    </FormControl>
-  );
-}
+import Biome from "./Biome";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,8 +37,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function House(props) {
   const [expanded, setExpanded] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
+  };
+  const handleCheckedClick = () => {
+    setChecked((prev) => !prev);
   };
   const house = props.house;
   const handleAddNPC = () => {
@@ -133,7 +69,7 @@ export default function House(props) {
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
-        <Typography color="textSecondary" gutterBottom>
+        <div>
           <TextField
             size="small"
             id="house-name"
@@ -141,15 +77,27 @@ export default function House(props) {
             defaultValue={house.name}
             variant="outlined"
           />
-        </Typography>
-        <Typography variant="h5" component="h2">
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={checked}
+                onChange={handleCheckedClick}
+                name="link-checked"
+                color="primary"
+              />
+            }
+            label="Linked house"
+          />
+        </div>
+        <div>
           <Biome
             onBiomeChange={(houseId, biome) =>
               props.onBiomeChange(houseId, biome)
             }
-            house={house}
+            biome={house.biome}
+            id={house.id}
           ></Biome>
-        </Typography>
+        </div>
       </CardContent>
       <CardActions>
         <Button size="small" onClick={() => props.delHouse(house.id)}>
@@ -171,7 +119,7 @@ export default function House(props) {
         <CardContent>
           {npcRows}
           <TextField
-            size="large"
+            size="medium"
             id="notes"
             label="notes"
             variant="outlined"

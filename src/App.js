@@ -35,7 +35,6 @@ class NewHouse extends React.Component {
           id="new-house-name"
           size="small"
           label="New House"
-          defaultValue="New House"
           value={this.state.value}
           onChange={this.handleNewHouse}
           variant="outlined"
@@ -188,7 +187,7 @@ export default class App extends React.Component {
       id: nanoid(),
       name: house,
       biome: "Forest",
-      npcs: [{ id: nanoid(), type: "Guide", p: 0 }],
+      npcs: [{ id: nanoid(), type: "Guide", price: 0 }],
     });
     const latestHouse = newHouses.length - 1;
     newHouses[latestHouse].npcs.forEach((npc) => {
