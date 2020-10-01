@@ -44,12 +44,13 @@ export default function House(props) {
   const handleCheckedClick = () => {
     setChecked((prev) => !prev);
   };
-  const house = props.house;
+  const { house } = props;
+  const { houseId, biome, name } = house;
   const handleAddNPC = () => {
     setExpanded((prev) => {
       return prev ? prev : !prev;
     });
-    return props.addNPC(house.id);
+    return props.addNPC(houseId);
   };
   const classes = useStyles();
   const npcRows = [];
@@ -57,12 +58,12 @@ export default function House(props) {
     npcRows.push(
       <NPCs
         delNPC={(houseId, npcId) => props.delNPC(houseId, npcId)}
-        onNPCChange={(houseId, npcId, npc) =>
-          props.onNPCChange(houseId, npcId, npc)
+        onNPCChange={(houseId, npcId, newNPCType) =>
+          props.onNPCChange(houseId, npcId, newNPCType)
         }
         npc={npc}
-        houseId={house.id}
-        key={npc.id}
+        houseId={houseId}
+        key={npc.npcId}
       ></NPCs>
     );
   });
@@ -74,7 +75,7 @@ export default function House(props) {
             size="small"
             id="house-name"
             label="House Name"
-            defaultValue={house.name}
+            defaultValue={name}
             variant="outlined"
           />
           <FormControlLabel
@@ -94,13 +95,14 @@ export default function House(props) {
             onBiomeChange={(houseId, biome) =>
               props.onBiomeChange(houseId, biome)
             }
-            biome={house.biome}
-            id={house.id}
+            biome={biome}
+            houseId={houseId}
+            key={houseId}
           ></Biome>
         </div>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={() => props.delHouse(house.id)}>
+        <Button size="small" onClick={() => props.delHouse(houseId)}>
           Delete House
         </Button>
         <Button size="small" onClick={handleAddNPC}>

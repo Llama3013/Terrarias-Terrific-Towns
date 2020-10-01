@@ -1,4 +1,4 @@
-import React from "react"
+import React from "react";
 import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
 
 import biomeList from "./data/json/biome.json";
@@ -15,7 +15,6 @@ import forest from "./data/images/biomes/Surface.png";
 import under from "./data/images/biomes/Underground.png";
 
 export default function Biome(props) {
-  const curBiome = props.biome;
   const biomeRows = [];
   biomeList.forEach((biome) => {
     const biomeImage =
@@ -47,13 +46,15 @@ export default function Biome(props) {
       </MenuItem>
     );
   });
+  const curBiome = props.biome;
+  const { houseId, npc } = props;
   return (
     <FormControl variant="outlined">
       <InputLabel htmlFor="biome-select">Biome</InputLabel>
       <Select
         value={curBiome}
         onChange={(biome) =>
-          props.onBiomeChange(props.id, biome.target.value, props.npc)
+          props.onBiomeChange(houseId, biome.target.value, npc)
         }
         label="Biome"
         inputProps={{

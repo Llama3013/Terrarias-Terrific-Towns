@@ -12,7 +12,7 @@ class NewHouse extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "",
+      value: "New House",
     };
 
     this.handleNewHouse = this.handleNewHouse.bind(this);
@@ -24,7 +24,7 @@ class NewHouse extends React.Component {
 
   createHouse() {
     const value = this.state.value;
-    this.setState({ value: "" });
+    this.setState({ value: "New House" });
     return this.props.createHouse(value);
   }
 
@@ -39,7 +39,11 @@ class NewHouse extends React.Component {
           onChange={this.handleNewHouse}
           variant="outlined"
         />
-        <Button variant="contained" size="small" onClick={() => this.createHouse()}>
+        <Button
+          variant="contained"
+          size="small"
+          onClick={() => this.createHouse()}
+        >
           Add House
         </Button>
       </div>
@@ -52,7 +56,7 @@ export default class App extends React.Component {
     super(props);
     sample.forEach((house) => {
       house.npcs.forEach((npc) => {
-        npc.price = this.priceCalc(house, npc);
+        npc.price = this.priceCalc(house, npc.npcType);
       });
     });
     this.state = {
@@ -69,16 +73,15 @@ export default class App extends React.Component {
    * @param {*} houseIndex This is the index of the current house
    * @param {*} npcIndex This is the index of the current npc
    */
-  priceCalc(house, npc) {
+  priceCalc(house, npcType) {
     let priceModifier = 1;
-    const currentNPCType = npc.type;
     let npcPrefs = preferences.find(
-      (preference) => preference.type === currentNPCType
+      (preference) => preference.type === npcType
     );
     if (npcPrefs === undefined) {
-      console.warn("npcPref for " + currentNPCType + " is " + npcPrefs);
+      console.warn("npcPref for " + npcType + " is " + npcPrefs);
       npcPrefs = {
-        type: currentNPCType,
+        type: npcType,
         biome: { loves: "", likes: "", dislikes: "", hates: "" },
         neighbour: {
           loves: [],
@@ -123,13 +126,13 @@ export default class App extends React.Component {
         : 1;
 
     house.npcs.forEach((npc) => {
-      priceModifier *= npcPrefs.neighbour.loves.includes(npc.type)
+      priceModifier *= npcPrefs.neighbour.loves.includes(npc.npcType)
         ? prices.loves
-        : npcPrefs.neighbour.likes.includes(npc.type)
+        : npcPrefs.neighbour.likes.includes(npc.npcType)
         ? prices.likes
-        : npcPrefs.neighbour.dislikes.includes(npc.type)
+        : npcPrefs.neighbour.dislikes.includes(npc.npcType)
         ? prices.dislikes
-        : npcPrefs.neighbour.hates.includes(npc.type)
+        : npcPrefs.neighbour.hates.includes(npc.npcType)
         ? prices.hates
         : 1;
     });
@@ -158,24 +161,24 @@ export default class App extends React.Component {
   }
 
   biomeChange(houseId, newBiome) {
-    const houseIndex = this.state.houses.findIndex((ids) => ids.id === houseId);
+    const houseIndex = this.state.houses.findIndex(
+      (house) => house.houseId === houseId
+    );
     const newHouses = [...this.state.houses];
     newHouses[houseIndex].biome = newBiome;
     newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[houseIndex], npc);
+      npc.price = this.priceCalc(newHouses[houseIndex], npc.npcType);
     });
     this.setState({ houses: newHouses });
   }
 
-  npcChange(houseId, npcId, npcType) {
-    const houseIndex = this.state.houses.findIndex((ids) => ids.id === houseId);
-    const npcIndex = this.state.houses[houseIndex].npcs.findIndex(
-      (ids) => ids.id === npcId
-    );
+  npcChange(houseId, npcId, newNPCType) {
+    const houseIndex = this.findHouse(houseId);
+    const npcIndex = this.findNPC(houseIndex, npcId);
     const newHouses = [...this.state.houses];
-    newHouses[houseIndex].npcs[npcIndex].type = npcType;
+    newHouses[houseIndex].npcs[npcIndex].npcType = newNPCType;
     newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[houseIndex], npc);
+      npc.price = this.priceCalc(newHouses[houseIndex], npc.npcType);
     });
     this.setState({ houses: newHouses });
   }
@@ -184,50 +187,58 @@ export default class App extends React.Component {
     house = house ? house : "New House";
     const newHouses = [...this.state.houses];
     newHouses.push({
-      id: nanoid(),
+      houseId: nanoid(),
       name: house,
       biome: "Forest",
-      npcs: [{ id: nanoid(), type: "Guide", price: 0 }],
+      npcs: [{ npcId: nanoid(), npcType: "Guide", price: 0 }],
     });
     const latestHouse = newHouses.length - 1;
     newHouses[latestHouse].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[latestHouse], npc);
+      npc.price = this.priceCalc(newHouses[latestHouse], npc.npcType);
     });
     this.setState({ houses: newHouses });
   }
 
-  delHouse(id) {
-    const houseIndex = this.state.houses.findIndex((ids) => ids.id === id);
+  delHouse(houseId) {
+    const houseIndex = this.findHouse(houseId);
     const newHouses = [...this.state.houses];
     newHouses.splice(houseIndex, 1);
     this.setState({ houses: newHouses });
   }
 
-  addNPC(id) {
-    const houseIndex = this.state.houses.findIndex((ids) => ids.id === id);
+  addNPC(houseId) {
+    const houseIndex = this.findHouse(houseId);
     const newHouses = [...this.state.houses];
     newHouses[houseIndex].npcs.push({
-      id: nanoid(),
-      type: "Guide",
+      npcId: nanoid(),
+      npcType: "Guide",
       price: 0,
     });
     newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[houseIndex], npc);
+      npc.price = this.priceCalc(newHouses[houseIndex], npc.npcType);
     });
     this.setState({ houses: newHouses });
   }
 
   delNPC(houseId, npcId) {
-    const houseIndex = this.state.houses.findIndex((ids) => ids.id === houseId);
-    const npcIndex = this.state.houses[houseIndex].npcs.findIndex(
-      (ids) => ids.id === npcId
-    );
+    const houseIndex = this.findHouse(houseId);
+    const npcIndex = this.findNPC(houseIndex, npcId);
     const newHouses = [...this.state.houses];
     newHouses[houseIndex].npcs.splice(npcIndex, 1);
     newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[houseIndex], npc);
+      npc.price = this.priceCalc(newHouses[houseIndex], npc.npcType);
     });
     this.setState({ houses: newHouses });
+  }
+
+  findHouse(houseId) {
+    return this.state.houses.findIndex((house) => house.houseId === houseId);
+  }
+
+  findNPC(houseIndex, npcId) {
+    return this.state.houses[houseIndex].npcs.findIndex(
+      (npc) => npc.npcId === npcId
+    );
   }
 
   render() {
@@ -240,10 +251,10 @@ export default class App extends React.Component {
         <Houses
           delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
           onBiomeChange={(houseId, biome) => this.biomeChange(houseId, biome)}
-          onNPCChange={(houseId, npcId, npc) =>
-            this.npcChange(houseId, npcId, npc)
+          onNPCChange={(houseId, npcId, newNPCType) =>
+            this.npcChange(houseId, npcId, newNPCType)
           }
-          addNPC={(id) => this.addNPC(id)}
+          addNPC={(houseId) => this.addNPC(houseId)}
           delNPC={(houseId, npcId) => this.delNPC(houseId, npcId)}
           houses={this.state.houses}
         ></Houses>
