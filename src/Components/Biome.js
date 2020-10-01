@@ -47,14 +47,14 @@ export default function Biome(props) {
     );
   });
   const curBiome = props.biome;
-  const { houseId, npc } = props;
+  const { houseId } = props;
   return (
     <FormControl variant="outlined">
       <InputLabel htmlFor="biome-select">Biome</InputLabel>
       <Select
         value={curBiome}
         onChange={(biome) =>
-          props.onBiomeChange(houseId, biome.target.value, npc)
+          props.onBiomeChange(houseId, biome.target.value)
         }
         label="Biome"
         inputProps={{
