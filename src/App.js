@@ -1,12 +1,25 @@
 import React from "react";
 import { nanoid } from "nanoid";
-import { Button, TextField, Typography } from "@material-ui/core";
+import {
+  Button,
+  TextField,
+  Typography,
+  createMuiTheme,
+  MuiThemeProvider,
+} from "@material-ui/core";
+import { StylesProvider, jssPreset } from "@material-ui/core/styles";
+import { create } from "jss";
 import "./App.scss";
 import Houses from "./Components/Houses.js";
 
 import preferences from "./Components/data/json/prefrences.json";
 import prices from "./Components/data/json/prices.json";
 import sample from "./Components/data/json/sample.json";
+
+const jss = create({
+  ...jssPreset(),
+  insertionPoint: "jss-insertion-point",
+});
 
 class NewHouse extends React.Component {
   constructor(props) {
@@ -241,24 +254,34 @@ export default class App extends React.Component {
     );
   }
 
+  muiTheme = createMuiTheme({});
+
   render() {
     return (
-      <div className="App">
-        <Typography variant="h1" className="App-header">
-          Terraria House Project
-        </Typography>
-        <NewHouse createHouse={(house) => this.createHouse(house)}></NewHouse>
-        <Houses
-          delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
-          onBiomeChange={(houseId, biome) => this.biomeChange(houseId, biome)}
-          onNPCChange={(houseId, npcId, newNPCType) =>
-            this.npcChange(houseId, npcId, newNPCType)
-          }
-          addNPC={(houseId) => this.addNPC(houseId)}
-          delNPC={(houseId, npcId) => this.delNPC(houseId, npcId)}
-          houses={this.state.houses}
-        ></Houses>
-      </div>
+      <StylesProvider jss={jss}>
+        <MuiThemeProvider theme={this.muiTheme}>
+          <div className="App">
+            <Typography variant="h1" className="App-header">
+              Terraria House Project
+            </Typography>
+            <NewHouse
+              createHouse={(house) => this.createHouse(house)}
+            ></NewHouse>
+            <Houses
+              delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
+              onBiomeChange={(houseId, biome) =>
+                this.biomeChange(houseId, biome)
+              }
+              onNPCChange={(houseId, npcId, newNPCType) =>
+                this.npcChange(houseId, npcId, newNPCType)
+              }
+              addNPC={(houseId) => this.addNPC(houseId)}
+              delNPC={(houseId, npcId) => this.delNPC(houseId, npcId)}
+              houses={this.state.houses}
+            ></Houses>
+          </div>
+        </MuiThemeProvider>
+      </StylesProvider>
     );
   }
 }

@@ -53,9 +53,7 @@ export default function Biome(props) {
       <InputLabel htmlFor="biome-select">Biome</InputLabel>
       <Select
         value={curBiome}
-        onChange={(biome) =>
-          props.onBiomeChange(houseId, biome.target.value)
-        }
+        onChange={(biome) => props.onBiomeChange(houseId, biome.target.value)}
         label="Biome"
         inputProps={{
           name: "biome",

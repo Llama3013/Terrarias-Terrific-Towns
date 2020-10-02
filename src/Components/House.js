@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
     margin: theme.spacing(1),
+    height: "fit-content",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -68,7 +69,7 @@ export default function House(props) {
     );
   });
   return (
-    <Card className={classes.root} variant="outlined">
+    <Card elevation={3} className={classes.root}>
       <CardContent>
         <div>
           <TextField
