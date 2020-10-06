@@ -1,25 +1,13 @@
 import React from "react";
 import { nanoid } from "nanoid";
-import {
-  Button,
-  TextField,
-  Typography,
-  createMuiTheme,
-  MuiThemeProvider,
-} from "@material-ui/core";
-import { StylesProvider, jssPreset } from "@material-ui/core/styles";
-import { create } from "jss";
+import { Button, TextField, Typography, Paper } from "@material-ui/core";
 import "./App.scss";
 import Houses from "./Components/Houses.js";
 
 import preferences from "./Components/data/json/prefrences.json";
 import prices from "./Components/data/json/prices.json";
 import sample from "./Components/data/json/sample.json";
-
-const jss = create({
-  ...jssPreset(),
-  insertionPoint: "jss-insertion-point",
-});
+import mainBack from "./Components/data/images/biomes/Forest_back_1.png";
 
 class NewHouse extends React.Component {
   constructor(props) {
@@ -63,6 +51,13 @@ class NewHouse extends React.Component {
     );
   }
 }
+
+const styles = {
+  paperContainer: {
+    background: "url(" + mainBack + ") no-repeat center fixed",
+    backgroundSize: "cover",
+  },
+};
 
 export default class App extends React.Component {
   constructor(props) {
@@ -154,7 +149,7 @@ export default class App extends React.Component {
     if (priceModifier >= 1.5) {
       return 1.5;
     } else if (priceModifier <= 0.75) {
-      console.log(
+      console.warn(
         "price modifier is " +
           priceModifier +
           ". This shouldn't be this low, probably calculation issue."
@@ -254,34 +249,24 @@ export default class App extends React.Component {
     );
   }
 
-  muiTheme = createMuiTheme({});
-
   render() {
     return (
-      <StylesProvider jss={jss}>
-        <MuiThemeProvider theme={this.muiTheme}>
-          <div className="App">
-            <Typography variant="h1" className="App-header">
-              Terraria House Project
-            </Typography>
-            <NewHouse
-              createHouse={(house) => this.createHouse(house)}
-            ></NewHouse>
-            <Houses
-              delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
-              onBiomeChange={(houseId, biome) =>
-                this.biomeChange(houseId, biome)
-              }
-              onNPCChange={(houseId, npcId, newNPCType) =>
-                this.npcChange(houseId, npcId, newNPCType)
-              }
-              addNPC={(houseId) => this.addNPC(houseId)}
-              delNPC={(houseId, npcId) => this.delNPC(houseId, npcId)}
-              houses={this.state.houses}
-            ></Houses>
-          </div>
-        </MuiThemeProvider>
-      </StylesProvider>
+      <Paper className="App" style={styles.paperContainer} square>
+        <Typography variant="h1" className="App-header">
+          Terraria House Project
+        </Typography>
+        <NewHouse createHouse={(house) => this.createHouse(house)}></NewHouse>
+        <Houses
+          delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
+          onBiomeChange={(houseId, biome) => this.biomeChange(houseId, biome)}
+          onNPCChange={(houseId, npcId, newNPCType) =>
+            this.npcChange(houseId, npcId, newNPCType)
+          }
+          addNPC={(houseId) => this.addNPC(houseId)}
+          delNPC={(houseId, npcId) => this.delNPC(houseId, npcId)}
+          houses={this.state.houses}
+        ></Houses>
+      </Paper>
     );
   }
 }

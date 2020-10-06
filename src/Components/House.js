@@ -9,18 +9,55 @@ import {
   TextField,
   FormControlLabel,
   Checkbox,
+  CardHeader,
 } from "@material-ui/core/";
-import { ExpandMore } from "@material-ui/icons";
+import { ExpandMore, Delete } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import NPCs from "./NPCs";
 import Biome from "./Biome";
+import CorruptBack from "./data/images/biomes/Corruption_back_1.png";
+import CrimBack from "./data/images/biomes/Crimson_back_1.png";
+import DesertBack from "./data/images/biomes/Desert_back_1.png";
+import DungeonBack from "./data/images/biomes/Dungeon_back_1.png";
+import ForestBack from "./data/images/biomes/Forest_back_1.png";
+import SnowBack from "./data/images/biomes/Snow_back_1.png";
+import MushroomBack from "./data/images/biomes/Mushroom_back_1.png";
+import HallowBack from "./data/images/biomes/Hallow_back_1.png";
+import JungleBack from "./data/images/biomes/Jungle_back_1.png";
+import OceanBack from "./data/images/biomes/Ocean_back_1.png";
+import UnderBack from "./data/images/biomes/Underground_back_1.png";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 275,
     margin: theme.spacing(1),
     height: "fit-content",
+    backgroundSize: "cover",
+    background: "no-repeat center",
+    backgroundImage: (props) =>
+      props.house.biome === "Corruption"
+        ? "url(" + CorruptBack + ")"
+        : props.house.biome === "Crimson"
+        ? "url(" + CrimBack + ")"
+        : props.house.biome === "Desert"
+        ? "url(" + DesertBack + ")"
+        : props.house.biome === "Dungeon"
+        ? "url(" + DungeonBack + ")"
+        : props.house.biome === "Mushroom"
+        ? "url(" + MushroomBack + ")"
+        : props.house.biome === "Hallow"
+        ? "url(" + HallowBack + ")"
+        : props.house.biome === "Jungle"
+        ? "url(" + JungleBack + ")"
+        : props.house.biome === "Ocean"
+        ? "url(" + OceanBack + ")"
+        : props.house.biome === "Snow"
+        ? "url(" + SnowBack + ")"
+        : props.house.biome === "Underground"
+        ? "url(" + UnderBack + ")"
+        : "url(" + ForestBack + ")",
   },
+  biome: { width: "fit-content" },
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
@@ -30,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
   expandOpen: {
     transform: "rotate(180deg)",
+    marginLeft: "auto",
     transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest,
     }),
@@ -53,7 +91,7 @@ export default function House(props) {
     });
     return props.addNPC(houseId);
   };
-  const classes = useStyles();
+  const classes = useStyles(props);
   const npcRows = [];
   house.npcs.forEach((npc) => {
     npcRows.push(
@@ -70,8 +108,8 @@ export default function House(props) {
   });
   return (
     <Card elevation={3} className={classes.root}>
-      <CardContent>
-        <div>
+      <CardHeader
+        title={
           <TextField
             size="small"
             id="house-name"
@@ -79,34 +117,37 @@ export default function House(props) {
             defaultValue={name}
             variant="outlined"
           />
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={checked}
-                onChange={handleCheckedClick}
-                name="link-checked"
-                color="primary"
-              />
-            }
-            label="Linked house"
-          />
-        </div>
-        <div>
-          <Biome
-            onBiomeChange={(houseId, biome) =>
-              props.onBiomeChange(houseId, biome)
-            }
-            biome={biome}
-            houseId={houseId}
-            key={houseId}
-          ></Biome>
-        </div>
+        }
+        action={
+          <IconButton onClick={() => props.delHouse(houseId)}>
+            <Delete />
+          </IconButton>
+        }
+      />
+      <CardContent>
+        <Biome
+          className={classes.biome}
+          onBiomeChange={(houseId, biome) =>
+            props.onBiomeChange(houseId, biome)
+          }
+          biome={biome}
+          houseId={houseId}
+          key={houseId}
+        ></Biome>
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={checked}
+              onChange={handleCheckedClick}
+              name="link-checked"
+              color="primary"
+            />
+          }
+          label="Linked house"
+        />
       </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => props.delHouse(houseId)}>
-          Delete House
-        </Button>
-        <Button size="small" onClick={handleAddNPC}>
+      <CardActions disableSpacing>
+        <Button size="small" onClick={handleAddNPC} variant="outlined">
           Add NPC
         </Button>
         <IconButton

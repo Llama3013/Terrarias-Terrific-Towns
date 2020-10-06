@@ -38,10 +38,10 @@
       "hates": ""
     },
     "neighbour": {
-      "loves": ["Witch"],
+      "loves": ["Witch Doctor"],
       "likes": ["Golfer"],
       "dislikes": ["Angler"],
-      "hates": ["Arms"]
+      "hates": ["Arms Dealer"]
     }
   },
   {
@@ -115,7 +115,7 @@
     "neighbour": {
       "loves": ["Golfer"],
       "likes": ["Merchant"],
-      "dislikes": ["Witch"],
+      "dislikes": ["Witch Doctor"],
       "hates": ["Cyborg"]
     }
   },
@@ -190,8 +190,8 @@
     "neighbour": {
       "loves": ["Nurse"],
       "likes": ["Steampunker"],
-      "dislikes": ["golfer"],
-      "hates": ["demolitionist"]
+      "dislikes": ["Golfer"],
+      "hates": ["Demolitionist"]
     }
   },
   {
@@ -341,7 +341,12 @@
   },
   {
     "type": "Santa Claus",
-    "biome": { "loves": "Snow", "hates": "Desert" },
+    "biome": {
+      "loves": "Snow",
+      "likes": "",
+      "dislikes": "",
+      "hates": "Desert"
+    },
     "neighbour": {
       "loves": [],
       "likes": [],
