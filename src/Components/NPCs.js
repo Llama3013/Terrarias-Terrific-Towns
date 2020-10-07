@@ -12,10 +12,10 @@ import { Delete } from "@material-ui/icons";
 
 export default function NPCs(props) {
   const delNPC = (npcId) => {
-    return props.delNPC(props.houseId, npcId);
+    return props.delNPC(props.townId, npcId);
   };
   const onNPCChange = (npcId, newNpcType) => {
-    return props.onNPCChange(props.houseId, npcId, newNpcType);
+    return props.onNPCChange(props.townId, npcId, newNpcType);
   };
   const { npcType, npcId, price } = props.npc;
   const npcPrefs = preferences.find(

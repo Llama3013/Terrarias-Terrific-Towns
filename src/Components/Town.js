@@ -35,25 +35,25 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     background: "no-repeat center",
     backgroundImage: (props) =>
-      props.house.biome === "Corruption"
+      props.town.biome === "Corruption"
         ? "url(" + CorruptBack + ")"
-        : props.house.biome === "Crimson"
+        : props.town.biome === "Crimson"
         ? "url(" + CrimBack + ")"
-        : props.house.biome === "Desert"
+        : props.town.biome === "Desert"
         ? "url(" + DesertBack + ")"
-        : props.house.biome === "Dungeon"
+        : props.town.biome === "Dungeon"
         ? "url(" + DungeonBack + ")"
-        : props.house.biome === "Mushroom"
+        : props.town.biome === "Mushroom"
         ? "url(" + MushroomBack + ")"
-        : props.house.biome === "Hallow"
+        : props.town.biome === "Hallow"
         ? "url(" + HallowBack + ")"
-        : props.house.biome === "Jungle"
+        : props.town.biome === "Jungle"
         ? "url(" + JungleBack + ")"
-        : props.house.biome === "Ocean"
+        : props.town.biome === "Ocean"
         ? "url(" + OceanBack + ")"
-        : props.house.biome === "Snow"
+        : props.town.biome === "Snow"
         ? "url(" + SnowBack + ")"
-        : props.house.biome === "Underground"
+        : props.town.biome === "Underground"
         ? "url(" + UnderBack + ")"
         : "url(" + ForestBack + ")",
   },
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function House(props) {
+export default function Town(props) {
   const [expanded, setExpanded] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
   const handleExpandClick = () => {
@@ -83,25 +83,25 @@ export default function House(props) {
   const handleCheckedClick = () => {
     setChecked((prev) => !prev);
   };
-  const { house } = props;
-  const { houseId, biome, name } = house;
+  const { town } = props;
+  const { townId, biome, name } = town;
   const handleAddNPC = () => {
     setExpanded((prev) => {
       return prev ? prev : !prev;
     });
-    return props.addNPC(houseId);
+    return props.addNPC(townId);
   };
   const classes = useStyles(props);
   const npcRows = [];
-  house.npcs.forEach((npc) => {
+  town.npcs.forEach((npc) => {
     npcRows.push(
       <NPCs
-        delNPC={(houseId, npcId) => props.delNPC(houseId, npcId)}
-        onNPCChange={(houseId, npcId, newNPCType) =>
-          props.onNPCChange(houseId, npcId, newNPCType)
+        delNPC={(townId, npcId) => props.delNPC(townId, npcId)}
+        onNPCChange={(townId, npcId, newNPCType) =>
+          props.onNPCChange(townId, npcId, newNPCType)
         }
         npc={npc}
-        houseId={houseId}
+        townId={townId}
         key={npc.npcId}
       ></NPCs>
     );
@@ -112,14 +112,14 @@ export default function House(props) {
         title={
           <TextField
             size="small"
-            id="house-name"
-            label="House Name"
+            id="town-name"
+            label="Town Name"
             defaultValue={name}
             variant="outlined"
           />
         }
         action={
-          <IconButton onClick={() => props.delHouse(houseId)}>
+          <IconButton onClick={() => props.delTown(townId)}>
             <Delete />
           </IconButton>
         }
@@ -127,12 +127,12 @@ export default function House(props) {
       <CardContent>
         <Biome
           className={classes.biome}
-          onBiomeChange={(houseId, biome) =>
-            props.onBiomeChange(houseId, biome)
+          onBiomeChange={(townId, biome) =>
+            props.onBiomeChange(townId, biome)
           }
           biome={biome}
-          houseId={houseId}
-          key={houseId}
+          townId={townId}
+          key={townId}
         ></Biome>
         <FormControlLabel
           control={
@@ -143,7 +143,7 @@ export default function House(props) {
               color="primary"
             />
           }
-          label="Linked house"
+          label="Linked town"
         />
       </CardContent>
       <CardActions disableSpacing>

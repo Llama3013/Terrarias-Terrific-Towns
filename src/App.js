@@ -2,50 +2,50 @@ import React from "react";
 import { nanoid } from "nanoid";
 import { Button, TextField, Typography, Paper } from "@material-ui/core";
 import "./App.scss";
-import Houses from "./Components/Houses.js";
+import Towns from "./Components/Towns.js";
 
 import preferences from "./Components/data/json/prefrences.json";
 import prices from "./Components/data/json/prices.json";
 import sample from "./Components/data/json/sample.json";
 import mainBack from "./Components/data/images/biomes/Forest_back_1.png";
 
-class NewHouse extends React.Component {
+class NewTown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: "New House",
+      value: "New Town",
     };
 
-    this.handleNewHouse = this.handleNewHouse.bind(this);
+    this.handleNewTown = this.handleNewTown.bind(this);
   }
 
-  handleNewHouse(e) {
+  handleNewTown(e) {
     this.setState({ value: e.target.value });
   }
 
-  createHouse() {
+  createTown() {
     const value = this.state.value;
-    this.setState({ value: "New House" });
-    return this.props.createHouse(value);
+    this.setState({ value: "New Town" });
+    return this.props.createTown(value);
   }
 
   render() {
     return (
-      <div className="Add-house">
+      <div className="Add-town">
         <TextField
-          id="new-house-name"
+          id="new-town-name"
           size="small"
-          label="New House"
+          label="New Town"
           value={this.state.value}
-          onChange={this.handleNewHouse}
+          onChange={this.handleNewTown}
           variant="outlined"
         />
         <Button
           variant="contained"
           size="small"
-          onClick={() => this.createHouse()}
+          onClick={() => this.createTown()}
         >
-          Add House
+          Add Town
         </Button>
       </div>
     );
@@ -62,13 +62,13 @@ const styles = {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    sample.forEach((house) => {
-      house.npcs.forEach((npc) => {
-        npc.price = this.priceCalc(house, npc.npcType);
+    sample.forEach((town) => {
+      town.npcs.forEach((npc) => {
+        npc.price = this.priceCalc(town, npc.npcType);
       });
     });
     this.state = {
-      houses: sample,
+      towns: sample,
     };
   }
 
@@ -77,11 +77,11 @@ export default class App extends React.Component {
    * This checks the current npc's price modifier by checking
    * if they have a preference in their current biome and if they
    * have a preference on what npcs are in the same area as them
-   * @param {*} houses This is the state of the houses
-   * @param {*} houseIndex This is the index of the current house
+   * @param {*} towns This is the state of the towns
+   * @param {*} townIndex This is the index of the current town
    * @param {*} npcIndex This is the index of the current npc
    */
-  priceCalc(house, npcType) {
+  priceCalc(town, npcType) {
     let priceModifier = 1;
     let npcPrefs = preferences.find(
       (preference) => preference.type === npcType
@@ -101,19 +101,19 @@ export default class App extends React.Component {
     }
 
     //If the npc is in any of these biomes they instantly have a price modifier of 150%
-    const houseBiome = house.biome;
+    const townBiome = town.biome;
     if (
-      houseBiome === "Dungeon" ||
-      houseBiome === "Corruption" ||
-      houseBiome === "Crimson"
+      townBiome === "Dungeon" ||
+      townBiome === "Corruption" ||
+      townBiome === "Crimson"
     ) {
       return prices.despises;
     }
 
     //Still need to add a checkbox or something for if more than 3 npcs
     //are within 120 blocks (not including the NPC's within 25 tiles)
-    //So for now it is going to just check if there are only 2 npcs in the house
-    const npcAmount = house.npcs.length;
+    //So for now it is going to just check if there are only 2 npcs in the town
+    const npcAmount = town.npcs.length;
     if (npcAmount <= 2) {
       priceModifier *= prices.couple;
     } else if (npcAmount >= 3) {
@@ -123,17 +123,17 @@ export default class App extends React.Component {
     }
 
     priceModifier *=
-      houseBiome === npcPrefs.biome.loves
+      townBiome === npcPrefs.biome.loves
         ? prices.loves
-        : houseBiome === npcPrefs.biome.likes
+        : townBiome === npcPrefs.biome.likes
         ? prices.likes
-        : houseBiome === npcPrefs.biome.dislikes
+        : townBiome === npcPrefs.biome.dislikes
         ? prices.dislikes
-        : houseBiome === npcPrefs.biome.hates
+        : townBiome === npcPrefs.biome.hates
         ? prices.hates
         : 1;
 
-    house.npcs.forEach((npc) => {
+    town.npcs.forEach((npc) => {
       priceModifier *= npcPrefs.neighbour.loves.includes(npc.npcType)
         ? prices.loves
         : npcPrefs.neighbour.likes.includes(npc.npcType)
@@ -168,83 +168,83 @@ export default class App extends React.Component {
     return Math.round(num * 20) / 20;
   }
 
-  biomeChange(houseId, newBiome) {
-    const houseIndex = this.state.houses.findIndex(
-      (house) => house.houseId === houseId
+  biomeChange(townId, newBiome) {
+    const townIndex = this.state.towns.findIndex(
+      (town) => town.townId === townId
     );
-    const newHouses = [...this.state.houses];
-    newHouses[houseIndex].biome = newBiome;
-    newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[houseIndex], npc.npcType);
+    const newTowns = [...this.state.towns];
+    newTowns[townIndex].biome = newBiome;
+    newTowns[townIndex].npcs.forEach((npc) => {
+      npc.price = this.priceCalc(newTowns[townIndex], npc.npcType);
     });
-    this.setState({ houses: newHouses });
+    this.setState({ towns: newTowns });
   }
 
-  npcChange(houseId, npcId, newNPCType) {
-    const houseIndex = this.findHouse(houseId);
-    const npcIndex = this.findNPC(houseIndex, npcId);
-    const newHouses = [...this.state.houses];
-    newHouses[houseIndex].npcs[npcIndex].npcType = newNPCType;
-    newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[houseIndex], npc.npcType);
+  npcChange(townId, npcId, newNPCType) {
+    const townIndex = this.findTown(townId);
+    const npcIndex = this.findNPC(townIndex, npcId);
+    const newTowns = [...this.state.towns];
+    newTowns[townIndex].npcs[npcIndex].npcType = newNPCType;
+    newTowns[townIndex].npcs.forEach((npc) => {
+      npc.price = this.priceCalc(newTowns[townIndex], npc.npcType);
     });
-    this.setState({ houses: newHouses });
+    this.setState({ towns: newTowns });
   }
 
-  createHouse(house) {
-    house = house ? house : "New House";
-    const newHouses = [...this.state.houses];
-    newHouses.push({
-      houseId: nanoid(),
-      name: house,
+  createTown(town) {
+    town = town ? town : "New Town";
+    const newTowns = [...this.state.towns];
+    newTowns.push({
+      townId: nanoid(),
+      name: town,
       biome: "Forest",
       npcs: [{ npcId: nanoid(), npcType: "Guide", price: 0 }],
     });
-    const latestHouse = newHouses.length - 1;
-    newHouses[latestHouse].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[latestHouse], npc.npcType);
+    const latestTown = newTowns.length - 1;
+    newTowns[latestTown].npcs.forEach((npc) => {
+      npc.price = this.priceCalc(newTowns[latestTown], npc.npcType);
     });
-    this.setState({ houses: newHouses });
+    this.setState({ towns: newTowns });
   }
 
-  delHouse(houseId) {
-    const houseIndex = this.findHouse(houseId);
-    const newHouses = [...this.state.houses];
-    newHouses.splice(houseIndex, 1);
-    this.setState({ houses: newHouses });
+  delTown(townId) {
+    const townIndex = this.findTown(townId);
+    const newTowns = [...this.state.towns];
+    newTowns.splice(townIndex, 1);
+    this.setState({ towns: newTowns });
   }
 
-  addNPC(houseId) {
-    const houseIndex = this.findHouse(houseId);
-    const newHouses = [...this.state.houses];
-    newHouses[houseIndex].npcs.push({
+  addNPC(townId) {
+    const townIndex = this.findTown(townId);
+    const newTowns = [...this.state.towns];
+    newTowns[townIndex].npcs.push({
       npcId: nanoid(),
       npcType: "Guide",
       price: 0,
     });
-    newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[houseIndex], npc.npcType);
+    newTowns[townIndex].npcs.forEach((npc) => {
+      npc.price = this.priceCalc(newTowns[townIndex], npc.npcType);
     });
-    this.setState({ houses: newHouses });
+    this.setState({ towns: newTowns });
   }
 
-  delNPC(houseId, npcId) {
-    const houseIndex = this.findHouse(houseId);
-    const npcIndex = this.findNPC(houseIndex, npcId);
-    const newHouses = [...this.state.houses];
-    newHouses[houseIndex].npcs.splice(npcIndex, 1);
-    newHouses[houseIndex].npcs.forEach((npc) => {
-      npc.price = this.priceCalc(newHouses[houseIndex], npc.npcType);
+  delNPC(townId, npcId) {
+    const townIndex = this.findTown(townId);
+    const npcIndex = this.findNPC(townIndex, npcId);
+    const newTowns = [...this.state.towns];
+    newTowns[townIndex].npcs.splice(npcIndex, 1);
+    newTowns[townIndex].npcs.forEach((npc) => {
+      npc.price = this.priceCalc(newTowns[townIndex], npc.npcType);
     });
-    this.setState({ houses: newHouses });
+    this.setState({ towns: newTowns });
   }
 
-  findHouse(houseId) {
-    return this.state.houses.findIndex((house) => house.houseId === houseId);
+  findTown(townId) {
+    return this.state.towns.findIndex((town) => town.townId === townId);
   }
 
-  findNPC(houseIndex, npcId) {
-    return this.state.houses[houseIndex].npcs.findIndex(
+  findNPC(townIndex, npcId) {
+    return this.state.towns[townIndex].npcs.findIndex(
       (npc) => npc.npcId === npcId
     );
   }
@@ -253,19 +253,19 @@ export default class App extends React.Component {
     return (
       <Paper className="App" style={styles.paperContainer} square>
         <Typography variant="h1" className="App-header">
-          Terraria House Project
+          Terrarias Terrific Towns
         </Typography>
-        <NewHouse createHouse={(house) => this.createHouse(house)}></NewHouse>
-        <Houses
-          delHouse={(houseId, npcId) => this.delHouse(houseId, npcId)}
-          onBiomeChange={(houseId, biome) => this.biomeChange(houseId, biome)}
-          onNPCChange={(houseId, npcId, newNPCType) =>
-            this.npcChange(houseId, npcId, newNPCType)
+        <NewTown createTown={(town) => this.createTown(town)}></NewTown>
+        <Towns
+          delTown={(townId, npcId) => this.delTown(townId, npcId)}
+          onBiomeChange={(townId, biome) => this.biomeChange(townId, biome)}
+          onNPCChange={(townId, npcId, newNPCType) =>
+            this.npcChange(townId, npcId, newNPCType)
           }
-          addNPC={(houseId) => this.addNPC(houseId)}
-          delNPC={(houseId, npcId) => this.delNPC(houseId, npcId)}
-          houses={this.state.houses}
-        ></Houses>
+          addNPC={(townId) => this.addNPC(townId)}
+          delNPC={(townId, npcId) => this.delNPC(townId, npcId)}
+          towns={this.state.towns}
+        ></Towns>
       </Paper>
     );
   }
