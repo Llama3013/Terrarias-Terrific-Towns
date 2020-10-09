@@ -169,9 +169,7 @@ export default class App extends React.Component {
   }
 
   biomeChange(townId, newBiome) {
-    const townIndex = this.state.towns.findIndex(
-      (town) => town.townId === townId
-    );
+    const townIndex = this.findTown(townId);
     const newTowns = [...this.state.towns];
     newTowns[townIndex].biome = newBiome;
     newTowns[townIndex].npcs.forEach((npc) => {
@@ -198,6 +196,7 @@ export default class App extends React.Component {
       townId: nanoid(),
       name: town,
       biome: "Forest",
+      pylonStatus: false,
       npcs: [{ npcId: nanoid(), npcType: "Guide", price: 0 }],
     });
     const latestTown = newTowns.length - 1;
@@ -249,6 +248,13 @@ export default class App extends React.Component {
     );
   }
 
+  pylonChange(townId, pylon) {
+    const townIndex = this.findTown(townId);
+    const newTowns = [...this.state.towns];
+    newTowns[townIndex].pylonStatus = pylon;
+    this.setState({ towns: newTowns });
+  }
+
   render() {
     return (
       <Paper className="App" style={styles.paperContainer} square>
@@ -264,6 +270,7 @@ export default class App extends React.Component {
           }
           addNPC={(townId) => this.addNPC(townId)}
           delNPC={(townId, npcId) => this.delNPC(townId, npcId)}
+          pylonChange={(townId, pylon) => this.pylonChange(townId, pylon)}
           towns={this.state.towns}
         ></Towns>
       </Paper>

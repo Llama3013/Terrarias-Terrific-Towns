@@ -1,5 +1,11 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 
 import biomeList from "./data/json/biome.json";
 import corrupt from "./data/images/biomes/Corruption_icon.png";
@@ -14,7 +20,12 @@ import ocean from "./data/images/biomes/Ocean_icon.png";
 import snow from "./data/images/biomes/Snow_icon.png";
 import under from "./data/images/biomes/Underground_icon.png";
 
+const useStyles = makeStyles(() => ({
+  biomeIcon: { width: "24px", height: "24px" },
+}));
+
 export default function Biome(props) {
+  const classes = useStyles();
   const biomeRows = [];
   biomeList.forEach((biome) => {
     const biomeImage =
@@ -41,7 +52,7 @@ export default function Biome(props) {
         : forest;
     biomeRows.push(
       <MenuItem value={biome.type} key={biome.priority}>
-        <img src={biomeImage} alt=""></img>
+        <img src={biomeImage} alt="" className={classes.biomeIcon}></img>
         {biome.type}
       </MenuItem>
     );

@@ -31,6 +31,7 @@ export default function Towns(props) {
             onNPCChange={(townId, npcId, newNPCType) =>
               props.onNPCChange(townId, npcId, newNPCType)
             }
+            pylonChange={(houseId, pylon) => props.pylonChange(houseId, pylon)}
             town={town}
             key={town.townId}
           ></Town>

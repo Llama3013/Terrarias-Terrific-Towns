@@ -1,5 +1,11 @@
 import React from "react";
-import { FormControl, InputLabel, MenuItem, Select } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  makeStyles,
+  MenuItem,
+  Select,
+} from "@material-ui/core";
 
 import preferences from "./data/json/prefrences.json";
 import iconAngler from "./data/images/npcs/Icon_Angler.png";
@@ -28,8 +34,13 @@ import iconWitch from "./data/images/npcs/Icon_Witch_Doctor.png";
 import iconWiz from "./data/images/npcs/Icon_Wizard.png";
 import iconZool from "./data/images/npcs/Icon_Zoologist.png";
 
+const useStyles = makeStyles(() => ({
+  npcIcon: { width: "24px", height: "24px" },
+}));
+
 export default function NPCType(props) {
   const npcRows = [];
+  const classes = useStyles();
   preferences.forEach((npcPref) => {
     const npcImage =
       npcPref.type === "Guide"
@@ -83,7 +94,7 @@ export default function NPCType(props) {
         : iconTruf;
     npcRows.push(
       <MenuItem value={npcPref.type} key={npcPref.type}>
-        <img src={npcImage} alt=""></img>
+        <img src={npcImage} alt="" className={classes.npcIcon}></img>
         {npcPref.type}
       </MenuItem>
     );

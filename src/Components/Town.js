@@ -26,6 +26,24 @@ import HallowBack from "./data/images/biomes/Hallow_back_1.png";
 import JungleBack from "./data/images/biomes/Jungle_back_1.png";
 import OceanBack from "./data/images/biomes/Ocean_back_1.png";
 import UnderBack from "./data/images/biomes/Underground_back_1.png";
+import ForestPylon from "./data/images/biomes/Forest_Pylon.png";
+import ForestPylonSelect from "./data/images/biomes/Forest_Pylon_(placed).gif";
+import SnowPylon from "./data/images/biomes/Snow_Pylon.png";
+import SnowPylonSelect from "./data/images/biomes/Snow_Pylon_(placed).gif";
+import DesertPylon from "./data/images/biomes/Desert_Pylon.png";
+import DesertPylonSelect from "./data/images/biomes/Desert_Pylon_(placed).gif";
+import CavernPylon from "./data/images/biomes/Cavern_Pylon.png";
+import CavernPylonSelect from "./data/images/biomes/Cavern_Pylon_(placed).gif";
+import OceanPylon from "./data/images/biomes/Ocean_Pylon.png";
+import OceanPylonSelect from "./data/images/biomes/Ocean_Pylon_(placed).gif";
+import JunglePylon from "./data/images/biomes/Jungle_Pylon.png";
+import JunglePylonSelect from "./data/images/biomes/Jungle_Pylon_(placed).gif";
+import HallowPylon from "./data/images/biomes/Hallow_Pylon.png";
+import HallowPylonSelect from "./data/images/biomes/Hallow_Pylon_(placed).gif";
+import MushroomPylon from "./data/images/biomes/Mushroom_Pylon.png";
+import MushroomPylonSelect from "./data/images/biomes/Mushroom_Pylon_(placed).gif";
+import UniPylon from "./data/images/biomes/Universal_Pylon.png";
+import UniPylonSelect from "./data/images/biomes/Universal_Pylon_(placed).gif";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -72,9 +90,46 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.shortest,
     }),
   },
+  pylon: { width: "32px", height: "48px" },
 }));
 
 export default function Town(props) {
+  const { town } = props;
+  const { townId, biome, name, pylonStatus } = town;
+  const pylon = biome === "Forest"
+  ? ForestPylon
+  : biome === "Snow"
+  ? SnowPylon
+  : biome === "Desert"
+  ? DesertPylon
+  : biome === "Cavern"
+  ? CavernPylon
+  : biome === "Ocean"
+  ? OceanPylon
+  : biome === "Jungle"
+  ? JunglePylon
+  : biome === "Hallow"
+  ? HallowPylon
+  : biome === "Mushroom"
+  ? MushroomPylon
+  : UniPylon;
+  const pylonSelect = biome === "Forest"
+  ? ForestPylonSelect
+  : biome === "Snow"
+  ? SnowPylonSelect
+  : biome === "Desert"
+  ? DesertPylonSelect
+  : biome === "Cavern"
+  ? CavernPylonSelect
+  : biome === "Ocean"
+  ? OceanPylonSelect
+  : biome === "Jungle"
+  ? JunglePylonSelect
+  : biome === "Hallow"
+  ? HallowPylonSelect
+  : biome === "Mushroom"
+  ? MushroomPylonSelect
+  : UniPylonSelect;
   const [expanded, setExpanded] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
   const handleExpandClick = () => {
@@ -83,8 +138,6 @@ export default function Town(props) {
   const handleCheckedClick = () => {
     setChecked((prev) => !prev);
   };
-  const { town } = props;
-  const { townId, biome, name } = town;
   const handleAddNPC = () => {
     setExpanded((prev) => {
       return prev ? prev : !prev;
@@ -92,6 +145,17 @@ export default function Town(props) {
     return props.addNPC(townId);
   };
   const classes = useStyles(props);
+  const showPylon =
+    town.npcs.length >= 2 ? (
+      <img
+        src={pylonStatus ? pylonSelect : pylon}
+        alt=""
+        onClick={() => props.pylonChange(townId, !pylonStatus)}
+        className={classes.pylon}
+      ></img>
+    ) : (
+      ""
+    );
   const npcRows = [];
   town.npcs.forEach((npc) => {
     npcRows.push(
@@ -119,17 +183,18 @@ export default function Town(props) {
           />
         }
         action={
-          <IconButton onClick={() => props.delTown(townId)}>
-            <Delete />
-          </IconButton>
+          <div>
+            {showPylon}
+            <IconButton onClick={() => props.delTown(townId)}>
+              <Delete />
+            </IconButton>
+          </div>
         }
       />
       <CardContent>
         <Biome
           className={classes.biome}
-          onBiomeChange={(townId, biome) =>
-            props.onBiomeChange(townId, biome)
-          }
+          onBiomeChange={(townId, biome) => props.onBiomeChange(townId, biome)}
           biome={biome}
           townId={townId}
           key={townId}
