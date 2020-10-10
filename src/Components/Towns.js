@@ -1,4 +1,4 @@
-import { Fade, Grid, makeStyles } from "@material-ui/core";
+import { Fade, makeStyles, Paper } from "@material-ui/core";
 import React from "react";
 import Town from "./Town";
 
@@ -6,6 +6,7 @@ const styles = makeStyles((theme) => ({
   cardContainer: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill,minmax(345px, 1fr))",
+    background: "no-repeat center",
   },
 }));
 
@@ -14,11 +15,7 @@ export default function Towns(props) {
 
   const classes = styles();
   return (
-    <Grid
-      className={classes.cardContainer}
-      container
-      style={{ padding: "12px" }}
-    >
+    <Paper className={classes.cardContainer} style={{ padding: "12px" }}>
       {towns.map((town) => (
         <Fade in={true} key={town.townId}>
           <Town
@@ -37,6 +34,6 @@ export default function Towns(props) {
           ></Town>
         </Fade>
       ))}
-    </Grid>
+    </Paper>
   );
 }

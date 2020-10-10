@@ -5,6 +5,7 @@ import {
   makeStyles,
   MenuItem,
   Select,
+  Tooltip,
 } from "@material-ui/core";
 
 import preferences from "./data/json/prefrences.json";
@@ -103,19 +104,21 @@ export default function NPCType(props) {
   return (
     <FormControl variant="outlined">
       <InputLabel htmlFor="npc-select">NPC</InputLabel>
-      <Select
-        value={npcType}
-        onChange={(newNPCType) =>
-          props.onNPCChange(npcId, newNPCType.target.value)
-        }
-        label="NPC"
-        inputProps={{
-          name: "npc",
-          id: "npc-select",
-        }}
-      >
-        {npcRows}
-      </Select>
+      <Tooltip title="Select NPC">
+        <Select
+          value={npcType}
+          onChange={(newNPCType) =>
+            props.onNPCChange(npcId, newNPCType.target.value)
+          }
+          label="NPC"
+          inputProps={{
+            name: "npc",
+            id: "npc-select",
+          }}
+        >
+          {npcRows}
+        </Select>
+      </Tooltip>
     </FormControl>
   );
 }

@@ -5,6 +5,8 @@ import {
   Typography,
   CardHeader,
   IconButton,
+  makeStyles,
+  Tooltip,
 } from "@material-ui/core";
 import preferences from "./data/json/prefrences.json";
 import NPCType from "./NPCType";
@@ -16,10 +18,30 @@ import {
   SentimentSatisfied,
 } from "@material-ui/icons";
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    minWidth: 225,
+    margin: theme.spacing(1),
+    height: "fit-content",
+    background: "no-repeat center",
+  },
+  expand: {
+    transform: "rotate(0deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+  expandOpen: {
+    transform: "rotate(180deg)",
+    marginLeft: "auto",
+    transition: theme.transitions.create("transform", {
+      duration: theme.transitions.duration.shortest,
+    }),
+  },
+}));
+
 export default function NPCs(props) {
-  const delNPC = (npcId) => {
-    return props.delNPC(props.townId, npcId);
-  };
   const onNPCChange = (npcId, newNpcType) => {
     return props.onNPCChange(props.townId, npcId, newNpcType);
   };
@@ -28,32 +50,32 @@ export default function NPCs(props) {
   const npcPrefs = preferences.find(
     (preference) => preference.type === npcType
   );
-  let loves = "";
+  let loves = ": ";
   npcPrefs.neighbour.loves.forEach((npc) => {
     loves += npc + ", ";
   });
   loves += npcPrefs.biome.loves;
-  let likes = "";
+  let likes = ": ";
   npcPrefs.neighbour.likes.forEach((npc) => {
     likes += npc + ", ";
   });
   likes += npcPrefs.biome.likes;
-  let dislikes = "";
+  let dislikes = ": ";
   npcPrefs.neighbour.dislikes.forEach((npc) => {
     dislikes += npc + ", ";
   });
   dislikes += npcPrefs.biome.dislikes;
-  let hates = "";
+  let hates = ": ";
   npcPrefs.neighbour.hates.forEach((npc) => {
     hates += npc + ", ";
   });
   hates += npcPrefs.biome.hates;
+  const classes = useStyles();
   return (
-    <Card variant="outlined">
+    <Card className={classes.root}>
       <CardHeader
         title={
           <NPCType
-            delNPC={(npcId) => delNPC(npcId)}
             onNPCChange={(npcId, newNPCType) => onNPCChange(npcId, newNPCType)}
             npcType={npcType}
             npcId={npcId}
@@ -61,29 +83,39 @@ export default function NPCs(props) {
           ></NPCType>
         }
         action={
-          <IconButton onClick={() => delNPC(npcId)}>
-            <Delete />
-          </IconButton>
+          <Tooltip title="Delete NPC">
+            <IconButton onClick={() => props.delNPC(props.townId, npcId)}>
+              <Delete />
+            </IconButton>
+          </Tooltip>
         }
       />
       <CardContent>
         <Typography>Price Modifier: {pricePercent}%</Typography>
-        <Typography>
-          <Mood />
-          {loves}
-        </Typography>
-        <Typography>
-          <SentimentSatisfied />
-          {likes}
-        </Typography>
-        <Typography>
-          <SentimentDissatisfied />
-          {dislikes}
-        </Typography>
-        <Typography>
-          <MoodBad />
-          {hates}
-        </Typography>
+        <Tooltip title="Loves">
+          <Typography>
+            <Mood />
+            {loves}
+          </Typography>
+        </Tooltip>
+        <Tooltip title="Likes">
+          <Typography>
+            <SentimentSatisfied />
+            {likes}
+          </Typography>
+        </Tooltip>
+        <Tooltip title="Dislikes">
+          <Typography>
+            <SentimentDissatisfied />
+            {dislikes}
+          </Typography>
+        </Tooltip>
+        <Tooltip title="Hates">
+          <Typography>
+            <MoodBad />
+            {hates}
+          </Typography>
+        </Tooltip>
       </CardContent>
     </Card>
   );

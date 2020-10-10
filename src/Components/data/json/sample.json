@@ -1,3 +1,15 @@
 [
-  
+  {
+    "biome": "Forest",
+    "name": "New Town",
+    "pylonStatus": false,
+    "townId": "eBMp6wjfN0w0riFbr6AOI",
+    "npcs": [
+      {
+        "npcId": "TlxC3-8_Y0V02EaBt9R2",
+        "npcType": "Guide",
+        "price": 0
+      }
+    ]
+  }
 ]

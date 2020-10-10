@@ -10,6 +10,7 @@ import {
   FormControlLabel,
   Checkbox,
   CardHeader,
+  Tooltip,
 } from "@material-ui/core/";
 import { ExpandMore, Delete } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -96,40 +97,42 @@ const useStyles = makeStyles((theme) => ({
 export default function Town(props) {
   const { town } = props;
   const { townId, biome, name, pylonStatus } = town;
-  const pylon = biome === "Forest"
-  ? ForestPylon
-  : biome === "Snow"
-  ? SnowPylon
-  : biome === "Desert"
-  ? DesertPylon
-  : biome === "Cavern"
-  ? CavernPylon
-  : biome === "Ocean"
-  ? OceanPylon
-  : biome === "Jungle"
-  ? JunglePylon
-  : biome === "Hallow"
-  ? HallowPylon
-  : biome === "Mushroom"
-  ? MushroomPylon
-  : UniPylon;
-  const pylonSelect = biome === "Forest"
-  ? ForestPylonSelect
-  : biome === "Snow"
-  ? SnowPylonSelect
-  : biome === "Desert"
-  ? DesertPylonSelect
-  : biome === "Cavern"
-  ? CavernPylonSelect
-  : biome === "Ocean"
-  ? OceanPylonSelect
-  : biome === "Jungle"
-  ? JunglePylonSelect
-  : biome === "Hallow"
-  ? HallowPylonSelect
-  : biome === "Mushroom"
-  ? MushroomPylonSelect
-  : UniPylonSelect;
+  const pylon =
+    biome === "Forest"
+      ? ForestPylon
+      : biome === "Snow"
+      ? SnowPylon
+      : biome === "Desert"
+      ? DesertPylon
+      : biome === "Cavern"
+      ? CavernPylon
+      : biome === "Ocean"
+      ? OceanPylon
+      : biome === "Jungle"
+      ? JunglePylon
+      : biome === "Hallow"
+      ? HallowPylon
+      : biome === "Mushroom"
+      ? MushroomPylon
+      : UniPylon;
+  const pylonSelect =
+    biome === "Forest"
+      ? ForestPylonSelect
+      : biome === "Snow"
+      ? SnowPylonSelect
+      : biome === "Desert"
+      ? DesertPylonSelect
+      : biome === "Cavern"
+      ? CavernPylonSelect
+      : biome === "Ocean"
+      ? OceanPylonSelect
+      : biome === "Jungle"
+      ? JunglePylonSelect
+      : biome === "Hallow"
+      ? HallowPylonSelect
+      : biome === "Mushroom"
+      ? MushroomPylonSelect
+      : UniPylonSelect;
   const [expanded, setExpanded] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
   const handleExpandClick = () => {
@@ -145,14 +148,20 @@ export default function Town(props) {
     return props.addNPC(townId);
   };
   const classes = useStyles(props);
+  const pylonTooltip = pylonStatus
+    ? "Pylon active"
+    : "Pylon is not active";
   const showPylon =
     town.npcs.length >= 2 ? (
-      <img
-        src={pylonStatus ? pylonSelect : pylon}
-        alt=""
-        onClick={() => props.pylonChange(townId, !pylonStatus)}
-        className={classes.pylon}
-      ></img>
+      <Tooltip title={pylonTooltip}>
+        <IconButton onClick={() => props.pylonChange(townId, !pylonStatus)}>
+          <img
+            src={pylonStatus ? pylonSelect : pylon}
+            alt=""
+            className={classes.pylon}
+          ></img>
+        </IconButton>
+      </Tooltip>
     ) : (
       ""
     );
@@ -185,9 +194,11 @@ export default function Town(props) {
         action={
           <div>
             {showPylon}
-            <IconButton onClick={() => props.delTown(townId)}>
-              <Delete />
-            </IconButton>
+            <Tooltip title="Delete House">
+              <IconButton onClick={() => props.delTown(townId)}>
+                <Delete />
+              </IconButton>
+            </Tooltip>
           </div>
         }
       />
@@ -200,8 +211,10 @@ export default function Town(props) {
           key={townId}
         ></Biome>
         <FormControlLabel
+          disabled
           control={
             <Checkbox
+              disabled
               checked={checked}
               onChange={handleCheckedClick}
               name="link-checked"
@@ -215,19 +228,22 @@ export default function Town(props) {
         <Button size="small" onClick={handleAddNPC} variant="outlined">
           Add NPC
         </Button>
-        <IconButton
-          className={expanded ? classes.expandOpen : classes.expand}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label="show more"
-        >
-          <ExpandMore />
-        </IconButton>
+        <Tooltip title="Show NPCs">
+          <IconButton
+            className={expanded ? classes.expandOpen : classes.expand}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label="show more"
+          >
+            <ExpandMore />
+          </IconButton>
+        </Tooltip>
       </CardActions>
       <Collapse in={expanded} timeout="auto">
         <CardContent>
           {npcRows}
           <TextField
+            disabled
             size="medium"
             id="notes"
             label="notes"

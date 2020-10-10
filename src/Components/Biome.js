@@ -5,6 +5,7 @@ import {
   makeStyles,
   MenuItem,
   Select,
+  Tooltip,
 } from "@material-ui/core";
 
 import biomeList from "./data/json/biome.json";
@@ -62,17 +63,19 @@ export default function Biome(props) {
   return (
     <FormControl variant="outlined">
       <InputLabel htmlFor="biome-select">Biome</InputLabel>
-      <Select
-        value={curBiome}
-        onChange={(biome) => props.onBiomeChange(townId, biome.target.value)}
-        label="Biome"
-        inputProps={{
-          name: "biome",
-          id: "biome-select",
-        }}
-      >
-        {biomeRows}
-      </Select>
+      <Tooltip title="Select Biome">
+        <Select
+          value={curBiome}
+          onChange={(biome) => props.onBiomeChange(townId, biome.target.value)}
+          label="Biome"
+          inputProps={{
+            name: "biome",
+            id: "biome-select",
+          }}
+        >
+          {biomeRows}
+        </Select>
+      </Tooltip>
     </FormControl>
   );
 }
