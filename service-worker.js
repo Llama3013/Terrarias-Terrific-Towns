@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Terrarias-Terrific-Towns/precache-manifest.ee325f0c35154bd38ce52bea207af4f2.js"
+  "/Terrarias-Terrific-Towns/precache-manifest.c9c2a3f5976a7cc9b48e23d7ddfad429.js"
 );
 
 self.addEventListener('message', (event) => {
