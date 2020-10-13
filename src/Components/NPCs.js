@@ -7,6 +7,7 @@ import {
   IconButton,
   makeStyles,
   Tooltip,
+  Paper,
 } from "@material-ui/core";
 import preferences from "./data/json/prefrences.json";
 import NPCType from "./NPCType";
@@ -24,6 +25,9 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(1),
     height: "fit-content",
     background: "no-repeat center",
+  },
+  backgroundBubble: {
+    backgroundColor: "rgba(123, 104, 238, 0.5)",
   },
   expand: {
     transform: "rotate(0deg)",
@@ -46,7 +50,6 @@ export default function NPCs(props) {
     return props.onNPCChange(props.townId, npcId, newNpcType);
   };
   const { npcType, npcId, price } = props.npc;
-  const pricePercent = Math.round(price * 100);
   const npcPrefs = preferences.find(
     (preference) => preference.type === npcType
   );
@@ -91,31 +94,33 @@ export default function NPCs(props) {
         }
       />
       <CardContent>
-        <Typography>Price Modifier: {pricePercent}%</Typography>
-        <Tooltip title="Loves">
-          <Typography>
-            <Mood />
-            {loves}
-          </Typography>
-        </Tooltip>
-        <Tooltip title="Likes">
-          <Typography>
-            <SentimentSatisfied />
-            {likes}
-          </Typography>
-        </Tooltip>
-        <Tooltip title="Dislikes">
-          <Typography>
-            <SentimentDissatisfied />
-            {dislikes}
-          </Typography>
-        </Tooltip>
-        <Tooltip title="Hates">
-          <Typography>
-            <MoodBad />
-            {hates}
-          </Typography>
-        </Tooltip>
+        <Paper variant="outlined" className={classes.backgroundBubble}>
+          <Typography>Price Modifier: {price}%</Typography>
+          <Tooltip title="Loves">
+            <Typography>
+              <Mood />
+              {loves}
+            </Typography>
+          </Tooltip>
+          <Tooltip title="Likes">
+            <Typography>
+              <SentimentSatisfied />
+              {likes}
+            </Typography>
+          </Tooltip>
+          <Tooltip title="Dislikes">
+            <Typography>
+              <SentimentDissatisfied />
+              {dislikes}
+            </Typography>
+          </Tooltip>
+          <Tooltip title="Hates">
+            <Typography>
+              <MoodBad />
+              {hates}
+            </Typography>
+          </Tooltip>
+        </Paper>
       </CardContent>
     </Card>
   );

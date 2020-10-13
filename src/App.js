@@ -146,16 +146,18 @@ export default class App extends React.Component {
     });
 
     priceModifier = this.roundFive(priceModifier);
-    if (priceModifier >= 1.5) {
-      return 1.5;
-    } else if (priceModifier <= 0.75) {
+    priceModifier = Math.round(priceModifier * 100);
+    if (priceModifier >= 150) {
+      return 150;
+    } else if (priceModifier <= 75) {
       console.warn(
         "price modifier is " +
           priceModifier +
           ". This shouldn't be this low, probably calculation issue."
       );
-      return 0.75;
+      return 75;
     } else {
+      priceModifier = npcAmount >= 3 ? (priceModifier-5) + "-" + (priceModifier) : priceModifier
       return priceModifier;
     }
   }

@@ -76,8 +76,12 @@ const useStyles = makeStyles((theme) => ({
         ? "url(" + UnderBack + ")"
         : "url(" + ForestBack + ")",
   },
+  backgroundBubble: {
+    backgroundColor: "rgba(123, 104, 238, 0.5)",
+  },
   biome: { width: "fit-content" },
   expand: {
+    backgroundColor: "rgba(123, 104, 238, 0.5)",
     transform: "rotate(0deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
@@ -85,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   expandOpen: {
+    backgroundColor: "rgba(123, 104, 238, 0.5)",
     transform: "rotate(180deg)",
     marginLeft: "auto",
     transition: theme.transitions.create("transform", {
@@ -104,7 +109,7 @@ export default function Town(props) {
       ? SnowPylon
       : biome === "Desert"
       ? DesertPylon
-      : biome === "Cavern"
+      : biome === "Underground"
       ? CavernPylon
       : biome === "Ocean"
       ? OceanPylon
@@ -122,7 +127,7 @@ export default function Town(props) {
       ? SnowPylonSelect
       : biome === "Desert"
       ? DesertPylonSelect
-      : biome === "Cavern"
+      : biome === "Underground"
       ? CavernPylonSelect
       : biome === "Ocean"
       ? OceanPylonSelect
@@ -148,11 +153,12 @@ export default function Town(props) {
     return props.addNPC(townId);
   };
   const classes = useStyles(props);
-  const pylonTooltip = pylonStatus
-    ? "Pylon active"
-    : "Pylon is not active";
+  const pylonTooltip = pylonStatus ? "Pylon active" : "Pylon is not active";
   const showPylon =
-    town.npcs.length >= 2 ? (
+    town.npcs.length >= 2 &&
+    biome !== "Dungeon" &&
+    biome !== "Corruption" &&
+    biome !== "Crimson" ? (
       <Tooltip title={pylonTooltip}>
         <IconButton onClick={() => props.pylonChange(townId, !pylonStatus)}>
           <img
@@ -188,14 +194,15 @@ export default function Town(props) {
             id="town-name"
             label="Town Name"
             defaultValue={name}
-            variant="outlined"
+            variant="filled"
+            className={classes.backgroundBubble}
           />
         }
         action={
           <div>
             {showPylon}
             <Tooltip title="Delete House">
-              <IconButton onClick={() => props.delTown(townId)}>
+              <IconButton className={classes.backgroundBubble} onClick={() => props.delTown(townId)}>
                 <Delete />
               </IconButton>
             </Tooltip>
@@ -225,7 +232,11 @@ export default function Town(props) {
         />
       </CardContent>
       <CardActions disableSpacing>
-        <Button size="small" onClick={handleAddNPC} variant="outlined">
+        <Button
+          className={classes.backgroundBubble}
+          onClick={handleAddNPC}
+          variant="outlined"
+        >
           Add NPC
         </Button>
         <Tooltip title="Show NPCs">

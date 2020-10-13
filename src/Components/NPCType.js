@@ -36,6 +36,9 @@ import iconWiz from "./data/images/npcs/Icon_Wizard.png";
 import iconZool from "./data/images/npcs/Icon_Zoologist.png";
 
 const useStyles = makeStyles(() => ({
+  backgroundBubble: {
+    backgroundColor: "rgba(123, 104, 238, 0.5)",
+  },
   npcIcon: { width: "24px", height: "24px" },
 }));
 
@@ -102,10 +105,11 @@ export default function NPCType(props) {
   });
   const { npcId, npcType } = props;
   return (
-    <FormControl variant="outlined">
+    <FormControl variant="filled">
       <InputLabel htmlFor="npc-select">NPC</InputLabel>
       <Tooltip title="Select NPC">
         <Select
+          className={classes.backgroundBubble}
           value={npcType}
           onChange={(newNPCType) =>
             props.onNPCChange(npcId, newNPCType.target.value)
