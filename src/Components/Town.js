@@ -97,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   pylon: { width: "32px", height: "48px" },
+  disabledPylon: { opacity: "0.5", width: "32px", height: "48px" },
 }));
 
 export default function Town(props) {
@@ -153,24 +154,15 @@ export default function Town(props) {
     return props.addNPC(townId);
   };
   const classes = useStyles(props);
-  const pylonTooltip = pylonStatus ? "Pylon active" : "Pylon is not active";
-  const showPylon =
+  const disabledPylon =
     town.npcs.length >= 2 &&
     biome !== "Dungeon" &&
     biome !== "Corruption" &&
-    biome !== "Crimson" ? (
-      <Tooltip title={pylonTooltip}>
-        <IconButton onClick={() => props.pylonChange(townId, !pylonStatus)}>
-          <img
-            src={pylonStatus ? pylonSelect : pylon}
-            alt=""
-            className={classes.pylon}
-          ></img>
-        </IconButton>
-      </Tooltip>
-    ) : (
-      ""
-    );
+    biome !== "Crimson"
+      ? false
+      : true;
+  const disabledLook = disabledPylon ? classes.disabledPylon : classes.pylon;
+  const pylonTooltip = pylonStatus && disabledPylon ? "Pylon placed but needs more npcs" : !pylonStatus && disabledPylon ? "Pylon not placed and needs more npcs" : pylonStatus && !disabledPylon ? "Pylon is active" : "Pylon is not placed and can be activated";
   const npcRows = [];
   town.npcs.forEach((npc) => {
     npcRows.push(
@@ -200,9 +192,26 @@ export default function Town(props) {
         }
         action={
           <div>
-            {showPylon}
+            <Tooltip title={pylonTooltip}>
+              <span>
+                <IconButton
+                  className={disabledLook}
+                  disabled={disabledPylon}
+                  onClick={() => props.pylonChange(townId, !pylonStatus)}
+                >
+                  <img
+                    src={pylonStatus ? pylonSelect : pylon}
+                    alt=""
+                    className={classes.pylon}
+                  ></img>
+                </IconButton>
+              </span>
+            </Tooltip>
             <Tooltip title="Delete House">
-              <IconButton className={classes.backgroundBubble} onClick={() => props.delTown(townId)}>
+              <IconButton
+                className={classes.backgroundBubble}
+                onClick={() => props.delTown(townId)}
+              >
                 <Delete />
               </IconButton>
             </Tooltip>

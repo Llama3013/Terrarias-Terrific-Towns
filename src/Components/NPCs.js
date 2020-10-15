@@ -49,7 +49,7 @@ export default function NPCs(props) {
   const onNPCChange = (npcId, newNpcType) => {
     return props.onNPCChange(props.townId, npcId, newNpcType);
   };
-  const { npcType, npcId, price } = props.npc;
+  const { npcType, npcId, price, priceNotes } = props.npc;
   const npcPrefs = preferences.find(
     (preference) => preference.type === npcType
   );
@@ -87,7 +87,10 @@ export default function NPCs(props) {
         }
         action={
           <Tooltip title="Delete NPC">
-            <IconButton onClick={() => props.delNPC(props.townId, npcId)}>
+            <IconButton
+              className={classes.backgroundBubble}
+              onClick={() => props.delNPC(props.townId, npcId)}
+            >
               <Delete />
             </IconButton>
           </Tooltip>
@@ -95,7 +98,9 @@ export default function NPCs(props) {
       />
       <CardContent>
         <Paper variant="outlined" className={classes.backgroundBubble}>
-          <Typography>Price Modifier: {price}%</Typography>
+          <Tooltip title={priceNotes}>
+            <Typography>Price Modifier: {price}%</Typography>
+          </Tooltip>
           <Tooltip title="Loves">
             <Typography>
               <Mood />

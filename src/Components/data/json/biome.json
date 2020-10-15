@@ -1,13 +1,68 @@
 [
-    {"priority": 1, "type": "Dungeon", "image": "./data/images/biomes/Dungeon.png", "color": "teal[200]"},
-    {"priority": 2, "type": "Corruption", "image": "./data/images/biomes/Corruption.png", "color": "deepPurple[900]"},
-    {"priority": 3, "type": "Crimson", "image": "./data/images/biomes/Crimson.png", "color": "red[500]"},
-    {"priority": 4, "type": "Mushroom", "image": "./data/images/biomes/Mushroom.png", "color": "indigo[600]"},
-    {"priority": 5, "type": "Hallow", "image": "./data/images/biomes/Hallow.png", "color": "blue[300]"},
-    {"priority": 6, "type": "Jungle", "image": "./data/images/biomes/Jungle.png", "color": "lightGreen[400]"},
-    {"priority": 7, "type": "Snow", "image": "./data/images/biomes/Snow.png", "color": "blueGrey[50]"},
-    {"priority": 8, "type": "Ocean", "image": "./data/images/biomes/Ocean.png", "color": "yellow[300]"},
-    {"priority": 9, "type": "Desert", "image": "./data/images/biomes/Desert.png", "color": "amber[500]"},
-    {"priority": 10, "type": "Underground", "image": "./data/images/biomes/Underground.png", "color": "grey[500]"},
-    {"priority": 11, "type": "Forest", "image": "./data/images/biomes/Forest.png", "color": "green[500]"}
+  {
+    "priority": 11,
+    "type": "Forest",
+    "image": "./data/images/biomes/Forest.png",
+    "color": "green[500]"
+  },
+  {
+    "priority": 10,
+    "type": "Underground",
+    "image": "./data/images/biomes/Underground.png",
+    "color": "grey[500]"
+  },
+  {
+    "priority": 9,
+    "type": "Desert",
+    "image": "./data/images/biomes/Desert.png",
+    "color": "amber[500]"
+  },
+  {
+    "priority": 8,
+    "type": "Ocean",
+    "image": "./data/images/biomes/Ocean.png",
+    "color": "yellow[300]"
+  },
+  {
+    "priority": 7,
+    "type": "Snow",
+    "image": "./data/images/biomes/Snow.png",
+    "color": "blueGrey[50]"
+  },
+  {
+    "priority": 6,
+    "type": "Jungle",
+    "image": "./data/images/biomes/Jungle.png",
+    "color": "lightGreen[400]"
+  },
+  {
+    "priority": 5,
+    "type": "Hallow",
+    "image": "./data/images/biomes/Hallow.png",
+    "color": "blue[300]"
+  },
+  {
+    "priority": 4,
+    "type": "Mushroom",
+    "image": "./data/images/biomes/Mushroom.png",
+    "color": "indigo[600]"
+  },
+  {
+    "priority": 3,
+    "type": "Crimson",
+    "image": "./data/images/biomes/Crimson.png",
+    "color": "red[500]"
+  },
+  {
+    "priority": 2,
+    "type": "Corruption",
+    "image": "./data/images/biomes/Corruption.png",
+    "color": "deepPurple[900]"
+  },
+  {
+    "priority": 1,
+    "type": "Dungeon",
+    "image": "./data/images/biomes/Dungeon.png",
+    "color": "teal[200]"
+  }
 ]

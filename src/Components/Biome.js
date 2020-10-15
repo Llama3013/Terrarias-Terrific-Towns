@@ -64,10 +64,11 @@ export default function Biome(props) {
   const curBiome = props.biome;
   const { townId } = props;
   return (
-    <FormControl variant="filled" >
+    <FormControl variant="filled">
       <InputLabel htmlFor="biome-select">Biome</InputLabel>
       <Tooltip title="Select Biome">
-        <Select className={classes.backgroundBubble}
+        <Select
+          className={classes.backgroundBubble}
           value={curBiome}
           onChange={(biome) => props.onBiomeChange(townId, biome.target.value)}
           label="Biome"

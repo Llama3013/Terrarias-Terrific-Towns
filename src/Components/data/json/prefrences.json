@@ -9,7 +9,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": ["Clothier", "Zoologist"],
+      "likes": ["Clothier", "Zoologist", "Princess"],
       "dislikes": ["Steampunker"],
       "hates": ["Painter"]
     }
@@ -24,7 +24,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": ["Golfer", "Nurse"],
+      "likes": ["Golfer", "Nurse", "Princess"],
       "dislikes": ["Tax Collector"],
       "hates": ["Angler"]
     }
@@ -39,7 +39,7 @@
     },
     "neighbour": {
       "loves": ["Witch Doctor"],
-      "likes": ["Golfer"],
+      "likes": ["Golfer", "Princess"],
       "dislikes": ["Angler"],
       "hates": ["Arms Dealer"]
     }
@@ -54,7 +54,7 @@
     },
     "neighbour": {
       "loves": ["Angler"],
-      "likes": ["Painter", "Zoologist"],
+      "likes": ["Painter", "Zoologist", "Princess"],
       "dislikes": ["Pirate"],
       "hates": ["Merchant"]
     }
@@ -69,7 +69,7 @@
     },
     "neighbour": {
       "loves": ["Arms Dealer"],
-      "likes": ["Wizard"],
+      "likes": ["Wizard", "Princess"],
       "dislikes": ["Dryad", "Party Girl"],
       "hates": ["Zoologist"]
     }
@@ -84,7 +84,7 @@
     },
     "neighbour": {
       "loves": ["Demolitionist"],
-      "likes": ["Goblin Tinkerer"],
+      "likes": ["Goblin Tinkerer", "Princess"],
       "dislikes": ["Guide"],
       "hates": ["Dye Trader"]
     }
@@ -99,7 +99,7 @@
     },
     "neighbour": {
       "loves": ["Wizard", "Zoologist"],
-      "likes": ["Stylist"],
+      "likes": ["Stylist", "Princess"],
       "dislikes": ["Merchant"],
       "hates": ["Tax Collector"]
     }
@@ -114,7 +114,7 @@
     },
     "neighbour": {
       "loves": ["Golfer"],
-      "likes": ["Merchant"],
+      "likes": ["Merchant", "Princess"],
       "dislikes": ["Witch Doctor"],
       "hates": ["Cyborg"]
     }
@@ -129,7 +129,7 @@
     },
     "neighbour": {
       "loves": ["Tavernkeep"],
-      "likes": ["Mechanic"],
+      "likes": ["Mechanic", "Princess"],
       "dislikes": ["Arms Dealer", "Goblin Tinkerer"],
       "hates": []
     }
@@ -144,7 +144,7 @@
     },
     "neighbour": {
       "loves": ["Mechanic"],
-      "likes": ["Dye Trader"],
+      "likes": ["Dye Trader", "Princess"],
       "dislikes": ["Clothier"],
       "hates": ["Stylist"]
     }
@@ -159,7 +159,7 @@
     },
     "neighbour": {
       "loves": ["Truffle"],
-      "likes": ["Tax Collector"],
+      "likes": ["Tax Collector", "Princess"],
       "dislikes": ["Nurse"],
       "hates": ["Mechanic"]
     }
@@ -174,7 +174,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": ["Arms Dealer", "Painter"],
+      "likes": ["Arms Dealer", "Painter", "Princess"],
       "dislikes": ["Steampunker"],
       "hates": ["Pirate"]
     }
@@ -189,7 +189,7 @@
     },
     "neighbour": {
       "loves": ["Nurse"],
-      "likes": ["Steampunker"],
+      "likes": ["Steampunker", "Princess"],
       "dislikes": ["Golfer"],
       "hates": ["Demolitionist"]
     }
@@ -204,7 +204,7 @@
     },
     "neighbour": {
       "loves": ["Cyborg"],
-      "likes": ["Painter"],
+      "likes": ["Painter", "Princess"],
       "dislikes": ["Dyrad", "Wizard", "Party Girl"],
       "hates": []
     }
@@ -219,7 +219,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": ["Witch Doctor", "Truffle"],
+      "likes": ["Witch Doctor", "Truffle", "Princess"],
       "dislikes": ["Angler"],
       "hates": ["Golfer"]
     }
@@ -234,7 +234,7 @@
     },
     "neighbour": {
       "loves": ["Dryad"],
-      "likes": ["Party Girl"],
+      "likes": ["Party Girl", "Princess"],
       "dislikes": ["Truffle", "Cyborg"],
       "hates": []
     }
@@ -249,7 +249,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": ["Dyrad", "Guide"],
+      "likes": ["Dyrad", "Guide", "Princess"],
       "dislikes": ["Nurse"],
       "hates": ["Truffle"]
     }
@@ -259,7 +259,7 @@
     "biome": { "loves": "", "likes": "Ocean", "dislikes": "Snow", "hates": "" },
     "neighbour": {
       "loves": ["Dye Trader"],
-      "likes": ["Pirate"],
+      "likes": ["Pirate", "Princess"],
       "dislikes": ["Tavernkeep"],
       "hates": ["Goblin Tinkerer"]
     }
@@ -274,7 +274,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": ["Demolitionist", "Party Girl", "Tax Collector"],
+      "likes": ["Demolitionist", "Party Girl", "Tax Collector", "Princess"],
       "dislikes": [],
       "hates": ["Tavernkeep"]
     }
@@ -289,7 +289,7 @@
     },
     "neighbour": {
       "loves": ["Angler"],
-      "likes": ["Tavernkeep"],
+      "likes": ["Tavernkeep", "Princess"],
       "dislikes": ["Stylist"],
       "hates": ["Guide"]
     }
@@ -304,7 +304,7 @@
     },
     "neighbour": {
       "loves": ["Goblin Tinkerer"],
-      "likes": ["Cyborg"],
+      "likes": ["Cyborg", "Princess"],
       "dislikes": ["Arms Dealer"],
       "hates": ["Clothier"]
     }
@@ -319,7 +319,7 @@
     },
     "neighbour": {
       "loves": ["Merchant"],
-      "likes": ["Party Girl"],
+      "likes": ["Party Girl", "Princess"],
       "dislikes": ["Demolitionist", "Mechanic"],
       "hates": ["Santa Claus"]
     }
@@ -334,7 +334,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": ["Steampunker", "Pirate", "Stylist"],
+      "likes": ["Steampunker", "Pirate", "Stylist", "Princess"],
       "dislikes": ["Zoologist"],
       "hates": ["Wizard"]
     }
@@ -349,7 +349,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": [],
+      "likes": ["Princess"],
       "dislikes": [],
       "hates": ["Tax Collector"]
     }
@@ -359,9 +359,45 @@
     "biome": { "loves": "", "likes": "Mushroom", "dislikes": "", "hates": "" },
     "neighbour": {
       "loves": ["Guide"],
-      "likes": ["Dyrad"],
+      "likes": ["Dyrad", "Princess"],
       "dislikes": ["Clothier"],
       "hates": ["Witch Doctor"]
+    }
+  },
+  {
+    "type": "Princess",
+    "biome": { "loves": "", "likes": "", "dislikes": "", "hates": "" },
+    "neighbour": {
+      "loves": [
+        "Guide",
+        "Merchant",
+        "Zoologist",
+        "Golfer",
+        "Nurse",
+        "Tavernkeep",
+        "Party Girl",
+        "Wizard",
+        "Demolitionist",
+        "Goblin Tinkerer",
+        "Clothier",
+        "Dye Trader",
+        "Arms Dealer",
+        "Steampunker",
+        "Dryad",
+        "Painter",
+        "Witch Doctor",
+        "Stylist",
+        "Angler",
+        "Pirate",
+        "Mechanic",
+        "Tax Collector",
+        "Cyborg",
+        "Santa Claus",
+        "Truffle"
+      ],
+      "likes": [],
+      "dislikes": [],
+      "hates": []
     }
   }
 ]

@@ -25,6 +25,7 @@ import iconNurse from "./data/images/npcs/Icon_Nurse.png";
 import iconPainter from "./data/images/npcs/Icon_Painter.png";
 import iconParty from "./data/images/npcs/Icon_Party_Girl.png";
 import iconPirate from "./data/images/npcs/Icon_Pirate.png";
+import iconPrincess from "./data/images/npcs/Icon_Princess.png";
 import iconSanta from "./data/images/npcs/Icon_Santa_Claus.png";
 import iconSteam from "./data/images/npcs/Icon_Steampunker.png";
 import iconStyl from "./data/images/npcs/Icon_Stylist.png";
@@ -95,6 +96,8 @@ export default function NPCType(props) {
         ? iconCyborg
         : npcPref.type === "Santa Claus"
         ? iconSanta
+        : npcPref.type === "Princess"
+        ? iconPrincess
         : iconTruf;
     npcRows.push(
       <MenuItem value={npcPref.type} key={npcPref.type}>
