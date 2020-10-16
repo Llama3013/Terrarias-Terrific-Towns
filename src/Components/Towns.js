@@ -2,7 +2,7 @@ import { Fade, makeStyles, Paper } from "@material-ui/core";
 import React from "react";
 import Town from "./Town";
 
-const styles = makeStyles((theme) => ({
+const styles = makeStyles(() => ({
   cardContainer: {
     display: "grid",
     gridTemplateColumns: "repeat(auto-fill,minmax(345px, 1fr))",
@@ -10,6 +10,10 @@ const styles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * This renders a grid of all of the towns and maps them to their own town
+ * @param {*} props 
+ */
 export default function Towns(props) {
   const { towns } = props;
 

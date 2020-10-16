@@ -28,23 +28,23 @@ import JungleBack from "./data/images/biomes/Jungle_back_1.png";
 import OceanBack from "./data/images/biomes/Ocean_back_1.png";
 import UnderBack from "./data/images/biomes/Underground_back_1.png";
 import ForestPylon from "./data/images/biomes/Forest_Pylon.png";
-import ForestPylonSelect from "./data/images/biomes/Forest_Pylon_(placed).gif";
+import ForestPylonPlaced from "./data/images/biomes/Forest_Pylon_(placed).gif";
 import SnowPylon from "./data/images/biomes/Snow_Pylon.png";
-import SnowPylonSelect from "./data/images/biomes/Snow_Pylon_(placed).gif";
+import SnowPylonPlaced from "./data/images/biomes/Snow_Pylon_(placed).gif";
 import DesertPylon from "./data/images/biomes/Desert_Pylon.png";
-import DesertPylonSelect from "./data/images/biomes/Desert_Pylon_(placed).gif";
+import DesertPylonPlaced from "./data/images/biomes/Desert_Pylon_(placed).gif";
 import CavernPylon from "./data/images/biomes/Cavern_Pylon.png";
-import CavernPylonSelect from "./data/images/biomes/Cavern_Pylon_(placed).gif";
+import CavernPylonPlaced from "./data/images/biomes/Cavern_Pylon_(placed).gif";
 import OceanPylon from "./data/images/biomes/Ocean_Pylon.png";
-import OceanPylonSelect from "./data/images/biomes/Ocean_Pylon_(placed).gif";
+import OceanPylonPlaced from "./data/images/biomes/Ocean_Pylon_(placed).gif";
 import JunglePylon from "./data/images/biomes/Jungle_Pylon.png";
-import JunglePylonSelect from "./data/images/biomes/Jungle_Pylon_(placed).gif";
+import JunglePylonPlaced from "./data/images/biomes/Jungle_Pylon_(placed).gif";
 import HallowPylon from "./data/images/biomes/Hallow_Pylon.png";
-import HallowPylonSelect from "./data/images/biomes/Hallow_Pylon_(placed).gif";
+import HallowPylonPlaced from "./data/images/biomes/Hallow_Pylon_(placed).gif";
 import MushroomPylon from "./data/images/biomes/Mushroom_Pylon.png";
-import MushroomPylonSelect from "./data/images/biomes/Mushroom_Pylon_(placed).gif";
+import MushroomPylonPlaced from "./data/images/biomes/Mushroom_Pylon_(placed).gif";
 import UniPylon from "./data/images/biomes/Universal_Pylon.png";
-import UniPylonSelect from "./data/images/biomes/Universal_Pylon_(placed).gif";
+import UniPylonPlaced from "./data/images/biomes/Universal_Pylon_(placed).gif";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,47 +100,58 @@ const useStyles = makeStyles((theme) => ({
   disabledPylon: { opacity: "0.5", width: "32px", height: "48px" },
 }));
 
+/**
+ *
+ * @param {*} props
+ */
 export default function Town(props) {
   const { town } = props;
   const { townId, biome, name, pylonStatus } = town;
-  const pylon =
-    biome === "Forest"
-      ? ForestPylon
-      : biome === "Snow"
-      ? SnowPylon
-      : biome === "Desert"
-      ? DesertPylon
-      : biome === "Underground"
-      ? CavernPylon
-      : biome === "Ocean"
-      ? OceanPylon
-      : biome === "Jungle"
-      ? JunglePylon
-      : biome === "Hallow"
-      ? HallowPylon
-      : biome === "Mushroom"
-      ? MushroomPylon
-      : UniPylon;
-  const pylonSelect =
-    biome === "Forest"
-      ? ForestPylonSelect
-      : biome === "Snow"
-      ? SnowPylonSelect
-      : biome === "Desert"
-      ? DesertPylonSelect
-      : biome === "Underground"
-      ? CavernPylonSelect
-      : biome === "Ocean"
-      ? OceanPylonSelect
-      : biome === "Jungle"
-      ? JunglePylonSelect
-      : biome === "Hallow"
-      ? HallowPylonSelect
-      : biome === "Mushroom"
-      ? MushroomPylonSelect
-      : UniPylonSelect;
+  //This checks which pylon image to use
+  let pylon;
+  if (pylonStatus) {
+    pylon =
+      biome === "Forest"
+        ? ForestPylonPlaced
+        : biome === "Snow"
+        ? SnowPylonPlaced
+        : biome === "Desert"
+        ? DesertPylonPlaced
+        : biome === "Underground"
+        ? CavernPylonPlaced
+        : biome === "Ocean"
+        ? OceanPylonPlaced
+        : biome === "Jungle"
+        ? JunglePylonPlaced
+        : biome === "Hallow"
+        ? HallowPylonPlaced
+        : biome === "Mushroom"
+        ? MushroomPylonPlaced
+        : UniPylonPlaced;
+  } else {
+    pylon =
+      biome === "Forest"
+        ? ForestPylon
+        : biome === "Snow"
+        ? SnowPylon
+        : biome === "Desert"
+        ? DesertPylon
+        : biome === "Underground"
+        ? CavernPylon
+        : biome === "Ocean"
+        ? OceanPylon
+        : biome === "Jungle"
+        ? JunglePylon
+        : biome === "Hallow"
+        ? HallowPylon
+        : biome === "Mushroom"
+        ? MushroomPylon
+        : UniPylon;
+  }
+
   const [expanded, setExpanded] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
+  const [townName, setTownName] = React.useState(name);
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
   };
@@ -162,7 +173,14 @@ export default function Town(props) {
       ? false
       : true;
   const disabledLook = disabledPylon ? classes.disabledPylon : classes.pylon;
-  const pylonTooltip = pylonStatus && disabledPylon ? "Pylon placed but needs more npcs" : !pylonStatus && disabledPylon ? "Pylon not placed and needs more npcs" : pylonStatus && !disabledPylon ? "Pylon is active" : "Pylon is not placed and can be activated";
+  const pylonTooltip =
+    pylonStatus && disabledPylon
+      ? "Pylon placed but needs more npcs"
+      : !pylonStatus && disabledPylon
+      ? "Pylon not placed and needs more npcs"
+      : pylonStatus && !disabledPylon
+      ? "Pylon is active"
+      : "Pylon is not placed and can be activated";
   const npcRows = [];
   town.npcs.forEach((npc) => {
     npcRows.push(
@@ -185,7 +203,8 @@ export default function Town(props) {
             size="small"
             id="town-name"
             label="Town Name"
-            defaultValue={name}
+            value={townName}
+            onChange={(e) => setTownName(e.target.value)}
             variant="filled"
             className={classes.backgroundBubble}
           />
@@ -200,8 +219,8 @@ export default function Town(props) {
                   onClick={() => props.pylonChange(townId, !pylonStatus)}
                 >
                   <img
-                    src={pylonStatus ? pylonSelect : pylon}
-                    alt=""
+                    src={pylon}
+                    alt="Biome pylon"
                     className={classes.pylon}
                   ></img>
                 </IconButton>
