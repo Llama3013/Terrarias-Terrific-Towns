@@ -28,9 +28,14 @@ const useStyles = makeStyles(() => ({
   biomeIcon: { width: "24px", height: "24px" },
 }));
 
+/**
+ * This function displays the biome selecter on the town card
+ * @param {*} props 
+ */
 export default function Biome(props) {
   const classes = useStyles();
   const biomeRows = [];
+  //This gets the image and text for every biome option
   biomeList.forEach((biome) => {
     const biomeImage =
       biome.type === "Dungeon"

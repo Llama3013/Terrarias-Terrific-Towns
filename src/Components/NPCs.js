@@ -45,6 +45,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+/**
+ * This function represents a NPC card. It finds out what
+ * the current npc's likes/dislikes and displays the
+ * happiness and likes/dislikes information.
+ * @param {*} props
+ */
 export default function NPCs(props) {
   const onNPCChange = (npcId, newNpcType) => {
     return props.onNPCChange(props.townId, npcId, newNpcType);

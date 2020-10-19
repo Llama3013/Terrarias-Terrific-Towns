@@ -101,14 +101,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- *
+ * 
  * @param {*} props
  */
 export default function Town(props) {
   const { town } = props;
   const { townId, biome, name, pylonStatus } = town;
   //This checks which pylon image to use
-  let pylon;
+  let pylon = "";
   if (pylonStatus) {
     pylon =
       biome === "Forest"
@@ -148,23 +148,25 @@ export default function Town(props) {
         ? MushroomPylon
         : UniPylon;
   }
-
+  //Hook setup for collapse menu, checkbox(which is disabled atm) and townName change
   const [expanded, setExpanded] = React.useState(false);
   const [checked, setChecked] = React.useState(false);
   const [townName, setTownName] = React.useState(name);
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
   };
-  const handleCheckedClick = () => {
-    setChecked((prev) => !prev);
-  };
+  //This opens the collapse menu when a npc is added
   const handleAddNPC = () => {
     setExpanded((prev) => {
       return prev ? prev : !prev;
     });
     return props.addNPC(townId);
   };
+  const handleCheckedClick = () => {
+    setChecked((prev) => !prev);
+  };
   const classes = useStyles(props);
+  //Checks for if the pylon can be activated
   const disabledPylon =
     town.npcs.length >= 2 &&
     biome !== "Dungeon" &&
@@ -172,6 +174,7 @@ export default function Town(props) {
     biome !== "Crimson"
       ? false
       : true;
+  //This is stores the style of the pylon dependent on disabledPylon
   const disabledLook = disabledPylon ? classes.disabledPylon : classes.pylon;
   const pylonTooltip =
     pylonStatus && disabledPylon

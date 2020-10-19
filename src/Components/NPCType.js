@@ -43,6 +43,11 @@ const useStyles = makeStyles(() => ({
   npcIcon: { width: "24px", height: "24px" },
 }));
 
+/**
+ * This functiondisplays the npc selecter on the npc card.
+ * It goes through the list of npcs and has a option for each npc.
+ * @param {*} props 
+ */
 export default function NPCType(props) {
   const npcRows = [];
   const classes = useStyles();
