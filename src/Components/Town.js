@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
   },
-  biome: { width: "fit-content" },
+  biome: { display: "flex", alignItems: "center", },
   expand: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
     transform: "rotate(0deg)",

@@ -26,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
     height: "fit-content",
     background: "no-repeat center",
   },
+  typo: {
+    textAlign: "left",
+  },
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
   },
@@ -43,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.shortest,
     }),
   },
+  npcHeader: { display: "flex", alignItems: "center" },
 }));
 
 /**
@@ -83,6 +87,7 @@ export default function NPCs(props) {
   return (
     <Card className={classes.root}>
       <CardHeader
+        className={classes.npcHeader}
         title={
           <NPCType
             onNPCChange={(npcId, newNPCType) => onNPCChange(npcId, newNPCType)}
@@ -108,25 +113,25 @@ export default function NPCs(props) {
             <Typography>Price Modifier: {price}%</Typography>
           </Tooltip>
           <Tooltip title="Loves">
-            <Typography>
+            <Typography className={classes.typo}>
               <Mood />
               {loves}
             </Typography>
           </Tooltip>
           <Tooltip title="Likes">
-            <Typography>
+            <Typography className={classes.typo}>
               <SentimentSatisfied />
               {likes}
             </Typography>
           </Tooltip>
           <Tooltip title="Dislikes">
-            <Typography>
+            <Typography className={classes.typo}>
               <SentimentDissatisfied />
               {dislikes}
             </Typography>
           </Tooltip>
           <Tooltip title="Hates">
-            <Typography>
+            <Typography className={classes.typo}>
               <MoodBad />
               {hates}
             </Typography>

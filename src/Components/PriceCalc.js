@@ -42,7 +42,7 @@ export default function priceCalc(town, npcType) {
   }
 
   //Still need to add a checkbox or something for if more than 3 npcs
-  //are within 120 blocks (not including the NPC's within 25 tiles)
+  //are within 240 blocks (not including the NPC's within 50 tiles)
   //So for now it is going to just check if there are only 2 npcs in the town
   const npcAmount = town.npcs.length;
   if (npcAmount <= 2 && npcType !== "Princess") {

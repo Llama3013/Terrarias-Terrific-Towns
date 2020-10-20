@@ -22,15 +22,18 @@ import snow from "./data/images/biomes/Snow_icon.png";
 import under from "./data/images/biomes/Underground_icon.png";
 
 const useStyles = makeStyles(() => ({
+  root: { display: "flex", alignItems: "center" },
+  form: { flexGrow: 1 },
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
+    textAlign: "left",
   },
   biomeIcon: { width: "24px", height: "24px" },
 }));
 
 /**
  * This function displays the biome selecter on the town card
- * @param {*} props 
+ * @param {*} props
  */
 export default function Biome(props) {
   const classes = useStyles();
@@ -69,22 +72,26 @@ export default function Biome(props) {
   const curBiome = props.biome;
   const { townId } = props;
   return (
-    <FormControl variant="filled">
-      <InputLabel htmlFor="biome-select">Biome</InputLabel>
-      <Tooltip title="Select Biome">
-        <Select
-          className={classes.backgroundBubble}
-          value={curBiome}
-          onChange={(biome) => props.onBiomeChange(townId, biome.target.value)}
-          label="Biome"
-          inputProps={{
-            name: "biome",
-            id: "biome-select",
-          }}
-        >
-          {biomeRows}
-        </Select>
-      </Tooltip>
-    </FormControl>
+    <div className={classes.root}>
+      <FormControl variant="filled" className={classes.form}>
+        <InputLabel htmlFor="biome-select">Biome</InputLabel>
+        <Tooltip title="Select Biome">
+          <Select
+            className={classes.backgroundBubble}
+            value={curBiome}
+            onChange={(biome) =>
+              props.onBiomeChange(townId, biome.target.value)
+            }
+            label="Biome"
+            inputProps={{
+              name: "biome",
+              id: "biome-select",
+            }}
+          >
+            {biomeRows}
+          </Select>
+        </Tooltip>
+      </FormControl>
+    </div>
   );
 }

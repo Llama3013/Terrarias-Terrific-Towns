@@ -12,7 +12,9 @@
       "likes": ["Clothier", "Zoologist", "Princess"],
       "dislikes": ["Steampunker"],
       "hates": ["Painter"]
-    }
+    },
+    "vendor": false,
+    "notes": "Gives tips and crafting info. His happiness means nothing"
   },
   {
     "type": "Merchant",
@@ -27,7 +29,9 @@
       "likes": ["Golfer", "Nurse", "Princess"],
       "dislikes": ["Tax Collector"],
       "hates": ["Angler"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells basic tools and supplies"
   },
   {
     "type": "Zoologist",
@@ -42,7 +46,9 @@
       "likes": ["Golfer", "Princess"],
       "dislikes": ["Angler"],
       "hates": ["Arms Dealer"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells vanity, mount, pet and critter-themed items"
   },
   {
     "type": "Golfer",
@@ -57,7 +63,9 @@
       "likes": ["Painter", "Zoologist", "Princess"],
       "dislikes": ["Pirate"],
       "hates": ["Merchant"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells golfing items"
   },
   {
     "type": "Nurse",
@@ -72,7 +80,9 @@
       "likes": ["Wizard", "Princess"],
       "dislikes": ["Dryad", "Party Girl"],
       "hates": ["Zoologist"]
-    }
+    },
+    "vendor": false,
+    "notes": "Heals player for price affected by happiness"
   },
   {
     "type": "Tavernkeep",
@@ -87,7 +97,9 @@
       "likes": ["Goblin Tinkerer", "Princess"],
       "dislikes": ["Guide"],
       "hates": ["Dye Trader"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells Ale and Eternia stuff (Only Ale and wave summon affected by happiness)"
   },
   {
     "type": "Party Girl",
@@ -102,7 +114,9 @@
       "likes": ["Stylist", "Princess"],
       "dislikes": ["Merchant"],
       "hates": ["Tax Collector"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells novelty items"
   },
   {
     "type": "Wizard",
@@ -117,7 +131,9 @@
       "likes": ["Merchant", "Princess"],
       "dislikes": ["Witch Doctor"],
       "hates": ["Cyborg"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells magic-related items"
   },
   {
     "type": "Demolitionist",
@@ -132,7 +148,9 @@
       "likes": ["Mechanic", "Princess"],
       "dislikes": ["Arms Dealer", "Goblin Tinkerer"],
       "hates": []
-    }
+    },
+    "vendor": true,
+    "notes": "Sells explosives"
   },
   {
     "type": "Goblin Tinkerer",
@@ -147,7 +165,9 @@
       "likes": ["Dye Trader", "Princess"],
       "dislikes": ["Clothier"],
       "hates": ["Stylist"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells accessories and Tinkerer's table. Reforge items (all affected by happiness)"
   },
   {
     "type": "Clothier",
@@ -162,7 +182,9 @@
       "likes": ["Tax Collector", "Princess"],
       "dislikes": ["Nurse"],
       "hates": ["Mechanic"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells vanity"
   },
   {
     "type": "Dye Trader",
@@ -177,7 +199,9 @@
       "likes": ["Arms Dealer", "Painter", "Princess"],
       "dislikes": ["Steampunker"],
       "hates": ["Pirate"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells dyes and dye vat. Strange plants quest. (plants not affected by happiness)"
   },
   {
     "type": "Arms Dealer",
@@ -192,7 +216,9 @@
       "likes": ["Steampunker", "Princess"],
       "dislikes": ["Golfer"],
       "hates": ["Demolitionist"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells guns and ammunition"
   },
   {
     "type": "Steampunker",
@@ -207,7 +233,9 @@
       "likes": ["Painter", "Princess"],
       "dislikes": ["Dyrad", "Wizard", "Party Girl"],
       "hates": []
-    }
+    },
+    "vendor": true,
+    "notes": "Sells clemtaminator, teleporter, vanity, accessories and crafting stations"
   },
   {
     "type": "Dryad",
@@ -222,7 +250,9 @@
       "likes": ["Witch Doctor", "Truffle", "Princess"],
       "dislikes": ["Angler"],
       "hates": ["Golfer"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells nature/evil biome items and can tell the percentage of good/evil biome"
   },
   {
     "type": "Painter",
@@ -237,7 +267,9 @@
       "likes": ["Party Girl", "Princess"],
       "dislikes": ["Truffle", "Cyborg"],
       "hates": []
-    }
+    },
+    "vendor": true,
+    "notes": "Sells paint, painting tools and paintings"
   },
   {
     "type": "Witch Doctor",
@@ -252,7 +284,9 @@
       "likes": ["Dyrad", "Guide", "Princess"],
       "dislikes": ["Nurse"],
       "hates": ["Truffle"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells summoner items, primitive ammo, bewitching table, imbuing station and fountains"
   },
   {
     "type": "Stylist",
@@ -262,7 +296,9 @@
       "likes": ["Pirate", "Princess"],
       "dislikes": ["Tavernkeep"],
       "hates": ["Goblin Tinkerer"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells hair dyes and changes hair style/hair colour (all affected by happiness)"
   },
   {
     "type": "Angler",
@@ -277,7 +313,9 @@
       "likes": ["Demolitionist", "Party Girl", "Tax Collector", "Princess"],
       "dislikes": [],
       "hates": ["Tavernkeep"]
-    }
+    },
+    "vendor": false,
+    "notes": "Fishing quests with fishing rewards (affected by happiness)"
   },
   {
     "type": "Pirate",
@@ -292,7 +330,9 @@
       "likes": ["Tavernkeep", "Princess"],
       "dislikes": ["Stylist"],
       "hates": ["Guide"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells cannon and pirate-related items"
   },
   {
     "type": "Mechanic",
@@ -307,7 +347,9 @@
       "likes": ["Cyborg", "Princess"],
       "dislikes": ["Arms Dealer"],
       "hates": ["Clothier"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells wrench, wire and other mechanism-related items"
   },
   {
     "type": "Tax Collector",
@@ -322,7 +364,9 @@
       "likes": ["Party Girl", "Princess"],
       "dislikes": ["Demolitionist", "Mechanic"],
       "hates": ["Santa Claus"]
-    }
+    },
+    "vendor": false,
+    "notes": "Collects taxes from npcs, 50 copper per npc. (affected by happiness)"
   },
   {
     "type": "Cyborg",
@@ -337,7 +381,9 @@
       "likes": ["Steampunker", "Pirate", "Stylist", "Princess"],
       "dislikes": ["Zoologist"],
       "hates": ["Wizard"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells mine launcher, rockets, nanites and sci-fi helmets"
   },
   {
     "type": "Santa Claus",
@@ -352,7 +398,9 @@
       "likes": ["Princess"],
       "dislikes": [],
       "hates": ["Tax Collector"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells santa set, christmas tree and tree related items"
   },
   {
     "type": "Truffle",
@@ -362,7 +410,9 @@
       "likes": ["Dyrad", "Princess"],
       "dislikes": ["Clothier"],
       "hates": ["Witch Doctor"]
-    }
+    },
+    "vendor": true,
+    "notes": "Sells autohammer, mushroom spear and mushroom-related items"
   },
   {
     "type": "Princess",
@@ -398,6 +448,8 @@
       "likes": [],
       "dislikes": [],
       "hates": []
-    }
+    },
+    "vendor": true,
+    "notes": "Sells vanity, decorations and music box Journey's End"
   }
 ]

@@ -7,6 +7,7 @@ import {
   Select,
   Tooltip,
 } from "@material-ui/core";
+import { AttachMoney, MoneyOff } from "@material-ui/icons";
 
 import preferences from "./data/json/prefrences.json";
 import iconAngler from "./data/images/npcs/Icon_Angler.png";
@@ -37,100 +38,114 @@ import iconWiz from "./data/images/npcs/Icon_Wizard.png";
 import iconZool from "./data/images/npcs/Icon_Zoologist.png";
 
 const useStyles = makeStyles(() => ({
+  root: { display: "flex", alignItems: "center" },
+  form: { flexGrow: 1},
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
+    textAlign: "left"
   },
   npcIcon: { width: "24px", height: "24px" },
+  shopIcon: { fontSize: "40px" },
 }));
 
 /**
  * This functiondisplays the npc selecter on the npc card.
  * It goes through the list of npcs and has a option for each npc.
- * @param {*} props 
+ * @param {*} props
  */
 export default function NPCType(props) {
   const npcRows = [];
   const classes = useStyles();
-  preferences.forEach((npcPref) => {
+  preferences.forEach((npcPrefs) => {
     const npcImage =
-      npcPref.type === "Guide"
+      npcPrefs.type === "Guide"
         ? iconGuide
-        : npcPref.type === "Merchant"
+        : npcPrefs.type === "Merchant"
         ? iconMerch
-        : npcPref.type === "Zoologist"
+        : npcPrefs.type === "Zoologist"
         ? iconZool
-        : npcPref.type === "Golfer"
+        : npcPrefs.type === "Golfer"
         ? iconGolfer
-        : npcPref.type === "Nurse"
+        : npcPrefs.type === "Nurse"
         ? iconNurse
-        : npcPref.type === "Tavernkeep"
+        : npcPrefs.type === "Tavernkeep"
         ? iconTavern
-        : npcPref.type === "Party Girl"
+        : npcPrefs.type === "Party Girl"
         ? iconParty
-        : npcPref.type === "Wizard"
+        : npcPrefs.type === "Wizard"
         ? iconWiz
-        : npcPref.type === "Demolitionist"
+        : npcPrefs.type === "Demolitionist"
         ? iconDemol
-        : npcPref.type === "Goblin Tinkerer"
+        : npcPrefs.type === "Goblin Tinkerer"
         ? iconGoblin
-        : npcPref.type === "Clothier"
+        : npcPrefs.type === "Clothier"
         ? iconCloth
-        : npcPref.type === "Dye Trader"
+        : npcPrefs.type === "Dye Trader"
         ? iconDye
-        : npcPref.type === "Arms Dealer"
+        : npcPrefs.type === "Arms Dealer"
         ? iconArms
-        : npcPref.type === "Steampunker"
+        : npcPrefs.type === "Steampunker"
         ? iconSteam
-        : npcPref.type === "Dryad"
+        : npcPrefs.type === "Dryad"
         ? iconDryad
-        : npcPref.type === "Painter"
+        : npcPrefs.type === "Painter"
         ? iconPainter
-        : npcPref.type === "Witch Doctor"
+        : npcPrefs.type === "Witch Doctor"
         ? iconWitch
-        : npcPref.type === "Stylist"
+        : npcPrefs.type === "Stylist"
         ? iconStyl
-        : npcPref.type === "Angler"
+        : npcPrefs.type === "Angler"
         ? iconAngler
-        : npcPref.type === "Pirate"
+        : npcPrefs.type === "Pirate"
         ? iconPirate
-        : npcPref.type === "Mechanic"
+        : npcPrefs.type === "Mechanic"
         ? iconMech
-        : npcPref.type === "Tax Collector"
+        : npcPrefs.type === "Tax Collector"
         ? iconTax
-        : npcPref.type === "Cyborg"
+        : npcPrefs.type === "Cyborg"
         ? iconCyborg
-        : npcPref.type === "Santa Claus"
+        : npcPrefs.type === "Santa Claus"
         ? iconSanta
-        : npcPref.type === "Princess"
+        : npcPrefs.type === "Princess"
         ? iconPrincess
         : iconTruf;
     npcRows.push(
-      <MenuItem value={npcPref.type} key={npcPref.type}>
+      <MenuItem value={npcPrefs.type} key={npcPrefs.type}>
         <img src={npcImage} alt="" className={classes.npcIcon}></img>
-        {npcPref.type}
+        {npcPrefs.type}
       </MenuItem>
     );
   });
   const { npcId, npcType } = props;
+  const currNPCPref = preferences.find((npc) => npc.type === npcType);
+  const notes = currNPCPref.notes;
+  const vendor = currNPCPref.vendor ? (
+    <AttachMoney className={classes.shopIcon} />
+  ) : (
+    <MoneyOff className={classes.shopIcon} />
+  );
   return (
-    <FormControl variant="filled">
-      <InputLabel htmlFor="npc-select">NPC</InputLabel>
-      <Tooltip title="Select NPC">
-        <Select
-          className={classes.backgroundBubble}
-          value={npcType}
-          onChange={(newNPCType) =>
-            props.onNPCChange(npcId, newNPCType.target.value)
-          }
-          label="NPC"
-          inputProps={{
-            name: "npc",
-            id: "npc-select",
-          }}
-        >
-          {npcRows}
-        </Select>
-      </Tooltip>
-    </FormControl>
+    <div className={classes.root}>
+      <FormControl variant="filled" className={classes.form}>
+        <InputLabel htmlFor="npc-select">NPC</InputLabel>
+        <Tooltip title="Select NPC">
+          <Select
+            className={classes.backgroundBubble}
+            value={npcType}
+            onChange={(newNPCType) =>
+              props.onNPCChange(npcId, newNPCType.target.value)
+            }
+            label="NPC"
+            inputProps={{
+              name: "npc",
+              id: "npc-select",
+            }}
+          >
+            {npcRows}
+          </Select>
+        </Tooltip>
+      </FormControl>
+      <Tooltip title={notes}>{vendor}</Tooltip>
+    </div>
   );
 }
