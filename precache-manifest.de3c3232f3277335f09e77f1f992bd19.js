@@ -1,27 +1,31 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1552c96237209816bcc56ee58adeff84",
+    "revision": "5e7236812ba41ed97b3a54a87b374d7d",
     "url": "/Terrarias-Terrific-Towns/index.html"
   },
   {
-    "revision": "5cc81616bbb2e2db13cb",
+    "revision": "a6cd16c21e1f85c8a0d8",
     "url": "/Terrarias-Terrific-Towns/static/css/main.282bf587.chunk.css"
   },
   {
-    "revision": "aa541f7b2dfeac69752f",
-    "url": "/Terrarias-Terrific-Towns/static/js/2.b5c24b50.chunk.js"
+    "revision": "648d7f71b67a4b09f805",
+    "url": "/Terrarias-Terrific-Towns/static/js/2.e35f71d1.chunk.js"
   },
   {
     "revision": "89b0379e7bcda1a468d8b0343aeb4e53",
-    "url": "/Terrarias-Terrific-Towns/static/js/2.b5c24b50.chunk.js.LICENSE.txt"
+    "url": "/Terrarias-Terrific-Towns/static/js/2.e35f71d1.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "5cc81616bbb2e2db13cb",
-    "url": "/Terrarias-Terrific-Towns/static/js/main.edaeb750.chunk.js"
+    "revision": "a6cd16c21e1f85c8a0d8",
+    "url": "/Terrarias-Terrific-Towns/static/js/main.a67ecb2b.chunk.js"
   },
   {
     "revision": "9373533094ad37546d3d",
     "url": "/Terrarias-Terrific-Towns/static/js/runtime-main.7128cae1.js"
+  },
+  {
+    "revision": "3de6b5cc133154d997de05df7a61605f",
+    "url": "/Terrarias-Terrific-Towns/static/media/Background.3de6b5cc.png"
   },
   {
     "revision": "f6f2fa4220b92ffbf009f5f6bb6809c4",
@@ -36,8 +40,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Terrarias-Terrific-Towns/static/media/Desert_back_1.7001f318.png"
   },
   {
-    "revision": "89916fad7cb45093dc822d8035115db1",
-    "url": "/Terrarias-Terrific-Towns/static/media/Dungeon_back_1.89916fad.png"
+    "revision": "150644e0a9ad72db418cbbf2ec13d6bc",
+    "url": "/Terrarias-Terrific-Towns/static/media/Dungeon_back_1.150644e0.png"
   },
   {
     "revision": "b2b181ecf872a8646022b74c3f7b9cd4",
@@ -62,5 +66,9 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
     "revision": "4566f83f2b18694b8a318c70a6f83595",
     "url": "/Terrarias-Terrific-Towns/static/media/Snow_back_1.4566f83f.png"
+  },
+  {
+    "revision": "9aea0b0fbe44bac36c7bb1e0f8856f85",
+    "url": "/Terrarias-Terrific-Towns/static/media/Underground_back_1.9aea0b0f.png"
   }
 ]);
