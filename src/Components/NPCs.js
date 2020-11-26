@@ -59,6 +59,7 @@ export default function NPCs(props) {
   const onNPCChange = (npcId, newNpcType) => {
     return props.onNPCChange(props.townId, npcId, newNpcType);
   };
+  const { npcCount } = props;
   const { npcType, npcId, price, priceNotes } = props.npc;
   const npcPrefs = preferences.find(
     (preference) => preference.type === npcType
@@ -91,6 +92,7 @@ export default function NPCs(props) {
         title={
           <NPCType
             onNPCChange={(npcId, newNPCType) => onNPCChange(npcId, newNPCType)}
+            npcCount={npcCount}
             npcType={npcType}
             npcId={npcId}
             key={npcId}

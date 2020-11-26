@@ -12,10 +12,10 @@ const styles = makeStyles(() => ({
 
 /**
  * This renders a grid of all of the towns and maps them to their own town
- * @param {*} props 
+ * @param {*} props
  */
 export default function Towns(props) {
-  const { towns } = props;
+  const { npcCount, towns } = props;
 
   const classes = styles();
   return (
@@ -34,6 +34,7 @@ export default function Towns(props) {
             }
             pylonChange={(houseId, pylon) => props.pylonChange(houseId, pylon)}
             town={town}
+            npcCount={npcCount}
             key={town.townId}
           ></Town>
         </Fade>

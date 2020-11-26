@@ -6,7 +6,8 @@ import Towns from "./components/Towns.js";
 import PriceCalc from "./components/PriceCalc.js";
 
 import sample from "./components/data/json/sample.json";
-import mainBack from "./components/data/images/biomes/Forest_back_1.png";
+import prefrences from "./components/data/json/prefrences.json";
+import mainBack from "./components/data/images/Background.png";
 
 const styles = {
   paperContainer: {
@@ -51,15 +52,22 @@ function NewTown(props) {
 export default class App extends React.Component {
   constructor(props) {
     super(props);
-    sample.forEach((town) => {
+    sample.npcCount.npcAmount = 0;
+    prefrences.forEach((npcPrefs) => {
+      sample.npcCount[npcPrefs.type] = 0;
+    });
+    sample.towns.forEach((town) => {
       town.npcs.forEach((npc) => {
         const { price, priceNotes } = PriceCalc(town, npc.npcType);
         npc.price = price;
         npc.priceNotes = priceNotes;
+        sample.npcCount.npcAmount += 1;
+        sample.npcCount[npc.npcType] += 1;
       });
     });
     this.state = {
-      towns: sample,
+      npcCount: sample.npcCount,
+      towns: sample.towns,
     };
   }
 
@@ -90,7 +98,12 @@ export default class App extends React.Component {
       npc.price = price;
       npc.priceNotes = priceNotes;
     });
-    this.setState({ towns: newTowns });
+    const npcCount = this.state.npcCount;
+    const latestNPC = newTowns[latestTown].npcs.length - 1;
+    const newNPCType = newTowns[latestTown].npcs[latestNPC].npcType;
+    npcCount.npcAmount += 1;
+    npcCount[newNPCType] += 1;
+    this.setState({ npcCount: npcCount, towns: newTowns });
   }
 
   /**
@@ -106,14 +119,17 @@ export default class App extends React.Component {
       npcId: nanoid(),
       npcType: "Guide",
       price: 0,
-      priceNotes: "Error",
+      priceNotes: "No notes set",
     });
     newTowns[townIndex].npcs.forEach((npc) => {
       const { price, priceNotes } = PriceCalc(newTowns[townIndex], npc.npcType);
       npc.price = price;
       npc.priceNotes = priceNotes;
     });
-    this.setState({ towns: newTowns });
+    const npcCount = this.state.npcCount;
+    npcCount.npcAmount += 1;
+    npcCount.Guide += 1;
+    this.setState({ npcCount: npcCount, towns: newTowns });
   }
 
   /**
@@ -148,20 +164,24 @@ export default class App extends React.Component {
     const townIndex = this.findTown(townId);
     const npcIndex = this.findNPC(townIndex, npcId);
     const newTowns = [...this.state.towns];
+    const oldNPCType = newTowns[townIndex].npcs[npcIndex].npcType;
     newTowns[townIndex].npcs[npcIndex].npcType = newNPCType;
     newTowns[townIndex].npcs.forEach((npc) => {
       const { price, priceNotes } = PriceCalc(newTowns[townIndex], npc.npcType);
       npc.price = price;
       npc.priceNotes = priceNotes;
     });
-    this.setState({ towns: newTowns });
+    const npcCount = this.state.npcCount;
+    npcCount[oldNPCType] -= 1;
+    npcCount[newNPCType] += 1;
+    this.setState({ npcCount: npcCount, towns: newTowns });
   }
 
   /**
    * This changes pylonStatus to true or false in the town state using townId to identify
    * the town being changed and pylon to tell the state if it is true or false.
    * @param {*} townId This is the id of the town we are changing
-   * @param {*} pylon This is a Boolean value to represent if a pylon is placed 
+   * @param {*} pylon This is a Boolean value to represent if a pylon is placed
    */
   pylonChange(townId, pylon) {
     const townIndex = this.findTown(townId);
@@ -177,8 +197,13 @@ export default class App extends React.Component {
   delTown(townId) {
     const townIndex = this.findTown(townId);
     const newTowns = [...this.state.towns];
+    const npcCount = this.state.npcCount;
+    newTowns[townIndex].npcs.forEach((npc) => {
+      npcCount.npcAmount -= 1;
+      npcCount[npc.npcType] -= 1;
+    });
     newTowns.splice(townIndex, 1);
-    this.setState({ towns: newTowns });
+    this.setState({ npcCount: npcCount, towns: newTowns });
   }
 
   /**
@@ -192,13 +217,17 @@ export default class App extends React.Component {
     const townIndex = this.findTown(townId);
     const npcIndex = this.findNPC(townIndex, npcId);
     const newTowns = [...this.state.towns];
+    const oldNPCType = newTowns[townIndex].npcs[npcIndex].npcType;
     newTowns[townIndex].npcs.splice(npcIndex, 1);
     newTowns[townIndex].npcs.forEach((npc) => {
       const { price, priceNotes } = PriceCalc(newTowns[townIndex], npc.npcType);
       npc.price = price;
       npc.priceNotes = priceNotes;
     });
-    this.setState({ towns: newTowns });
+    const npcCount = this.state.npcCount;
+    npcCount.npcAmount -= 1;
+    npcCount[oldNPCType] -= 1;
+    this.setState({ npcCount: npcCount, towns: newTowns });
   }
 
   /**
@@ -212,8 +241,8 @@ export default class App extends React.Component {
   /**
    * This finds the required npc using npcId in the specfied town using townIndex by
    * searching the current state.
-   * @param {*} townIndex 
-   * @param {*} npcId 
+   * @param {*} townIndex
+   * @param {*} npcId
    */
   findNPC(townIndex, npcId) {
     return this.state.towns[townIndex].npcs.findIndex(
@@ -241,6 +270,7 @@ export default class App extends React.Component {
           delNPC={(townId, npcId) => this.delNPC(townId, npcId)}
           pylonChange={(townId, pylon) => this.pylonChange(townId, pylon)}
           towns={this.state.towns}
+          npcCount={this.state.npcCount}
         ></Towns>
       </Paper>
     );

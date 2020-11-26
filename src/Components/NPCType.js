@@ -39,10 +39,10 @@ import iconZool from "./data/images/npcs/Icon_Zoologist.png";
 
 const useStyles = makeStyles(() => ({
   root: { display: "flex", alignItems: "center" },
-  form: { flexGrow: 1},
+  form: { flexGrow: 1 },
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
-    textAlign: "left"
+    textAlign: "left",
   },
   npcIcon: { width: "24px", height: "24px" },
   shopIcon: { fontSize: "40px" },
@@ -54,6 +54,7 @@ const useStyles = makeStyles(() => ({
  * @param {*} props
  */
 export default function NPCType(props) {
+  const { npcCount, npcId, npcType } = props;
   const npcRows = [];
   const classes = useStyles();
   preferences.forEach((npcPrefs) => {
@@ -109,14 +110,14 @@ export default function NPCType(props) {
         : npcPrefs.type === "Princess"
         ? iconPrincess
         : iconTruf;
+    const menuItemText = npcPrefs.type + ": (" + npcCount[npcPrefs.type] + ")";
     npcRows.push(
       <MenuItem value={npcPrefs.type} key={npcPrefs.type}>
         <img src={npcImage} alt="" className={classes.npcIcon}></img>
-        {npcPrefs.type}
+        {menuItemText}
       </MenuItem>
     );
   });
-  const { npcId, npcType } = props;
   const currNPCPref = preferences.find((npc) => npc.type === npcType);
   const notes = currNPCPref.notes;
   const vendor = currNPCPref.vendor ? (

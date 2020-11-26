@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
   },
-  biome: { display: "flex", alignItems: "center", },
+  biome: { display: "flex", alignItems: "center" },
   expand: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
     transform: "rotate(0deg)",
@@ -101,11 +101,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- * 
+ *
  * @param {*} props
  */
 export default function Town(props) {
-  const { town } = props;
+  const { npcCount, town } = props;
   const { townId, biome, name, pylonStatus } = town;
   //This checks which pylon image to use
   let pylon = "";
@@ -194,17 +194,20 @@ export default function Town(props) {
         }
         npc={npc}
         townId={townId}
+        npcCount={npcCount}
         key={npc.npcId}
       ></NPCs>
     );
   });
+  const cardTitleId = "town-name-" + townId;
+  const notesId = "notes-" + townId;
   return (
     <Card elevation={3} className={classes.root}>
       <CardHeader
         title={
           <TextField
             size="small"
-            id="town-name"
+            id={cardTitleId}
             label="Town Name"
             value={townName}
             onChange={(e) => setTownName(e.target.value)}
@@ -287,7 +290,7 @@ export default function Town(props) {
           <TextField
             disabled
             size="medium"
-            id="notes"
+            id={notesId}
             label="notes"
             variant="outlined"
           />
