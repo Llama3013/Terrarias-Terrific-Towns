@@ -177,7 +177,9 @@ export default function Town(props) {
   //This is stores the style of the pylon dependent on disabledPylon
   const disabledLook = disabledPylon ? classes.disabledPylon : classes.pylon;
   const pylonTooltip =
-    pylonStatus && disabledPylon
+    biome === "Dungeon" || biome === "Corruption" || biome === "Crimson"
+      ? "Pylon in bad biome (cannot be used)"
+      : pylonStatus && disabledPylon
       ? "Pylon placed but needs more npcs"
       : !pylonStatus && disabledPylon
       ? "Pylon not placed and needs more npcs"

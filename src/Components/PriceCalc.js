@@ -41,26 +41,6 @@ export default function priceCalc(town, npcType) {
     return { price: priceModifier, priceNotes: priceNotes };
   }
 
-  //Still need to add a checkbox or something for if more than 3 npcs
-  //are within 240 blocks (not including the NPC's within 50 tiles)
-  //So for now it is going to just check if there are only 2 npcs in the town
-  const npcAmount = town.npcs.length;
-  if (npcAmount <= 2 && npcType !== "Princess") {
-    priceNotes += "*" + prices.couple;
-    priceModifier *= prices.couple;
-  } else if (npcAmount === 1 && npcType === "Princess") {
-    priceNotes += "*" + prices.hates;
-    priceModifier *= prices.hates;
-  } else if (npcAmount >= 3 && npcType !== "Princess") {
-    for (let i = 3; i <= npcAmount; i++) {
-      priceNotes += "*" + prices.extra;
-      priceModifier *= prices.extra;
-    }
-  } else if (npcAmount >= 3 && npcType === "Princess") {
-    priceNotes += "*" + prices.loves;
-    priceModifier *= prices.loves;
-  }
-
   priceModifier *=
     townBiome === npcPrefs.biome.loves
       ? prices.loves
@@ -106,12 +86,20 @@ export default function priceCalc(town, npcType) {
     }
   });
 
-  priceNotes += "=" + priceModifier.toFixed(2);
-  priceModifier = roundFive(priceModifier);
-  priceModifier = Math.round(priceModifier * 100);
-  if (priceModifier >= 150) {
+  /* Might add a input that allows the user to select other towns that maybe within
+     25 to 120 tiles. So for now it is going to just check if there are more than 3
+     npcs in the town */
+  const npcAmount = town.npcs.length;
+  if (npcAmount >= 4 && npcType !== "Princess") {
+    for (let i = 3; i <= npcAmount; i++) {
+      priceNotes += "*" + prices.extra;
+      priceModifier *= prices.extra;
+    }
+  }
+
+  if (priceModifier > 1.5) {
     return { price: 150, priceNotes: priceNotes };
-  } else if (priceModifier <= 75) {
+  } else if (priceModifier < 0.75) {
     console.warn(
       "price modifier is " +
         priceModifier +
@@ -119,16 +107,21 @@ export default function priceCalc(town, npcType) {
     );
     return { price: 75, priceNotes: priceNotes };
   } else {
-    priceModifier =
-      npcAmount >= 3 ? priceModifier - 5 + "-" + priceModifier : priceModifier;
+    /* This variablePrice element is used to show users the difference in price if 
+       other npcs are within 120 tiles */
+    let variablePrice;
+    if (npcAmount <= 2 && npcType === "Princess") {
+      variablePrice = priceModifier * 100;
+      priceNotes += "*" + prices.despises;
+      priceModifier = prices.despises;
+    } else if (npcType === "Princess") {
+      priceModifier = priceModifier * 100;
+      return { price: priceModifier, priceNotes: priceNotes };
+    } else {
+      variablePrice = priceModifier * 0.95 * 100;
+    }
+    priceModifier = priceModifier * 100;
+    priceModifier = Math.round(variablePrice) + "-" + Math.round(priceModifier);
     return { price: priceModifier, priceNotes: priceNotes };
   }
-}
-
-/**
- * This rounds the prices to the correct 5% interval
- * @param {*} num
- */
-function roundFive(num) {
-  return Math.round(num * 20) / 20;
 }

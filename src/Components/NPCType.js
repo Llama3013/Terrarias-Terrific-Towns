@@ -49,7 +49,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 /**
- * This functiondisplays the npc selecter on the npc card.
+ * This function displays the npc selecter on the npc card.
  * It goes through the list of npcs and has a option for each npc.
  * @param {*} props
  */
@@ -59,57 +59,57 @@ export default function NPCType(props) {
   const classes = useStyles();
   preferences.forEach((npcPrefs) => {
     const npcImage =
-      npcPrefs.type === "Guide"
-        ? iconGuide
-        : npcPrefs.type === "Merchant"
-        ? iconMerch
-        : npcPrefs.type === "Zoologist"
-        ? iconZool
-        : npcPrefs.type === "Golfer"
-        ? iconGolfer
-        : npcPrefs.type === "Nurse"
-        ? iconNurse
-        : npcPrefs.type === "Tavernkeep"
-        ? iconTavern
-        : npcPrefs.type === "Party Girl"
-        ? iconParty
-        : npcPrefs.type === "Wizard"
-        ? iconWiz
-        : npcPrefs.type === "Demolitionist"
-        ? iconDemol
-        : npcPrefs.type === "Goblin Tinkerer"
-        ? iconGoblin
-        : npcPrefs.type === "Clothier"
-        ? iconCloth
-        : npcPrefs.type === "Dye Trader"
-        ? iconDye
+      npcPrefs.type === "Angler"
+        ? iconAngler
         : npcPrefs.type === "Arms Dealer"
         ? iconArms
-        : npcPrefs.type === "Steampunker"
-        ? iconSteam
-        : npcPrefs.type === "Dryad"
-        ? iconDryad
-        : npcPrefs.type === "Painter"
-        ? iconPainter
-        : npcPrefs.type === "Witch Doctor"
-        ? iconWitch
-        : npcPrefs.type === "Stylist"
-        ? iconStyl
-        : npcPrefs.type === "Angler"
-        ? iconAngler
-        : npcPrefs.type === "Pirate"
-        ? iconPirate
-        : npcPrefs.type === "Mechanic"
-        ? iconMech
-        : npcPrefs.type === "Tax Collector"
-        ? iconTax
+        : npcPrefs.type === "Clothier"
+        ? iconCloth
         : npcPrefs.type === "Cyborg"
         ? iconCyborg
-        : npcPrefs.type === "Santa Claus"
-        ? iconSanta
+        : npcPrefs.type === "Demolitionist"
+        ? iconDemol
+        : npcPrefs.type === "Dryad"
+        ? iconDryad
+        : npcPrefs.type === "Dye Trader"
+        ? iconDye
+        : npcPrefs.type === "Goblin Tinkerer"
+        ? iconGoblin
+        : npcPrefs.type === "Golfer"
+        ? iconGolfer
+        : npcPrefs.type === "Guide"
+        ? iconGuide
+        : npcPrefs.type === "Mechanic"
+        ? iconMech
+        : npcPrefs.type === "Merchant"
+        ? iconMerch
+        : npcPrefs.type === "Nurse"
+        ? iconNurse
+        : npcPrefs.type === "Painter"
+        ? iconPainter
+        : npcPrefs.type === "Party Girl"
+        ? iconParty
+        : npcPrefs.type === "Pirate"
+        ? iconPirate
         : npcPrefs.type === "Princess"
         ? iconPrincess
-        : iconTruf;
+        : npcPrefs.type === "Santa Claus"
+        ? iconSanta
+        : npcPrefs.type === "Steampunker"
+        ? iconSteam
+        : npcPrefs.type === "Stylist"
+        ? iconStyl
+        : npcPrefs.type === "Tavernkeep"
+        ? iconTavern
+        : npcPrefs.type === "Tax Collector"
+        ? iconTruf
+        : npcPrefs.type === "Truffle"
+        ? iconTax
+        : npcPrefs.type === "Witch Doctor"
+        ? iconWitch
+        : npcPrefs.type === "Wizard"
+        ? iconWiz
+        : iconZool;
     const menuItemText = npcPrefs.type + ": (" + npcCount[npcPrefs.type] + ")";
     npcRows.push(
       <MenuItem value={npcPrefs.type} key={npcPrefs.type}>
@@ -125,10 +125,11 @@ export default function NPCType(props) {
   ) : (
     <MoneyOff className={classes.shopIcon} />
   );
+  const npcSelectId = "npc-select: " + npcId;
   return (
     <div className={classes.root}>
       <FormControl variant="filled" className={classes.form}>
-        <InputLabel htmlFor="npc-select">NPC</InputLabel>
+        <InputLabel htmlFor={npcSelectId}>NPC</InputLabel>
         <Tooltip title="Select NPC">
           <Select
             className={classes.backgroundBubble}
@@ -137,10 +138,7 @@ export default function NPCType(props) {
               props.onNPCChange(npcId, newNPCType.target.value)
             }
             label="NPC"
-            inputProps={{
-              name: "npc",
-              id: "npc-select",
-            }}
+            id={npcSelectId}
           >
             {npcRows}
           </Select>

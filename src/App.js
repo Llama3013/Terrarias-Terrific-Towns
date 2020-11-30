@@ -1,10 +1,16 @@
 import React from "react";
 import { nanoid } from "nanoid";
-import { Button, TextField, Typography, Paper } from "@material-ui/core";
+import {
+  Paper,
+  ThemeProvider,
+  responsiveFontSizes,
+  createMuiTheme,
+} from "@material-ui/core";
+
 import "./App.scss";
+import TownAppBar from "./components/TownAppBar.js";
 import Towns from "./components/Towns.js";
 import PriceCalc from "./components/PriceCalc.js";
-
 import sample from "./components/data/json/sample.json";
 import prefrences from "./components/data/json/prefrences.json";
 import mainBack from "./components/data/images/Background.png";
@@ -15,34 +21,6 @@ const styles = {
     backgroundSize: "cover",
   },
 };
-
-/**
- * This is a Textfield with a linked Button which when clicked creates a new
- * town and pushes the town name inputted into TextField to App class.
- * @param {*} props
- */
-function NewTown(props) {
-  const [town, setTown] = React.useState("New Town");
-
-  const addTown = () => {
-    return props.addTown(town);
-  };
-  return (
-    <div className="Add-town">
-      <TextField
-        id="new-town-name"
-        size="small"
-        label="New Town"
-        value={town}
-        onChange={(e) => setTown(e.target.value)}
-        variant="outlined"
-      />
-      <Button variant="contained" size="small" onClick={() => addTown()}>
-        Add Town
-      </Button>
-    </div>
-  );
-}
 
 /**
  * This App class handles all of the state changes. I might go through this at
@@ -255,24 +233,32 @@ export default class App extends React.Component {
    */
   render() {
     return (
-      <Paper className="App" style={styles.paperContainer} square>
-        <Typography variant="h1" className="App-header">
-          Terrarias Terrific Towns
-        </Typography>
-        <NewTown addTown={(town) => this.addTown(town)}></NewTown>
-        <Towns
-          delTown={(townId, npcId) => this.delTown(townId, npcId)}
-          onBiomeChange={(townId, biome) => this.biomeChange(townId, biome)}
-          onNPCChange={(townId, npcId, newNPCType) =>
-            this.npcChange(townId, npcId, newNPCType)
-          }
-          addNPC={(townId) => this.addNPC(townId)}
-          delNPC={(townId, npcId) => this.delNPC(townId, npcId)}
-          pylonChange={(townId, pylon) => this.pylonChange(townId, pylon)}
-          towns={this.state.towns}
-          npcCount={this.state.npcCount}
-        ></Towns>
-      </Paper>
+      <ThemeProvider theme={detailedTheme}>
+        <Paper className="App" style={styles.paperContainer} square>
+          <TownAppBar addTown={(town) => this.addTown(town)}> </TownAppBar>
+          <Towns
+            delTown={(townId, npcId) => this.delTown(townId, npcId)}
+            onBiomeChange={(townId, biome) => this.biomeChange(townId, biome)}
+            onNPCChange={(townId, npcId, newNPCType) =>
+              this.npcChange(townId, npcId, newNPCType)
+            }
+            addNPC={(townId) => this.addNPC(townId)}
+            delNPC={(townId, npcId) => this.delNPC(townId, npcId)}
+            pylonChange={(townId, pylon) => this.pylonChange(townId, pylon)}
+            towns={this.state.towns}
+            npcCount={this.state.npcCount}
+          ></Towns>
+        </Paper>
+      </ThemeProvider>
     );
   }
 }
+
+//This is the dark theme for the theme provider. This might change if I add a theme switch.
+export const detailedTheme = responsiveFontSizes(
+  createMuiTheme({
+    palette: {
+      type: "dark",
+    },
+  })
+);
