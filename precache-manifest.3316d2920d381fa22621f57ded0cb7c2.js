@@ -1,23 +1,23 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5e7236812ba41ed97b3a54a87b374d7d",
+    "revision": "54b0207ba1a7565e9392cc2462613c33",
     "url": "/Terrarias-Terrific-Towns/index.html"
   },
   {
-    "revision": "a6cd16c21e1f85c8a0d8",
+    "revision": "5baa3ddf779d65ee6999",
     "url": "/Terrarias-Terrific-Towns/static/css/main.282bf587.chunk.css"
   },
   {
-    "revision": "648d7f71b67a4b09f805",
-    "url": "/Terrarias-Terrific-Towns/static/js/2.e35f71d1.chunk.js"
+    "revision": "a0364e1350a11fbdae2f",
+    "url": "/Terrarias-Terrific-Towns/static/js/2.d6bddcb1.chunk.js"
   },
   {
     "revision": "89b0379e7bcda1a468d8b0343aeb4e53",
-    "url": "/Terrarias-Terrific-Towns/static/js/2.e35f71d1.chunk.js.LICENSE.txt"
+    "url": "/Terrarias-Terrific-Towns/static/js/2.d6bddcb1.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a6cd16c21e1f85c8a0d8",
-    "url": "/Terrarias-Terrific-Towns/static/js/main.a67ecb2b.chunk.js"
+    "revision": "5baa3ddf779d65ee6999",
+    "url": "/Terrarias-Terrific-Towns/static/js/main.c2c93384.chunk.js"
   },
   {
     "revision": "9373533094ad37546d3d",
