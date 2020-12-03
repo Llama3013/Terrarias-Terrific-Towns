@@ -1,15 +1,50 @@
 {
-  
-  "npcCount": {"npcAmount":1,"Angler":0,"Arms Dealer":0,"Clothier":0,"Cyborg":0,"Demolitionist":0,"Dryad":0,"Dye Trader":0,"Goblin Tinkerer":0,"Golfer":0,"Guide":1,"Mechanic":0,"Merchant":0,"Nurse":0,"Painter":0,"Party Girl":0,"Pirate":0,"Princess":0,"Santa Claus":0,"Steampunker":0,"Stylist":0,"Tavernkeep":0,"Tax Collector":0,"Truffle":0,"Witch Doctor":0,"Wizard":0,"Zoologist":0},
+  "npcCount": {
+    "npcAmount": 1,
+    "Angler": 0,
+    "Arms Dealer": 0,
+    "Clothier": 0,
+    "Cyborg": 0,
+    "Demolitionist": 0,
+    "Dryad": 0,
+    "Dye Trader": 0,
+    "Goblin Tinkerer": 0,
+    "Golfer": 0,
+    "Guide": 1,
+    "Mechanic": 0,
+    "Merchant": 0,
+    "Nurse": 0,
+    "Painter": 0,
+    "Party Girl": 0,
+    "Pirate": 0,
+    "Princess": 0,
+    "Santa Claus": 0,
+    "Steampunker": 0,
+    "Stylist": 0,
+    "Tavernkeep": 0,
+    "Tax Collector": 0,
+    "Truffle": 0,
+    "Witch Doctor": 0,
+    "Wizard": 0,
+    "Zoologist": 0
+  },
+  "settings": {
+    "multiBiome": false,
+    "notes": false
+  },
   "towns": [
     {
       "biome": "Forest",
       "name": "New Town",
       "npcs": [
         {
-          "npcId": "TlxC3-8_Y0V02EaBt9R2",
           "npcType": "Guide",
-          "price": 0
+          "price": 0,
+          "multiBiome": {
+            "on": false,
+            "type": "Forest"
+          },
+          "npcId": "TlxC3-8_Y0V02EaBt9R2"
         }
       ],
       "pylonStatus": false,

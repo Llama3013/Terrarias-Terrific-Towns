@@ -6,11 +6,12 @@ import prices from "./data/json/prices.json";
  * This checks the current npc's price modifier by checking
  * if they have a preference in their current biome and if they
  * have a preference on what npcs are in the same area as them
- * @param {*} towns This is the state of the towns
- * @param {*} townIndex This is the index of the current town
- * @param {*} npcIndex This is the index of the current npc
+ * @param {*} town The current town that is being calculated
+ * @param {*} npcType The current npc type which will have likes and dislikes
+ * @param {*} biome The current biome used for calculation (could be using
+ *            town's biome or npc specfic biome multi biome)
  */
-export default function priceCalc(town, npcType) {
+export default function priceCalc(town, npcType, biome) {
   let priceModifier = 1;
   let priceNotes = "1";
   let npcPrefs = preferences.find((preference) => preference.type === npcType);
@@ -29,11 +30,10 @@ export default function priceCalc(town, npcType) {
   }
 
   //If the npc is in any of these biomes they instantly have a price modifier of 150%
-  const townBiome = town.biome;
   if (
-    townBiome === "Dungeon" ||
-    townBiome === "Corruption" ||
-    townBiome === "Crimson"
+    biome === "Dungeon" ||
+    biome === "Corruption" ||
+    biome === "Crimson"
   ) {
     priceNotes += "*" + prices.despises + "=" + prices.despises;
     priceModifier *= prices.despises;
@@ -42,24 +42,24 @@ export default function priceCalc(town, npcType) {
   }
 
   priceModifier *=
-    townBiome === npcPrefs.biome.loves
+    biome === npcPrefs.biome.loves
       ? prices.loves
-      : townBiome === npcPrefs.biome.likes
+      : biome === npcPrefs.biome.likes
       ? prices.likes
-      : townBiome === npcPrefs.biome.dislikes
+      : biome === npcPrefs.biome.dislikes
       ? prices.dislikes
-      : townBiome === npcPrefs.biome.hates
+      : biome === npcPrefs.biome.hates
       ? prices.hates
       : 1;
 
   priceNotes +=
-    townBiome === npcPrefs.biome.loves
+    biome === npcPrefs.biome.loves
       ? "*" + prices.loves
-      : townBiome === npcPrefs.biome.likes
+      : biome === npcPrefs.biome.likes
       ? "*" + prices.likes
-      : townBiome === npcPrefs.biome.dislikes
+      : biome === npcPrefs.biome.dislikes
       ? "*" + prices.dislikes
-      : townBiome === npcPrefs.biome.hates
+      : biome === npcPrefs.biome.hates
       ? "*" + prices.hates
       : "";
 

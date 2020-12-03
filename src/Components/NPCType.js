@@ -135,7 +135,7 @@ export default function NPCType(props) {
             className={classes.backgroundBubble}
             value={npcType}
             onChange={(newNPCType) =>
-              props.onNPCChange(npcId, newNPCType.target.value)
+              props.npcChange(npcId, newNPCType.target.value)
             }
             label="NPC"
             id={npcSelectId}

@@ -24,29 +24,68 @@ const styles = {
 
 /**
  * This App class handles all of the state changes. I might go through this at
- * a later date and maybe try to change this class and maybe handle more of the
+ * a later date and maybe try to change this class. Also I might handle more of the
  * changes on the component level rather than pushing props up the component list.
  */
 export default class App extends React.Component {
+  /**
+   * This sets the state to reflect what is inside of sample.json. This may change
+   * with import and export system if implemented.
+   * @param {*} props
+   */
   constructor(props) {
     super(props);
-    sample.npcCount.npcAmount = 0;
+    const { npcCount, settings, towns } = this.loadTowns(
+      sample.npcCount,
+      sample.settings,
+      sample.towns
+    );
+    this.state = {
+      npcCount: npcCount,
+      settings: settings,
+      towns: towns,
+    };
+  }
+
+  /**
+   * This will load or refresh the current price of the town's npcs
+   * @param {*} npcCount
+   * @param {*} settings
+   * @param {*} towns
+   */
+  loadTowns(npcCount, settings, towns) {
+    npcCount.npcAmount = 0;
     prefrences.forEach((npcPrefs) => {
-      sample.npcCount[npcPrefs.type] = 0;
+      npcCount[npcPrefs.type] = 0;
     });
-    sample.towns.forEach((town) => {
+    towns.forEach((town) => {
       town.npcs.forEach((npc) => {
-        const { price, priceNotes } = PriceCalc(town, npc.npcType);
-        npc.price = price;
-        npc.priceNotes = priceNotes;
-        sample.npcCount.npcAmount += 1;
-        sample.npcCount[npc.npcType] += 1;
+        npc = this.changePrice(town, npc, settings.multiBiome);
+        npcCount.npcAmount += 1;
+        npcCount[npc.npcType] += 1;
       });
     });
-    this.state = {
-      npcCount: sample.npcCount,
-      towns: sample.towns,
-    };
+    return { npcCount, settings, towns };
+  }
+
+  /**
+   * This will check if the npc is using multiBiome or not and gets the price and
+   * priceNotes calculated from PriceCalc. It lastly will return the npc which has
+   * been calculated
+   * @param {*} town The state of the town that the npc is in.
+   * @param {*} npc The state of the current npc.
+   */
+  changePrice(town, npc, multiBiomeSetting) {
+    let biome;
+    if (npc.multiBiome.biomeSwitch && multiBiomeSetting) {
+      biome = npc.multiBiome.type;
+    } else {
+      biome = town.biome;
+    }
+    const { price, priceNotes } = PriceCalc(town, npc.npcType, biome);
+    npc.price = price;
+    npc.priceNotes = priceNotes;
+    return npc;
   }
 
   /**
@@ -64,17 +103,25 @@ export default class App extends React.Component {
       biome: "Forest",
       pylonStatus: false,
       npcs: [
-        { npcId: nanoid(), npcType: "Guide", price: 0, priceNotes: "Error" },
+        {
+          npcId: nanoid(),
+          npcType: "Guide",
+          price: 0,
+          priceNotes: "Error",
+          multiBiome: {
+            multiBiome: false,
+            type: "Forest",
+          },
+        },
       ],
     });
     const latestTown = newTowns.length - 1;
     newTowns[latestTown].npcs.forEach((npc) => {
-      const { price, priceNotes } = PriceCalc(
+      npc = this.changePrice(
         newTowns[latestTown],
-        npc.npcType
+        npc,
+        this.state.settings.multiBiome
       );
-      npc.price = price;
-      npc.priceNotes = priceNotes;
     });
     const npcCount = this.state.npcCount;
     const latestNPC = newTowns[latestTown].npcs.length - 1;
@@ -98,11 +145,17 @@ export default class App extends React.Component {
       npcType: "Guide",
       price: 0,
       priceNotes: "No notes set",
+      multiBiome: {
+        multiBiome: false,
+        type: "Forest",
+      },
     });
     newTowns[townIndex].npcs.forEach((npc) => {
-      const { price, priceNotes } = PriceCalc(newTowns[townIndex], npc.npcType);
-      npc.price = price;
-      npc.priceNotes = priceNotes;
+      npc = this.changePrice(
+        newTowns[townIndex],
+        npc,
+        this.state.settings.multiBiome
+      );
     });
     const npcCount = this.state.npcCount;
     npcCount.npcAmount += 1;
@@ -122,9 +175,11 @@ export default class App extends React.Component {
     const newTowns = [...this.state.towns];
     newTowns[townIndex].biome = newBiome;
     newTowns[townIndex].npcs.forEach((npc) => {
-      const { price, priceNotes } = PriceCalc(newTowns[townIndex], npc.npcType);
-      npc.price = price;
-      npc.priceNotes = priceNotes;
+      npc = this.changePrice(
+        newTowns[townIndex],
+        npc,
+        this.state.settings.multiBiome
+      );
     });
     this.setState({ towns: newTowns });
   }
@@ -145,9 +200,11 @@ export default class App extends React.Component {
     const oldNPCType = newTowns[townIndex].npcs[npcIndex].npcType;
     newTowns[townIndex].npcs[npcIndex].npcType = newNPCType;
     newTowns[townIndex].npcs.forEach((npc) => {
-      const { price, priceNotes } = PriceCalc(newTowns[townIndex], npc.npcType);
-      npc.price = price;
-      npc.priceNotes = priceNotes;
+      npc = this.changePrice(
+        newTowns[townIndex],
+        npc,
+        this.state.settings.multiBiome
+      );
     });
     const npcCount = this.state.npcCount;
     npcCount[oldNPCType] -= 1;
@@ -198,9 +255,11 @@ export default class App extends React.Component {
     const oldNPCType = newTowns[townIndex].npcs[npcIndex].npcType;
     newTowns[townIndex].npcs.splice(npcIndex, 1);
     newTowns[townIndex].npcs.forEach((npc) => {
-      const { price, priceNotes } = PriceCalc(newTowns[townIndex], npc.npcType);
-      npc.price = price;
-      npc.priceNotes = priceNotes;
+      npc = this.changePrice(
+        newTowns[townIndex],
+        npc,
+        this.state.settings.multiBiome
+      );
     });
     const npcCount = this.state.npcCount;
     npcCount.npcAmount -= 1;
@@ -219,13 +278,79 @@ export default class App extends React.Component {
   /**
    * This finds the required npc using npcId in the specfied town using townIndex by
    * searching the current state.
-   * @param {*} townIndex
-   * @param {*} npcId
+   * @param {*} townIndex The index of the town the npc that is to be found is in
+   * @param {*} npcId The id of the npc that needs to be found
    */
   findNPC(townIndex, npcId) {
     return this.state.towns[townIndex].npcs.findIndex(
       (npc) => npc.npcId === npcId
     );
+  }
+
+  /**
+   * This function runs when the user clicks on the multi biome switch. Changes whether
+   * the npc is in a multiBiome
+   * @param {*} townId The id of the town that the npc is in
+   * @param {*} npcId The id of the npc that is having multiBiome turned on/off
+   * @param {*} biomeSwitch The boolean value of whether the npc is in a multiBiome
+   */
+  multiBiomeSwitch(townId, npcId, biomeSwitch) {
+    const townIndex = this.findTown(townId);
+    const npcIndex = this.findNPC(townIndex, npcId);
+    const newTowns = [...this.state.towns];
+    let npc = newTowns[townIndex].npcs[npcIndex];
+    npc.multiBiome.biomeSwitch = biomeSwitch;
+    npc = this.changePrice(
+      newTowns[townIndex],
+      npc,
+      this.state.settings.multiBiome
+    );
+    this.setState({ towns: newTowns });
+  }
+
+  /**
+   * This changes what biome this specfic npc is in.
+   * @param {*} townId The id of the town that the npc is in
+   * @param {*} npcId The id of the npc that is having its biome changed
+   * @param {*} biome The new biome the npc will be in
+   */
+  multiBiomeChange(townId, npcId, biome) {
+    const townIndex = this.findTown(townId);
+    const npcIndex = this.findNPC(townIndex, npcId);
+    const newTowns = [...this.state.towns];
+    let npc = newTowns[townIndex].npcs[npcIndex];
+    npc.multiBiome.type = biome;
+    npc = this.changePrice(
+      newTowns[townIndex],
+      npc,
+      this.state.settings.multiBiome
+    );
+    this.setState({ towns: newTowns });
+  }
+
+  /**
+   * This sets whether the user wants to use the multi biome system in the top-left
+   * menu. It also loads the towns again with the new multiBiomeSetting to
+   * recalculate the npc prices.
+   * @param {*} multiBiome Boolean value of whether the multi biome setting is on
+   */
+  multiBiomeSetting(multiBiome) {
+    const { npcCount, settings } = this.state;
+    const oldTowns = this.state.towns;
+    settings.multiBiome = multiBiome;
+    const { towns } = this.loadTowns(npcCount, settings, oldTowns);
+    this.setState({ npcCount: npcCount, settings: settings, towns: towns });
+  }
+
+  /**
+   * This sets whether the user wants to show notes (that the user can edit) at
+   * the end of every town.
+   * @param {*} notes Boolean value of whether the notes setting is on
+   */
+  notesSetting(notes) {
+    const { settings } = this.state;
+    settings.notes = notes;
+    this.setState({ settings: settings });
   }
 
   /**
@@ -235,18 +360,30 @@ export default class App extends React.Component {
     return (
       <ThemeProvider theme={detailedTheme}>
         <Paper className="App" style={styles.paperContainer} square>
-          <TownAppBar addTown={(town) => this.addTown(town)}> </TownAppBar>
+          <TownAppBar
+            addTown={(town) => this.addTown(town)}
+            multiBiomeSetting={(multiBiome) =>
+              this.multiBiomeSetting(multiBiome)
+            }
+            notesSetting={(notes) => this.notesSetting(notes)}
+            settings={this.state.settings}
+          ></TownAppBar>
           <Towns
             delTown={(townId, npcId) => this.delTown(townId, npcId)}
-            onBiomeChange={(townId, biome) => this.biomeChange(townId, biome)}
-            onNPCChange={(townId, npcId, newNPCType) =>
+            biomeChange={(townId, biome) => this.biomeChange(townId, biome)}
+            npcChange={(townId, npcId, newNPCType) =>
               this.npcChange(townId, npcId, newNPCType)
             }
             addNPC={(townId) => this.addNPC(townId)}
             delNPC={(townId, npcId) => this.delNPC(townId, npcId)}
             pylonChange={(townId, pylon) => this.pylonChange(townId, pylon)}
-            towns={this.state.towns}
-            npcCount={this.state.npcCount}
+            multiBiomeSwitch={(townId, npcId, on) =>
+              this.multiBiomeSwitch(townId, npcId, on)
+            }
+            multiBiomeChange={(townId, npcId, biome) =>
+              this.multiBiomeChange(townId, npcId, biome)
+            }
+            townData={this.state}
           ></Towns>
         </Paper>
       </ThemeProvider>

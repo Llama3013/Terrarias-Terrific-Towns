@@ -70,8 +70,8 @@ export default function Biome(props) {
     );
   });
   const curBiome = props.biome;
-  const { townId } = props;
-  const biomeSelectId = "biome-select: " + townId;
+  const { id, isTown } = props;
+  const biomeSelectId = "biome-select: " + id;
   return (
     <div className={classes.root}>
       <FormControl variant="filled" className={classes.form}>
@@ -81,7 +81,10 @@ export default function Biome(props) {
             className={classes.backgroundBubble}
             value={curBiome}
             onChange={(biome) =>
-              props.onBiomeChange(townId, biome.target.value)
+              //This might generate an error if something goes wrong with isTown
+              isTown
+                ? props.biomeChange(id, biome.target.value)
+                : props.multiBiomeChange(id, biome.target.value)
             }
             id={biomeSelectId}
             label="Biome"

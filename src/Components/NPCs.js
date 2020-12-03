@@ -8,6 +8,9 @@ import {
   makeStyles,
   Tooltip,
   Paper,
+  Switch,
+  FormControlLabel,
+  FormGroup,
 } from "@material-ui/core";
 import preferences from "./data/json/prefrences.json";
 import NPCType from "./NPCType";
@@ -18,13 +21,18 @@ import {
   SentimentDissatisfied,
   SentimentSatisfied,
 } from "@material-ui/icons";
+import Biome from "./Biome";
+import { getNPCBackground } from "./Images";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 225,
     margin: theme.spacing(1),
     height: "fit-content",
+    backgroundSize: "cover",
     background: "no-repeat center",
+    backgroundImage: (props) =>
+      getNPCBackground(props.npc.multiBiome, props.settings.multiBiome),
   },
   typo: {
     textAlign: "left",
@@ -47,6 +55,8 @@ const useStyles = makeStyles((theme) => ({
     }),
   },
   npcHeader: { display: "flex", alignItems: "center" },
+  biome: { display: "flex", alignItems: "center" },
+  formGroup: { display: "flex" },
 }));
 
 /**
@@ -56,11 +66,11 @@ const useStyles = makeStyles((theme) => ({
  * @param {*} props
  */
 export default function NPCs(props) {
-  const onNPCChange = (npcId, newNpcType) => {
-    return props.onNPCChange(props.townId, npcId, newNpcType);
+  const npcChange = (npcId, newNpcType) => {
+    return props.npcChange(props.townId, npcId, newNpcType);
   };
-  const { npcCount } = props;
-  const { npcType, npcId, price, priceNotes } = props.npc;
+  const { npc, npcCount, settings } = props;
+  const { npcType, npcId, price, priceNotes, multiBiome } = npc;
   const npcPrefs = preferences.find(
     (preference) => preference.type === npcType
   );
@@ -84,19 +94,58 @@ export default function NPCs(props) {
     hates += npc + ", ";
   });
   hates += npcPrefs.biome.hates;
-  const classes = useStyles();
+  const classes = useStyles(props);
+  const [biomeSwitch, setBiomeSwitch] = React.useState(false);
+
+  const multiBiomeToggle = () => {
+    props.multiBiomeSwitch(npcId, !biomeSwitch);
+    setBiomeSwitch((prev) => !prev);
+  };
+
+  //May replace with display="none" once I overhaul the styles
+  const multiBiomeSelect = biomeSwitch ? (
+    <Biome
+      className={classes.biome}
+      multiBiomeChange={(npcId, biome) => props.multiBiomeChange(npcId, biome)}
+      biome={multiBiome.type}
+      isTown={false}
+      id={npcId}
+      key={npcId}
+    ></Biome>
+  ) : undefined;
+
+  //May replace with display="none" once I overhaul the styles
+  const multiBiomeSwitch = settings.multiBiome ? (
+    <FormGroup className={classes.formGroup} row>
+      <FormControlLabel
+        control={
+          <Switch
+            checked={biomeSwitch}
+            onChange={multiBiomeToggle}
+            name="multi-biome-switch"
+          />
+        }
+        label="Multi biome"
+      />
+      {multiBiomeSelect}
+    </FormGroup>
+  ) : undefined;
+
   return (
     <Card className={classes.root}>
       <CardHeader
         className={classes.npcHeader}
         title={
-          <NPCType
-            onNPCChange={(npcId, newNPCType) => onNPCChange(npcId, newNPCType)}
-            npcCount={npcCount}
-            npcType={npcType}
-            npcId={npcId}
-            key={npcId}
-          ></NPCType>
+          <div>
+            <NPCType
+              npcChange={(npcId, newNPCType) => npcChange(npcId, newNPCType)}
+              npcCount={npcCount}
+              npcType={npcType}
+              npcId={npcId}
+              key={npcId}
+            ></NPCType>
+            {multiBiomeSwitch}
+          </div>
         }
         action={
           <Tooltip title="Delete NPC">

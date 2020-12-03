@@ -15,7 +15,8 @@ const styles = makeStyles(() => ({
  * @param {*} props
  */
 export default function Towns(props) {
-  const { npcCount, towns } = props;
+  const { townData } = props;
+  const { npcCount, settings, towns } = townData;
 
   const classes = styles();
   return (
@@ -24,17 +25,22 @@ export default function Towns(props) {
         <Fade in={true} key={town.townId}>
           <Town
             delTown={(townId) => props.delTown(townId)}
-            onBiomeChange={(townId, biome) =>
-              props.onBiomeChange(townId, biome)
-            }
+            biomeChange={(townId, biome) => props.biomeChange(townId, biome)}
             addNPC={(townId) => props.addNPC(townId)}
             delNPC={(townId, npcId) => props.delNPC(townId, npcId)}
-            onNPCChange={(townId, npcId, newNPCType) =>
-              props.onNPCChange(townId, npcId, newNPCType)
+            npcChange={(townId, npcId, newNPCType) =>
+              props.npcChange(townId, npcId, newNPCType)
             }
             pylonChange={(houseId, pylon) => props.pylonChange(houseId, pylon)}
+            multiBiomeSwitch={(townId, npcId, multiBiome) =>
+              props.multiBiomeSwitch(townId, npcId, multiBiome)
+            }
+            multiBiomeChange={(townId, npcId, biome) =>
+              props.multiBiomeChange(townId, npcId, biome)
+            }
             town={town}
             npcCount={npcCount}
+            settings={settings}
             key={town.townId}
           ></Town>
         </Fade>

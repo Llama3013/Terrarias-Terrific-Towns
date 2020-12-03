@@ -7,8 +7,6 @@ import {
   IconButton,
   Button,
   TextField,
-  FormControlLabel,
-  Checkbox,
   CardHeader,
   Tooltip,
 } from "@material-ui/core/";
@@ -16,35 +14,7 @@ import { ExpandMore, Delete } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import NPCs from "./NPCs";
 import Biome from "./Biome";
-import CorruptBack from "./data/images/biomes/Corruption_back_1.png";
-import CrimBack from "./data/images/biomes/Crimson_back_1.png";
-import DesertBack from "./data/images/biomes/Desert_back_1.png";
-import DungeonBack from "./data/images/biomes/Dungeon_back_1.png";
-import ForestBack from "./data/images/biomes/Forest_back_1.png";
-import SnowBack from "./data/images/biomes/Snow_back_1.png";
-import MushroomBack from "./data/images/biomes/Mushroom_back_1.png";
-import HallowBack from "./data/images/biomes/Hallow_back_1.png";
-import JungleBack from "./data/images/biomes/Jungle_back_1.png";
-import OceanBack from "./data/images/biomes/Ocean_back_1.png";
-import UnderBack from "./data/images/biomes/Underground_back_1.png";
-import ForestPylon from "./data/images/biomes/Forest_Pylon.png";
-import ForestPylonPlaced from "./data/images/biomes/Forest_Pylon_(placed).gif";
-import SnowPylon from "./data/images/biomes/Snow_Pylon.png";
-import SnowPylonPlaced from "./data/images/biomes/Snow_Pylon_(placed).gif";
-import DesertPylon from "./data/images/biomes/Desert_Pylon.png";
-import DesertPylonPlaced from "./data/images/biomes/Desert_Pylon_(placed).gif";
-import CavernPylon from "./data/images/biomes/Cavern_Pylon.png";
-import CavernPylonPlaced from "./data/images/biomes/Cavern_Pylon_(placed).gif";
-import OceanPylon from "./data/images/biomes/Ocean_Pylon.png";
-import OceanPylonPlaced from "./data/images/biomes/Ocean_Pylon_(placed).gif";
-import JunglePylon from "./data/images/biomes/Jungle_Pylon.png";
-import JunglePylonPlaced from "./data/images/biomes/Jungle_Pylon_(placed).gif";
-import HallowPylon from "./data/images/biomes/Hallow_Pylon.png";
-import HallowPylonPlaced from "./data/images/biomes/Hallow_Pylon_(placed).gif";
-import MushroomPylon from "./data/images/biomes/Mushroom_Pylon.png";
-import MushroomPylonPlaced from "./data/images/biomes/Mushroom_Pylon_(placed).gif";
-import UniPylon from "./data/images/biomes/Universal_Pylon.png";
-import UniPylonPlaced from "./data/images/biomes/Universal_Pylon_(placed).gif";
+import { getPylonImage, getTownBackground } from "./Images";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -53,28 +23,7 @@ const useStyles = makeStyles((theme) => ({
     height: "fit-content",
     backgroundSize: "cover",
     background: "no-repeat center",
-    backgroundImage: (props) =>
-      props.town.biome === "Corruption"
-        ? "url(" + CorruptBack + ")"
-        : props.town.biome === "Crimson"
-        ? "url(" + CrimBack + ")"
-        : props.town.biome === "Desert"
-        ? "url(" + DesertBack + ")"
-        : props.town.biome === "Dungeon"
-        ? "url(" + DungeonBack + ")"
-        : props.town.biome === "Mushroom"
-        ? "url(" + MushroomBack + ")"
-        : props.town.biome === "Hallow"
-        ? "url(" + HallowBack + ")"
-        : props.town.biome === "Jungle"
-        ? "url(" + JungleBack + ")"
-        : props.town.biome === "Ocean"
-        ? "url(" + OceanBack + ")"
-        : props.town.biome === "Snow"
-        ? "url(" + SnowBack + ")"
-        : props.town.biome === "Underground"
-        ? "url(" + UnderBack + ")"
-        : "url(" + ForestBack + ")",
+    backgroundImage: (props) => getTownBackground(props.town.biome),
   },
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
@@ -101,74 +50,18 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- *
- * @param {*} props
+ * This gets the details of the pylon used in the town. Gets the image,
+ * whether it is disabled and what tooltip should be shown.
+ * @param {*} townLength The length of the current town
+ * @param {*} biome The biome the town is located
+ * @param {*} pylonStatus A boolean value that shows whether the pylon is placed
+ * @param {*} classes The styles needed for the pylons whether working or disabled
  */
-export default function Town(props) {
-  const { npcCount, town } = props;
-  const { townId, biome, name, pylonStatus } = town;
-  //This checks which pylon image to use
-  let pylon = "";
-  if (pylonStatus) {
-    pylon =
-      biome === "Forest"
-        ? ForestPylonPlaced
-        : biome === "Snow"
-        ? SnowPylonPlaced
-        : biome === "Desert"
-        ? DesertPylonPlaced
-        : biome === "Underground"
-        ? CavernPylonPlaced
-        : biome === "Ocean"
-        ? OceanPylonPlaced
-        : biome === "Jungle"
-        ? JunglePylonPlaced
-        : biome === "Hallow"
-        ? HallowPylonPlaced
-        : biome === "Mushroom"
-        ? MushroomPylonPlaced
-        : UniPylonPlaced;
-  } else {
-    pylon =
-      biome === "Forest"
-        ? ForestPylon
-        : biome === "Snow"
-        ? SnowPylon
-        : biome === "Desert"
-        ? DesertPylon
-        : biome === "Underground"
-        ? CavernPylon
-        : biome === "Ocean"
-        ? OceanPylon
-        : biome === "Jungle"
-        ? JunglePylon
-        : biome === "Hallow"
-        ? HallowPylon
-        : biome === "Mushroom"
-        ? MushroomPylon
-        : UniPylon;
-  }
-  //Hook setup for collapse menu, checkbox(which is disabled atm) and townName change
-  const [expanded, setExpanded] = React.useState(false);
-  const [checked, setChecked] = React.useState(false);
-  const [townName, setTownName] = React.useState(name);
-  const handleExpandClick = () => {
-    setExpanded((prev) => !prev);
-  };
-  //This opens the collapse menu when a npc is added
-  const handleAddNPC = () => {
-    setExpanded((prev) => {
-      return prev ? prev : !prev;
-    });
-    return props.addNPC(townId);
-  };
-  const handleCheckedClick = () => {
-    setChecked((prev) => !prev);
-  };
-  const classes = useStyles(props);
+function getPylon(townLength, biome, pylonStatus, classes) {
+  const pylon = getPylonImage(biome, pylonStatus);
   //Checks for if the pylon can be activated
   const disabledPylon =
-    town.npcs.length >= 2 &&
+    townLength >= 2 &&
     biome !== "Dungeon" &&
     biome !== "Corruption" &&
     biome !== "Crimson"
@@ -186,23 +79,68 @@ export default function Town(props) {
       : pylonStatus && !disabledPylon
       ? "Pylon is active"
       : "Pylon is not placed and can be activated";
+  return { pylon, disabledPylon, disabledLook, pylonTooltip };
+}
+
+/**
+ *
+ * @param {*} props
+ */
+export default function Town(props) {
+  const { npcCount, settings, town } = props;
+  const { townId, name, biome, pylonStatus } = town;
+  //Hook setup for collapse menu, checkbox(which is disabled atm) and townName change
+  const [expanded, setExpanded] = React.useState(false);
+  const [townName, setTownName] = React.useState(name);
+  const handleExpandClick = () => {
+    setExpanded((prev) => !prev);
+  };
+  //This opens the collapse menu when a npc is added
+  const handleAddNPC = () => {
+    setExpanded((prev) => {
+      return prev ? prev : !prev;
+    });
+    return props.addNPC(townId);
+  };
+  const multiBiomeSwitch = (npcId, multiBiome) => {
+    return props.multiBiomeSwitch(townId, npcId, multiBiome);
+  };
+  const multiBiomeChange = (npcId, biome) => {
+    return props.multiBiomeChange(townId, npcId, biome);
+  };
+  const classes = useStyles(props);
+  const { pylon, disabledPylon, disabledLook, pylonTooltip } = getPylon(
+    town.npcs.length,
+    biome,
+    pylonStatus,
+    classes
+  );
   const npcRows = [];
   town.npcs.forEach((npc) => {
     npcRows.push(
       <NPCs
         delNPC={(townId, npcId) => props.delNPC(townId, npcId)}
-        onNPCChange={(townId, npcId, newNPCType) =>
-          props.onNPCChange(townId, npcId, newNPCType)
+        npcChange={(townId, npcId, newNPCType) =>
+          props.npcChange(townId, npcId, newNPCType)
         }
+        multiBiomeSwitch={(npcId, on) => multiBiomeSwitch(npcId, on)}
+        multiBiomeChange={(npcId, biome) => multiBiomeChange(npcId, biome)}
         npc={npc}
         townId={townId}
         npcCount={npcCount}
+        settings={settings}
         key={npc.npcId}
       ></NPCs>
     );
   });
+
   const cardTitleId = "town-name-" + townId;
   const notesId = "notes-" + townId;
+
+  //May replace with display="none" once I overhaul the styles
+  const notesText = settings.notes ? (
+    <TextField size="medium" id={notesId} label="notes" variant="outlined" />
+  ) : undefined;
   return (
     <Card elevation={3} className={classes.root}>
       <CardHeader
@@ -248,24 +186,12 @@ export default function Town(props) {
       <CardContent>
         <Biome
           className={classes.biome}
-          onBiomeChange={(townId, biome) => props.onBiomeChange(townId, biome)}
+          biomeChange={(townId, biome) => props.biomeChange(townId, biome)}
           biome={biome}
-          townId={townId}
+          isTown={true}
+          id={townId}
           key={townId}
         ></Biome>
-        <FormControlLabel
-          disabled
-          control={
-            <Checkbox
-              disabled
-              checked={checked}
-              onChange={handleCheckedClick}
-              name="link-checked"
-              color="primary"
-            />
-          }
-          label="Linked town"
-        />
       </CardContent>
       <CardActions disableSpacing>
         <Button
@@ -289,13 +215,7 @@ export default function Town(props) {
       <Collapse in={expanded} timeout="auto">
         <CardContent>
           {npcRows}
-          <TextField
-            disabled
-            size="medium"
-            id={notesId}
-            label="notes"
-            variant="outlined"
-          />
+          {notesText}
         </CardContent>
       </Collapse>
     </Card>
