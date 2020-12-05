@@ -6,6 +6,8 @@ import {
   responsiveFontSizes,
   createMuiTheme,
 } from "@material-ui/core";
+import clipboard from "clipboard-copy";
+import { saveAs } from "file-saver";
 
 import "./App.scss";
 import TownAppBar from "./components/TownAppBar.js";
@@ -353,6 +355,28 @@ export default class App extends React.Component {
     this.setState({ settings: settings });
   }
 
+  importTownsState(townsData) {
+    const townsState = JSON.parse(townsData);
+    console.log(townsState.npcCount);
+    console.log(townsState.settings);
+    console.log(townsState.towns);
+    const { npcCount, settings, towns } = this.loadTowns(
+      townsState.npcCount,
+      townsState.settings,
+      townsState.towns
+    );
+    this.setState({ npcCount: npcCount, settings: settings, towns: towns });
+  }
+
+  exportClipboard() {
+    clipboard(JSON.stringify(this.state));
+  }
+
+  exportFile() {
+    var blob = new Blob([JSON.stringify(this.state)], {type: "text/plain;charset=utf-8"});
+    saveAs(blob, "Terrarias-Terrific-Towns-data.json");
+  }
+
   /**
    * This renders all of the visible components seen by the user.
    */
@@ -366,6 +390,9 @@ export default class App extends React.Component {
               this.multiBiomeSetting(multiBiome)
             }
             notesSetting={(notes) => this.notesSetting(notes)}
+            importTownsState={(townsState) => this.importTownsState(townsState)}
+            exportClipboard={() => this.exportClipboard()}
+            exportFile={() => this.exportFile()}
             settings={this.state.settings}
           ></TownAppBar>
           <Towns

@@ -4,6 +4,7 @@ import {
   Button,
   Dialog,
   DialogActions,
+  DialogContent,
   DialogTitle,
   IconButton,
   makeStyles,
@@ -11,9 +12,12 @@ import {
   MenuItem,
   TextField,
   Toolbar,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -34,7 +38,10 @@ export default function TownAppBar(props) {
   const { settings } = props;
   const classes = useStyles(props);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [infoDialogOpen, setInfoDialogOpen] = React.useState(false);
+  const [importDialogOpen, setImportDialogOpen] = React.useState(false);
+  const [exportDialogOpen, setExportDialogOpen] = React.useState(false);
+  const [importError, setImportError] = React.useState(false);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -44,18 +51,62 @@ export default function TownAppBar(props) {
     setAnchorEl(null);
   };
 
-  const handleDialogClose = () => {
-    setDialogOpen(false);
+  const handleInfoDialogClose = () => {
+    setInfoDialogOpen(false);
   };
 
-  const handleDialogOpen = () => {
+  const handleInfoDialogOpen = () => {
     setAnchorEl(null);
-    setDialogOpen(true);
+    setInfoDialogOpen(true);
   };
 
   const handleMoreInfo = () => {
     window.open("https://terraria.gamepedia.com/NPCs#Happiness");
-    handleDialogClose();
+    handleInfoDialogClose();
+  };
+
+  const handleImportDialogClose = () => {
+    setImportDialogOpen(false);
+  };
+
+  const handleImportDialogOpen = () => {
+    setAnchorEl(null);
+    setImportDialogOpen(true);
+  };
+
+  const handleImport = () => {
+    try {
+      props.importTownsState(townsData);
+      handleImportDialogClose();
+    } catch (error) {
+      console.log(error);
+      setImportError(true);
+    }
+  };
+
+  const handleExportDialogClose = () => {
+    setExportDialogOpen(false);
+  };
+
+  const handleExportDialogOpen = () => {
+    setAnchorEl(null);
+    setExportDialogOpen(true);
+  };
+
+  const handleExportClipboard = () => {
+    try {
+      props.exportClipboard();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleExportFile = () => {
+    try {
+      props.exportFile();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const multiBiomeToggle = () => {
@@ -69,11 +120,15 @@ export default function TownAppBar(props) {
   };
 
   const [town, setTown] = React.useState("New Town");
+  const [townsData, setTownsData] = React.useState("");
 
   const addTown = () => {
     return props.addTown(town);
   };
 
+  const importErrorText = importError
+    ? "towns data is incorrect or formatted"
+    : "";
   return (
     <AppBar position="static">
       <Toolbar>
@@ -93,23 +148,88 @@ export default function TownAppBar(props) {
           open={Boolean(anchorEl)}
           onClose={handleMenuClose}
         >
-          <MenuItem onClick={handleMenuClose}>Import towns</MenuItem>
-          <MenuItem onClick={handleMenuClose}>Export towns</MenuItem>
+          <div>
+            <MenuItem onClick={handleImportDialogOpen}>Import towns</MenuItem>
+            <Dialog
+              open={importDialogOpen}
+              onClose={handleImportDialogClose}
+              aria-labelledby="import-dialog-title"
+              aria-describedby="import-dialog-description"
+            >
+              <DialogTitle id="import-dialog-title">
+                {"Would you like to import your towns?"}
+              </DialogTitle>
+              <DialogContent>
+                <TextField
+                  error={importError}
+                  id="import-towns-state"
+                  label="Import"
+                  helperText={importErrorText}
+                  variant="outlined"
+                  multiline
+                  value={townsData}
+                  onChange={(e) => setTownsData(e.target.value)}
+                />
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleImportDialogClose} color="primary">
+                  Disagree
+                </Button>
+                <Button onClick={handleImport} color="primary" autoFocus>
+                  Agree
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
+          <div>
+            <MenuItem onClick={handleExportDialogOpen}>Export towns</MenuItem>
+            <Dialog
+              open={exportDialogOpen}
+              onClose={handleExportDialogClose}
+              aria-labelledby="export-dialog-title"
+              aria-describedby="export-dialog-description"
+            >
+              <DialogTitle id="export-dialog-title">
+                {"Would you like to Export your towns?"}
+              </DialogTitle>
+              <DialogContent>
+                <Tooltip title="Copy">
+                  <IconButton onClick={handleExportClipboard}>
+                    <FileCopyIcon />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Download">
+                  <IconButton onClick={handleExportFile}>
+                    <GetAppIcon />
+                  </IconButton>
+                </Tooltip>
+              </DialogContent>
+              <DialogActions>
+                <Button
+                  onClick={handleExportDialogClose}
+                  color="primary"
+                  autoFocus
+                >
+                  Done
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </div>
           <MenuItem onClick={multiBiomeToggle}>Multi Biome</MenuItem>
           <MenuItem onClick={notesToggle}>Notes</MenuItem>
           <div>
-            <MenuItem onClick={handleDialogOpen}>More Info</MenuItem>
+            <MenuItem onClick={handleInfoDialogOpen}>More Info</MenuItem>
             <Dialog
-              open={dialogOpen}
-              onClose={handleDialogClose}
+              open={infoDialogOpen}
+              onClose={handleInfoDialogClose}
               aria-labelledby="alert-dialog-title"
               aria-describedby="alert-dialog-description"
             >
               <DialogTitle id="alert-dialog-title">
-                {"Would you like to access a third party website"}
+                {"Would you like to access a third party website?"}
               </DialogTitle>
               <DialogActions>
-                <Button onClick={handleDialogClose} color="primary">
+                <Button onClick={handleInfoDialogClose} color="primary">
                   Disagree
                 </Button>
                 <Button onClick={handleMoreInfo} color="primary" autoFocus>
