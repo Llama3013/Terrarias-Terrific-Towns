@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundSize: "cover",
     background: "no-repeat center",
     backgroundImage: (props) => getTownBackground(props.town.biome),
+    alignself: "center",
   },
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
@@ -45,8 +46,14 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.shortest,
     }),
   },
-  pylon: { width: "32px", height: "48px" },
-  disabledPylon: { opacity: "0.5", width: "32px", height: "48px" },
+  pylon: { width: "32px", height: "48px", margin: theme.spacing(1) },
+  disabledPylon: {
+    opacity: "0.5",
+    width: "32px",
+    height: "48px",
+    margin: theme.spacing(1),
+  },
+  notes: { display: "flex" },
 }));
 
 /**
@@ -88,10 +95,11 @@ function getPylon(townLength, biome, pylonStatus, classes) {
  */
 export default function Town(props) {
   const { npcCount, settings, town } = props;
-  const { townId, name, biome, pylonStatus } = town;
+  const { townId, name, biome, pylonStatus, notes } = town;
   //Hook setup for collapse menu, checkbox(which is disabled atm) and townName change
   const [expanded, setExpanded] = React.useState(false);
   const [townName, setTownName] = React.useState(name);
+  const [notesData, setNotesData] = React.useState(notes)
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
   };
@@ -139,7 +147,14 @@ export default function Town(props) {
 
   //May replace with display="none" once I overhaul the styles
   const notesText = settings.notes ? (
-    <TextField size="medium" id={notesId} label="notes" variant="outlined" />
+    <TextField
+      onChange={(e) => setNotesData(e.target.value)}
+      multiline
+      id={notesId}
+      label="notes"
+      variant="outlined"
+      className={classes.notes}
+    />
   ) : undefined;
   return (
     <Card elevation={3} className={classes.root}>

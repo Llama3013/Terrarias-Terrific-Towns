@@ -18,6 +18,8 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import GetAppIcon from "@material-ui/icons/GetApp";
+import ToggleOffIcon from "@material-ui/icons/ToggleOff";
+import ToggleOnIcon from "@material-ui/icons/ToggleOn";
 
 const useStyles = makeStyles((theme) => ({
   menuButton: {
@@ -25,6 +27,17 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+  },
+  importText: {
+    display: "flex",
+    marginTop: theme.spacing(1),
+  },
+  newTown: {
+    display: "flex",
+    alignItems: "center",
+  },
+  newTownText: {
+    margin: theme.spacing(1),
   },
 }));
 
@@ -42,14 +55,8 @@ export default function TownAppBar(props) {
   const [importDialogOpen, setImportDialogOpen] = React.useState(false);
   const [exportDialogOpen, setExportDialogOpen] = React.useState(false);
   const [importError, setImportError] = React.useState(false);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
+  const [town, setTown] = React.useState("New Town");
+  const [townsData, setTownsData] = React.useState("");
 
   const handleInfoDialogClose = () => {
     setInfoDialogOpen(false);
@@ -75,9 +82,22 @@ export default function TownAppBar(props) {
   };
 
   const handleImport = () => {
+    props.importTownsState(townsData);
+    handleImportDialogClose();
+  };
+
+  const handleImportFile = (townsFile) => {
     try {
-      props.importTownsState(townsData);
-      handleImportDialogClose();
+      const reader = new FileReader();
+      reader.readAsText(townsFile[0]);
+
+      reader.onload = () => {
+        setTownsData(reader.result);
+      };
+
+      reader.onerror = function () {
+        console.log(reader.error);
+      };
     } catch (error) {
       console.log(error);
       setImportError(true);
@@ -109,22 +129,16 @@ export default function TownAppBar(props) {
     }
   };
 
-  const multiBiomeToggle = () => {
-    props.multiBiomeSetting(!settings.multiBiome);
-    setAnchorEl(null);
-  };
-
-  const notesToggle = () => {
-    props.notesSetting(!settings.notes);
-    setAnchorEl(null);
-  };
-
-  const [town, setTown] = React.useState("New Town");
-  const [townsData, setTownsData] = React.useState("");
-
   const addTown = () => {
     return props.addTown(town);
   };
+
+  const multiBiomeSwitch = settings.multiBiome ? (
+    <ToggleOnIcon />
+  ) : (
+    <ToggleOffIcon />
+  );
+  const notesSwitch = settings.notes ? <ToggleOnIcon /> : <ToggleOffIcon />;
 
   const importErrorText = importError
     ? "towns data is incorrect or formatted"
@@ -137,7 +151,9 @@ export default function TownAppBar(props) {
           className={classes.menuButton}
           color="inherit"
           aria-label="menu"
-          onClick={handleClick}
+          onClick={(event) => {
+            setAnchorEl(event.currentTarget);
+          }}
         >
           <MenuIcon />
         </IconButton>
@@ -146,7 +162,7 @@ export default function TownAppBar(props) {
           anchorEl={anchorEl}
           keepMounted
           open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
+          onClose={() => setAnchorEl(null)}
         >
           <div>
             <MenuItem onClick={handleImportDialogOpen}>Import towns</MenuItem>
@@ -156,23 +172,42 @@ export default function TownAppBar(props) {
               aria-labelledby="import-dialog-title"
               aria-describedby="import-dialog-description"
             >
-              <DialogTitle id="import-dialog-title">
-                {"Would you like to import your towns?"}
-              </DialogTitle>
-              <DialogContent>
-                <TextField
-                  error={importError}
-                  id="import-towns-state"
-                  label="Import"
-                  helperText={importErrorText}
-                  variant="outlined"
-                  multiline
-                  value={townsData}
-                  onChange={(e) => setTownsData(e.target.value)}
-                />
-              </DialogContent>
+              <div onDrop={(e) => e.dataTransfer.files}>
+                <DialogTitle id="import-dialog-title">
+                  {"Would you like to import your towns?"}
+                </DialogTitle>
+                <DialogContent>
+                  <div>
+                    <input
+                      type="file"
+                      onChange={(e) => handleImportFile(e.currentTarget.files)}
+                    />
+                  </div>
+                  <div>
+                    <TextField
+                      className={classes.importText}
+                      error={importError}
+                      id="import-towns-state"
+                      label="Import"
+                      helperText={importErrorText}
+                      variant="outlined"
+                      multiline
+                      value={townsData}
+                      onChange={(e) => {
+                        try {
+                          JSON.parse(e.currentTarget.value);
+                          setImportError(false);
+                        } catch {
+                          setImportError(true);
+                        }
+                        setTownsData(e.currentTarget.value);
+                      }}
+                    />
+                  </div>
+                </DialogContent>
+              </div>
               <DialogActions>
-                <Button onClick={handleImportDialogClose} color="primary">
+                <Button onClick={handleImportDialogClose} color="secondary">
                   Disagree
                 </Button>
                 <Button onClick={handleImport} color="primary" autoFocus>
@@ -190,19 +225,25 @@ export default function TownAppBar(props) {
               aria-describedby="export-dialog-description"
             >
               <DialogTitle id="export-dialog-title">
-                {"Would you like to Export your towns?"}
+                {"How would you like to export your towns?"}
               </DialogTitle>
               <DialogContent>
-                <Tooltip title="Copy">
-                  <IconButton onClick={handleExportClipboard}>
-                    <FileCopyIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Download">
-                  <IconButton onClick={handleExportFile}>
-                    <GetAppIcon />
-                  </IconButton>
-                </Tooltip>
+                <div className={classes.importText}>
+                  <Typography variant="h6">Copy towns to Clipboard</Typography>
+                  <Tooltip title="Copy">
+                    <IconButton onClick={handleExportClipboard}>
+                      <FileCopyIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+                <div className={classes.importText}>
+                  <Typography variant="h6">Download towns</Typography>
+                  <Tooltip title="Download">
+                    <IconButton onClick={handleExportFile}>
+                      <GetAppIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
               </DialogContent>
               <DialogActions>
                 <Button
@@ -215,8 +256,14 @@ export default function TownAppBar(props) {
               </DialogActions>
             </Dialog>
           </div>
-          <MenuItem onClick={multiBiomeToggle}>Multi Biome</MenuItem>
-          <MenuItem onClick={notesToggle}>Notes</MenuItem>
+          <MenuItem
+            onClick={() => props.multiBiomeSetting(!settings.multiBiome)}
+          >
+            Multi Biome {multiBiomeSwitch}
+          </MenuItem>
+          <MenuItem onClick={() => props.notesSetting(!settings.notes)}>
+            Notes {notesSwitch}
+          </MenuItem>
           <div>
             <MenuItem onClick={handleInfoDialogOpen}>More Info</MenuItem>
             <Dialog
@@ -226,10 +273,13 @@ export default function TownAppBar(props) {
               aria-describedby="alert-dialog-description"
             >
               <DialogTitle id="alert-dialog-title">
-                {"Would you like to access a third party website?"}
+                {"Would you like to access this third party website?"}
               </DialogTitle>
+              <DialogContent>
+                https://terraria.gamepedia.com/NPCs#Happiness
+              </DialogContent>
               <DialogActions>
-                <Button onClick={handleInfoDialogClose} color="primary">
+                <Button onClick={handleInfoDialogClose} color="secondary">
                   Disagree
                 </Button>
                 <Button onClick={handleMoreInfo} color="primary" autoFocus>
@@ -242,17 +292,20 @@ export default function TownAppBar(props) {
         <Typography variant="h4" className={classes.title}>
           Terrarias Terrific Towns
         </Typography>
-        <TextField
-          id="new-town-name"
-          size="small"
-          label="New Town"
-          value={town}
-          onChange={(e) => setTown(e.target.value)}
-          variant="outlined"
-        />
-        <Button variant="contained" size="small" onClick={() => addTown()}>
-          Add Town
-        </Button>
+        <div className={classes.newTown}>
+          <TextField
+            className={classes.newTownText}
+            id="new-town-name"
+            size="small"
+            label="New Town"
+            value={town}
+            onChange={(e) => setTown(e.currentTarget.value)}
+            variant="outlined"
+          />
+          <Button variant="contained" size="small" onClick={() => addTown()}>
+            Add Town
+          </Button>
+        </div>
       </Toolbar>
     </AppBar>
   );

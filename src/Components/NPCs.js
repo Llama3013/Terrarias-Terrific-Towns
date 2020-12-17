@@ -27,7 +27,7 @@ import { getNPCBackground } from "./Images";
 const useStyles = makeStyles((theme) => ({
   root: {
     minWidth: 225,
-    margin: theme.spacing(1),
+    margin: theme.spacing(0),
     height: "fit-content",
     backgroundSize: "cover",
     background: "no-repeat center",
@@ -54,9 +54,7 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.shortest,
     }),
   },
-  npcHeader: { display: "flex", alignItems: "center" },
-  biome: { display: "flex", alignItems: "center" },
-  formGroup: { display: "flex" },
+  npcHeader: { "& .MuiCardHeader-action": { alignSelf: "center" } },
 }));
 
 /**
@@ -105,7 +103,6 @@ export default function NPCs(props) {
   //May replace with display="none" once I overhaul the styles
   const multiBiomeSelect = biomeSwitch ? (
     <Biome
-      className={classes.biome}
       multiBiomeChange={(npcId, biome) => props.multiBiomeChange(npcId, biome)}
       biome={multiBiome.type}
       isTown={false}
@@ -116,7 +113,7 @@ export default function NPCs(props) {
 
   //May replace with display="none" once I overhaul the styles
   const multiBiomeSwitch = settings.multiBiome ? (
-    <FormGroup className={classes.formGroup} row>
+    <FormGroup row>
       <FormControlLabel
         control={
           <Switch
@@ -132,8 +129,9 @@ export default function NPCs(props) {
   ) : undefined;
 
   return (
-    <Card className={classes.root}>
+    <Card variant="outlined" className={classes.root}>
       <CardHeader
+        disableTypography={true}
         className={classes.npcHeader}
         title={
           <div>
