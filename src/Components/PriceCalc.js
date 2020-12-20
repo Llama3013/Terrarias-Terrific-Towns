@@ -93,40 +93,43 @@ export default function priceCalc(town, npcType, biome, solitary) {
     }
   }
 
-  if (priceModifier > 1.5) {
-    return { price: 150, priceNotes: priceNotes };
-  } else if (priceModifier < 0.75) {
-    console.warn(
-      "price modifier is " +
-        priceModifier +
-        ". This shouldn't be this low, probably calculation issue or is a princess."
-    );
-    return { price: 75, priceNotes: priceNotes };
-  } else {
+  let variablePrice;
+  if (npcType === "Princess") {
+    if (npcAmount <= 2 && solitary) {
+      priceNotes = prices.despises;
+      priceModifier = prices.despises;
+    } else if (npcAmount <= 2) {
+      variablePrice = priceModifier;
+      priceNotes += "*" + prices.despises;
+      priceModifier = prices.despises;
+    }
     /* This variablePrice element is used to show users the difference in price if 
        other npcs are within 120 tiles */
-    if (solitary) {
-      priceModifier *= 0.95;
-      priceNotes += "*" + prices.solitary;
-      priceModifier *= 100;
-      priceModifier = Math.round(priceModifier);
-      return { price: priceModifier, priceNotes: priceNotes };
-    } else {
-      let variablePrice;
-      if (npcAmount <= 2 && npcType === "Princess") {
-        variablePrice = priceModifier * 100;
-        priceNotes += "*" + prices.despises;
-        priceModifier = prices.despises;
-      } else if (npcType === "Princess") {
-        priceModifier = priceModifier * 100;
-        return { price: priceModifier, priceNotes: priceNotes };
-      } else {
-        variablePrice = priceModifier * 0.95 * 100;
-      }
-      priceModifier = priceModifier * 100;
-      priceModifier =
-        Math.round(variablePrice) + "-" + Math.round(priceModifier);
-      return { price: priceModifier, priceNotes: priceNotes };
-    }
+  } else if (solitary) {
+    priceModifier *= 0.95;
+    priceNotes += "*" + prices.solitary;
+  } else {
+    variablePrice = priceModifier * 0.95;
+  }
+  priceModifier = checkLimits(priceModifier);
+  if (variablePrice) {
+    variablePrice = checkLimits(variablePrice);
+    priceModifier *= 100;
+    variablePrice *= 100;
+    priceModifier = Math.round(variablePrice) + "-" + Math.round(priceModifier);
+  } else {
+    priceModifier *= 100;
+    priceModifier = Math.round(priceModifier);
+  }
+  return { price: priceModifier, priceNotes: priceNotes };
+}
+
+function checkLimits(price) {
+  if (price > 1.5) {
+    return 1.5;
+  } else if (price < 0.75) {
+    return 0.75;
+  } else {
+    return price;
   }
 }
