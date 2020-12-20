@@ -7,19 +7,20 @@ import {
   Select,
   Tooltip,
 } from "@material-ui/core";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
-import biomeList from "./data/json/biome.json";
-import corrupt from "./data/images/biomes/Corruption_icon.png";
-import crimson from "./data/images/biomes/Crimson_icon.png";
-import desert from "./data/images/biomes/Desert_icon.png";
-import dungeon from "./data/images/biomes/Dungeon_icon.png";
-import forest from "./data/images/biomes/Forest_icon.png";
-import hallow from "./data/images/biomes/Hallow_icon.png";
-import jungle from "./data/images/biomes/Jungle_icon.png";
-import mushroom from "./data/images/biomes/Mushroom_icon.png";
-import ocean from "./data/images/biomes/Ocean_icon.png";
-import snow from "./data/images/biomes/Snow_icon.png";
-import under from "./data/images/biomes/Underground_icon.png";
+import BiomeList from "./data/json/biome.json";
+import CorruptIcon from "./data/images/biomes/Corruption_icon.png";
+import CrimsonIcon from "./data/images/biomes/Crimson_icon.png";
+import DesertIcon from "./data/images/biomes/Desert_icon.png";
+import DungeonIcon from "./data/images/biomes/Dungeon_icon.png";
+import ForestIcon from "./data/images/biomes/Forest_icon.png";
+import HallowIcon from "./data/images/biomes/Hallow_icon.png";
+import JungleIcon from "./data/images/biomes/Jungle_icon.png";
+import MushroomIcon from "./data/images/biomes/Mushroom_icon.png";
+import OceanIcon from "./data/images/biomes/Ocean_icon.png";
+import SnowIcon from "./data/images/biomes/Snow_icon.png";
+import UnderIcon from "./data/images/biomes/Underground_icon.png";
 
 const useStyles = makeStyles(() => ({
   root: { display: "flex", alignItems: "center" },
@@ -39,29 +40,31 @@ export default function Biome(props) {
   const classes = useStyles();
   const biomeRows = [];
   //This gets the image and text for every biome option
-  biomeList.forEach((biome) => {
+  BiomeList.forEach((biome) => {
     const biomeImage =
       biome.type === "Dungeon"
-        ? dungeon
+        ? DungeonIcon
         : biome.type === "Corruption"
-        ? corrupt
+        ? CorruptIcon
         : biome.type === "Crimson"
-        ? crimson
+        ? CrimsonIcon
         : biome.type === "Mushroom"
-        ? mushroom
+        ? MushroomIcon
         : biome.type === "Hallow"
-        ? hallow
+        ? HallowIcon
         : biome.type === "Jungle"
-        ? jungle
+        ? JungleIcon
         : biome.type === "Snow"
-        ? snow
+        ? SnowIcon
         : biome.type === "Ocean"
-        ? ocean
+        ? OceanIcon
         : biome.type === "Desert"
-        ? desert
+        ? DesertIcon
         : biome.type === "Underground"
-        ? under
-        : forest;
+        ? UnderIcon
+        : biome.type === "Forest"
+        ? ForestIcon
+        : ErrorOutlineIcon;
     biomeRows.push(
       <MenuItem value={biome.type} key={biome.priority}>
         <img src={biomeImage} alt="" className={classes.biomeIcon}></img>

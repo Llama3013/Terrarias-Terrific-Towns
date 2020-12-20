@@ -25,6 +25,10 @@ export default function Towns(props) {
         <Fade in={true} key={town.townId}>
           <Town
             delTown={(townId) => props.delTown(townId)}
+            setTownName={(townId, townName) =>
+              props.setTownName(townId, townName)
+            }
+            setNotes={(townId, notes) => props.setNotes(townId, notes)}
             biomeChange={(townId, biome) => props.biomeChange(townId, biome)}
             addNPC={(townId) => props.addNPC(townId)}
             delNPC={(townId, npcId) => props.delNPC(townId, npcId)}

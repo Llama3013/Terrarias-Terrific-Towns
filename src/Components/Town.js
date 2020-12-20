@@ -10,7 +10,8 @@ import {
   CardHeader,
   Tooltip,
 } from "@material-ui/core/";
-import { ExpandMore, Delete } from "@material-ui/icons";
+import DeleteIcon from "@material-ui/icons/Delete";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core/styles";
 import NPCs from "./NPCs";
 import Biome from "./Biome";
@@ -98,8 +99,6 @@ export default function Town(props) {
   const { townId, name, biome, pylonStatus, notes } = town;
   //Hook setup for collapse menu, checkbox(which is disabled atm) and townName change
   const [expanded, setExpanded] = React.useState(false);
-  const [townName, setTownName] = React.useState(name);
-  const [notesData, setNotesData] = React.useState(notes)
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
   };
@@ -148,14 +147,15 @@ export default function Town(props) {
   //May replace with display="none" once I overhaul the styles
   const notesText = settings.notes ? (
     <TextField
-      onChange={(e) => setNotesData(e.target.value)}
+      onChange={(e) => props.setNotes(townId, e.currentTarget.value)}
       multiline
       id={notesId}
       label="notes"
+      value={notes}
       variant="outlined"
       className={classes.notes}
     />
-  ) : undefined;
+  ) : null;
   return (
     <Card elevation={3} className={classes.root}>
       <CardHeader
@@ -164,8 +164,8 @@ export default function Town(props) {
             size="small"
             id={cardTitleId}
             label="Town Name"
-            value={townName}
-            onChange={(e) => setTownName(e.target.value)}
+            value={name}
+            onChange={(e) => props.setTownName(townId, e.currentTarget.value)}
             variant="filled"
             className={classes.backgroundBubble}
           />
@@ -192,7 +192,7 @@ export default function Town(props) {
                 className={classes.backgroundBubble}
                 onClick={() => props.delTown(townId)}
               >
-                <Delete />
+                <DeleteIcon />
               </IconButton>
             </Tooltip>
           </div>
@@ -223,7 +223,7 @@ export default function Town(props) {
             aria-expanded={expanded}
             aria-label="show more"
           >
-            <ExpandMore />
+            <ExpandMoreIcon />
           </IconButton>
         </Tooltip>
       </CardActions>

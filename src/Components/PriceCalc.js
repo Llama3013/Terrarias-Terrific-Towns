@@ -11,7 +11,7 @@ import prices from "./data/json/prices.json";
  * @param {*} biome The current biome used for calculation (could be using
  *            town's biome or npc specfic biome multi biome)
  */
-export default function priceCalc(town, npcType, biome) {
+export default function priceCalc(town, npcType, biome, solitary) {
   let priceModifier = 1;
   let priceNotes = "1";
   let npcPrefs = preferences.find((preference) => preference.type === npcType);
@@ -30,11 +30,7 @@ export default function priceCalc(town, npcType, biome) {
   }
 
   //If the npc is in any of these biomes they instantly have a price modifier of 150%
-  if (
-    biome === "Dungeon" ||
-    biome === "Corruption" ||
-    biome === "Crimson"
-  ) {
+  if (biome === "Dungeon" || biome === "Corruption" || biome === "Crimson") {
     priceNotes += "*" + prices.despises + "=" + prices.despises;
     priceModifier *= prices.despises;
     priceModifier *= 100;
@@ -109,19 +105,28 @@ export default function priceCalc(town, npcType, biome) {
   } else {
     /* This variablePrice element is used to show users the difference in price if 
        other npcs are within 120 tiles */
-    let variablePrice;
-    if (npcAmount <= 2 && npcType === "Princess") {
-      variablePrice = priceModifier * 100;
-      priceNotes += "*" + prices.despises;
-      priceModifier = prices.despises;
-    } else if (npcType === "Princess") {
-      priceModifier = priceModifier * 100;
+    if (solitary) {
+      priceModifier *= 0.95;
+      priceNotes += "*" + prices.solitary;
+      priceModifier *= 100;
+      priceModifier = Math.round(priceModifier);
       return { price: priceModifier, priceNotes: priceNotes };
     } else {
-      variablePrice = priceModifier * 0.95 * 100;
+      let variablePrice;
+      if (npcAmount <= 2 && npcType === "Princess") {
+        variablePrice = priceModifier * 100;
+        priceNotes += "*" + prices.despises;
+        priceModifier = prices.despises;
+      } else if (npcType === "Princess") {
+        priceModifier = priceModifier * 100;
+        return { price: priceModifier, priceNotes: priceNotes };
+      } else {
+        variablePrice = priceModifier * 0.95 * 100;
+      }
+      priceModifier = priceModifier * 100;
+      priceModifier =
+        Math.round(variablePrice) + "-" + Math.round(priceModifier);
+      return { price: priceModifier, priceNotes: priceNotes };
     }
-    priceModifier = priceModifier * 100;
-    priceModifier = Math.round(variablePrice) + "-" + Math.round(priceModifier);
-    return { price: priceModifier, priceNotes: priceNotes };
   }
 }

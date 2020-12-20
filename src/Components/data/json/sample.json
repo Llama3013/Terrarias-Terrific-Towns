@@ -30,18 +30,20 @@
   },
   "settings": {
     "multiBiome": false,
-    "notes": false
+    "notes": false,
+    "solitary": true
   },
   "towns": [
     {
       "biome": "Forest",
       "name": "New Town",
+      "notes": " ",
       "npcs": [
         {
           "npcType": "Guide",
           "price": 0,
           "multiBiome": {
-            "on": false,
+            "biomeSwitch": false,
             "type": "Forest"
           },
           "npcId": "TlxC3-8_Y0V02EaBt9R2"

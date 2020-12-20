@@ -13,13 +13,13 @@ import "./App.scss";
 import TownAppBar from "./components/TownAppBar.js";
 import Towns from "./components/Towns.js";
 import PriceCalc from "./components/PriceCalc.js";
+import MainBack from "./components/data/images/Background.png";
 import sample from "./components/data/json/sample.json";
 import prefrences from "./components/data/json/prefrences.json";
-import mainBack from "./components/data/images/Background.png";
 
 const styles = {
   paperContainer: {
-    background: "url(" + mainBack + ") no-repeat center fixed",
+    background: "url(" + MainBack + ") no-repeat center fixed",
     backgroundSize: "cover",
   },
 };
@@ -37,14 +37,14 @@ export default class App extends React.Component {
    */
   constructor(props) {
     super(props);
-    const { npcCount, settings, towns } = this.loadTowns(
+    const { npcCount, towns } = this.loadTowns(
       sample.npcCount,
       sample.settings,
       sample.towns
     );
     this.state = {
       npcCount: npcCount,
-      settings: settings,
+      settings: sample.settings,
       towns: towns,
     };
   }
@@ -62,12 +62,12 @@ export default class App extends React.Component {
     });
     towns.forEach((town) => {
       town.npcs.forEach((npc) => {
-        npc = this.changePrice(town, npc, settings.multiBiome);
+        npc = this.changePrice(town, npc, settings);
         npcCount.npcAmount += 1;
         npcCount[npc.npcType] += 1;
       });
     });
-    return { npcCount, settings, towns };
+    return { npcCount, towns };
   }
 
   /**
@@ -77,14 +77,15 @@ export default class App extends React.Component {
    * @param {*} town The state of the town that the npc is in.
    * @param {*} npc The state of the current npc.
    */
-  changePrice(town, npc, multiBiomeSetting) {
+  changePrice(town, npc, setting) {
+    const { multiBiome, solitary } = setting;
     let biome;
-    if (npc.multiBiome.biomeSwitch && multiBiomeSetting) {
+    if (npc.multiBiome.biomeSwitch && multiBiome) {
       biome = npc.multiBiome.type;
     } else {
       biome = town.biome;
     }
-    const { price, priceNotes } = PriceCalc(town, npc.npcType, biome);
+    const { price, priceNotes } = PriceCalc(town, npc.npcType, biome, solitary);
     npc.price = price;
     npc.priceNotes = priceNotes;
     return npc;
@@ -111,7 +112,7 @@ export default class App extends React.Component {
           price: 0,
           priceNotes: "Error",
           multiBiome: {
-            multiBiome: false,
+            biomeSwitch: false,
             type: "Forest",
           },
         },
@@ -119,11 +120,7 @@ export default class App extends React.Component {
     });
     const latestTown = newTowns.length - 1;
     newTowns[latestTown].npcs.forEach((npc) => {
-      npc = this.changePrice(
-        newTowns[latestTown],
-        npc,
-        this.state.settings.multiBiome
-      );
+      npc = this.changePrice(newTowns[latestTown], npc, this.state.settings);
     });
     const npcCount = this.state.npcCount;
     const latestNPC = newTowns[latestTown].npcs.length - 1;
@@ -148,16 +145,12 @@ export default class App extends React.Component {
       price: 0,
       priceNotes: "No notes set",
       multiBiome: {
-        multiBiome: false,
+        biomeSwitch: false,
         type: "Forest",
       },
     });
     newTowns[townIndex].npcs.forEach((npc) => {
-      npc = this.changePrice(
-        newTowns[townIndex],
-        npc,
-        this.state.settings.multiBiome
-      );
+      npc = this.changePrice(newTowns[townIndex], npc, this.state.settings);
     });
     const npcCount = this.state.npcCount;
     npcCount.npcAmount += 1;
@@ -177,11 +170,7 @@ export default class App extends React.Component {
     const newTowns = [...this.state.towns];
     newTowns[townIndex].biome = newBiome;
     newTowns[townIndex].npcs.forEach((npc) => {
-      npc = this.changePrice(
-        newTowns[townIndex],
-        npc,
-        this.state.settings.multiBiome
-      );
+      npc = this.changePrice(newTowns[townIndex], npc, this.state.settings);
     });
     this.setState({ towns: newTowns });
   }
@@ -202,11 +191,7 @@ export default class App extends React.Component {
     const oldNPCType = newTowns[townIndex].npcs[npcIndex].npcType;
     newTowns[townIndex].npcs[npcIndex].npcType = newNPCType;
     newTowns[townIndex].npcs.forEach((npc) => {
-      npc = this.changePrice(
-        newTowns[townIndex],
-        npc,
-        this.state.settings.multiBiome
-      );
+      npc = this.changePrice(newTowns[townIndex], npc, this.state.settings);
     });
     const npcCount = this.state.npcCount;
     npcCount[oldNPCType] -= 1;
@@ -244,6 +229,30 @@ export default class App extends React.Component {
   }
 
   /**
+   * Changes the name of a town
+   * @param {*} townId The id of the town to be name changed
+   * @param {*} townName The name of the town
+   */
+  setTownName(townId, townName) {
+    const townIndex = this.findTown(townId);
+    const newTowns = [...this.state.towns];
+    newTowns[townIndex].name = townName;
+    this.setState({ towns: newTowns });
+  }
+
+  /**
+   * Changes the notes contents
+   * @param {*} townId The id of the town with the notes being changed
+   * @param {*} notes The content of the notes
+   */
+  setNotes(townId, notes) {
+    const townIndex = this.findTown(townId);
+    const newTowns = [...this.state.towns];
+    newTowns[townIndex].notes = notes;
+    this.setState({ towns: newTowns });
+  }
+
+  /**
    * This deletes the specified npc using townId to tell us which town the npc is in
    * and npcId to tell us which npc to delete in that town. It also has to calculate
    * all of the npcs prices for the current town.
@@ -257,11 +266,7 @@ export default class App extends React.Component {
     const oldNPCType = newTowns[townIndex].npcs[npcIndex].npcType;
     newTowns[townIndex].npcs.splice(npcIndex, 1);
     newTowns[townIndex].npcs.forEach((npc) => {
-      npc = this.changePrice(
-        newTowns[townIndex],
-        npc,
-        this.state.settings.multiBiome
-      );
+      npc = this.changePrice(newTowns[townIndex], npc, this.state.settings);
     });
     const npcCount = this.state.npcCount;
     npcCount.npcAmount -= 1;
@@ -302,11 +307,7 @@ export default class App extends React.Component {
     const newTowns = [...this.state.towns];
     let npc = newTowns[townIndex].npcs[npcIndex];
     npc.multiBiome.biomeSwitch = biomeSwitch;
-    npc = this.changePrice(
-      newTowns[townIndex],
-      npc,
-      this.state.settings.multiBiome
-    );
+    npc = this.changePrice(newTowns[townIndex], npc, this.state.settings);
     this.setState({ towns: newTowns });
   }
 
@@ -322,11 +323,7 @@ export default class App extends React.Component {
     const newTowns = [...this.state.towns];
     let npc = newTowns[townIndex].npcs[npcIndex];
     npc.multiBiome.type = biome;
-    npc = this.changePrice(
-      newTowns[townIndex],
-      npc,
-      this.state.settings.multiBiome
-    );
+    npc = this.changePrice(newTowns[townIndex], npc, this.state.settings);
     this.setState({ towns: newTowns });
   }
 
@@ -341,7 +338,7 @@ export default class App extends React.Component {
     const oldTowns = this.state.towns;
     settings.multiBiome = multiBiome;
     const { towns } = this.loadTowns(npcCount, settings, oldTowns);
-    this.setState({ npcCount: npcCount, settings: settings, towns: towns });
+    this.setState({ settings: settings, towns: towns });
   }
 
   /**
@@ -355,25 +352,62 @@ export default class App extends React.Component {
     this.setState({ settings: settings });
   }
 
+  /**
+   * This sets whether the user wants to assume the towns are isolated from each other
+   * @param {*} solitary Boolean value of whether the solitary setting is on
+   */
+  solitarySetting(solitary) {
+    const { settings } = this.state;
+    settings.solitary = solitary;
+    const { npcCount } = this.state;
+    const { towns } = this.loadTowns(npcCount, settings, this.state.towns);
+    this.setState({ settings: settings, towns: towns });
+  }
+
+  /**
+   * Imports users towns data from the TownAppBar using a json file
+   * @param {*} townsData towns state in json format
+   */
   importTownsState(townsData) {
     const townsState = JSON.parse(townsData);
-    console.log(townsState.npcCount);
-    console.log(townsState.settings);
-    console.log(townsState.towns);
-    const { npcCount, settings, towns } = this.loadTowns(
-      townsState.npcCount,
+    const { npcCount, towns } = this.loadTowns(
+      this.state.npcCount,
       townsState.settings,
       townsState.towns
     );
-    this.setState({ npcCount: npcCount, settings: settings, towns: towns });
+    this.setState({
+      npcCount: npcCount,
+      settings: townsState.settings,
+      towns: towns,
+    });
   }
 
+  /**
+   * Exports the user's town data by saving the it to the user's clipboard
+   */
   exportClipboard() {
-    clipboard(JSON.stringify(this.state));
+    const exportValue =
+      '{ "settings": ' +
+      JSON.stringify(this.state.settings) +
+      ',"towns":' +
+      JSON.stringify(this.state.towns) +
+      "}";
+    clipboard(exportValue);
   }
 
+  /**
+   * Exports the user's town data by saving as a file and let the user download it
+   */
   exportFile() {
-    var blob = new Blob([JSON.stringify(this.state)], {type: "text/plain;charset=utf-8"});
+    const exportValue =
+      '{ "settings": ' +
+      JSON.stringify(this.state.settings) +
+      ',"towns":' +
+      JSON.stringify(this.state.towns) +
+      "}";
+    var blob = new Blob([JSON.stringify(exportValue)], {
+      type: "text/plain;charset=utf-8",
+    });
     saveAs(blob, "Terrarias-Terrific-Towns-data.json");
   }
 
@@ -390,6 +424,7 @@ export default class App extends React.Component {
               this.multiBiomeSetting(multiBiome)
             }
             notesSetting={(notes) => this.notesSetting(notes)}
+            solitarySetting={(solitary) => this.solitarySetting(solitary)}
             importTownsState={(townsState) => this.importTownsState(townsState)}
             exportClipboard={() => this.exportClipboard()}
             exportFile={() => this.exportFile()}
@@ -397,6 +432,10 @@ export default class App extends React.Component {
           ></TownAppBar>
           <Towns
             delTown={(townId, npcId) => this.delTown(townId, npcId)}
+            setTownName={(townId, townName) =>
+              this.setTownName(townId, townName)
+            }
+            setNotes={(townId, notes) => this.setNotes(townId, notes)}
             biomeChange={(townId, biome) => this.biomeChange(townId, biome)}
             npcChange={(townId, npcId, newNPCType) =>
               this.npcChange(townId, npcId, newNPCType)

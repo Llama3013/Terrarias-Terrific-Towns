@@ -109,7 +109,7 @@ export default function NPCs(props) {
       id={npcId}
       key={npcId}
     ></Biome>
-  ) : undefined;
+  ) : null;
 
   //May replace with display="none" once I overhaul the styles
   const multiBiomeSwitch = settings.multiBiome ? (
@@ -126,7 +126,7 @@ export default function NPCs(props) {
       />
       {multiBiomeSelect}
     </FormGroup>
-  ) : undefined;
+  ) : null;
 
   return (
     <Card variant="outlined" className={classes.root}>

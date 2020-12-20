@@ -7,7 +7,9 @@ import {
   Select,
   Tooltip,
 } from "@material-ui/core";
-import { AttachMoney, MoneyOff } from "@material-ui/icons";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
+import MoneyOffIcon from "@material-ui/icons/MoneyOff";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 import preferences from "./data/json/prefrences.json";
 import iconAngler from "./data/images/npcs/Icon_Angler.png";
@@ -109,7 +111,9 @@ export default function NPCType(props) {
         ? iconWitch
         : npcPrefs.type === "Wizard"
         ? iconWiz
-        : iconZool;
+        : npcPrefs.type === "Zoologist"
+        ? iconZool
+        : ErrorOutlineIcon;
     const menuItemText = npcPrefs.type + ": (" + npcCount[npcPrefs.type] + ")";
     npcRows.push(
       <MenuItem value={npcPrefs.type} key={npcPrefs.type}>
@@ -121,9 +125,9 @@ export default function NPCType(props) {
   const currNPCPref = preferences.find((npc) => npc.type === npcType);
   const notes = currNPCPref.notes;
   const vendor = currNPCPref.vendor ? (
-    <AttachMoney className={classes.shopIcon} />
+    <AttachMoneyIcon className={classes.shopIcon} />
   ) : (
-    <MoneyOff className={classes.shopIcon} />
+    <MoneyOffIcon className={classes.shopIcon} />
   );
   const npcSelectId = "npc-select: " + npcId;
   return (

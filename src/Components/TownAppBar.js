@@ -81,11 +81,27 @@ export default function TownAppBar(props) {
     setImportDialogOpen(true);
   };
 
+  /**
+   * This checks if the json is in the correct format and then if successful it will go to app.js and
+   * finish importing. If unsuccessful it will turn on importError which will show a red outline and
+   * error text
+   */
   const handleImport = () => {
-    props.importTownsState(townsData);
-    handleImportDialogClose();
+    try {
+      JSON.parse(townsData);
+      setImportError(false);
+      props.importTownsState(townsData);
+      handleImportDialogClose();
+      setTownsData("");
+    } catch {
+      setImportError(true);
+    }
   };
 
+  /**
+   * This will change the townsData to reflect the user's uploaded file. 
+   * @param {*} townsFile 
+   */
   const handleImportFile = (townsFile) => {
     try {
       const reader = new FileReader();
@@ -133,12 +149,7 @@ export default function TownAppBar(props) {
     return props.addTown(town);
   };
 
-  const multiBiomeSwitch = settings.multiBiome ? (
-    <ToggleOnIcon />
-  ) : (
-    <ToggleOffIcon />
-  );
-  const notesSwitch = settings.notes ? <ToggleOnIcon /> : <ToggleOffIcon />;
+  const onOffSwitch = (onOff) => (onOff ? <ToggleOnIcon /> : <ToggleOffIcon />);
 
   const importErrorText = importError
     ? "towns data is incorrect or formatted"
@@ -194,12 +205,6 @@ export default function TownAppBar(props) {
                       multiline
                       value={townsData}
                       onChange={(e) => {
-                        try {
-                          JSON.parse(e.currentTarget.value);
-                          setImportError(false);
-                        } catch {
-                          setImportError(true);
-                        }
                         setTownsData(e.currentTarget.value);
                       }}
                     />
@@ -259,10 +264,13 @@ export default function TownAppBar(props) {
           <MenuItem
             onClick={() => props.multiBiomeSetting(!settings.multiBiome)}
           >
-            Multi Biome {multiBiomeSwitch}
+            Multi Biome {onOffSwitch(settings.multiBiome)}
           </MenuItem>
           <MenuItem onClick={() => props.notesSetting(!settings.notes)}>
-            Notes {notesSwitch}
+            Notes {onOffSwitch(settings.notes)}
+          </MenuItem>
+          <MenuItem onClick={() => props.solitarySetting(!settings.solitary)}>
+            Assume solitary {onOffSwitch(settings.solitary)}
           </MenuItem>
           <div>
             <MenuItem onClick={handleInfoDialogOpen}>More Info</MenuItem>
