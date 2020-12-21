@@ -15,6 +15,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import { makeStyles } from "@material-ui/core/styles";
 import NPCs from "./NPCs";
 import Biome from "./Biome";
+import InfoDialog from "./InfoDialog";
 import { getPylonImage, getTownBackground } from "./Images";
 
 const useStyles = makeStyles((theme) => ({
@@ -206,7 +207,7 @@ export default function Town(props) {
           isTown={true}
           id={townId}
           key={townId}
-        ></Biome>
+        />
       </CardContent>
       <CardActions disableSpacing>
         <Button
@@ -216,6 +217,7 @@ export default function Town(props) {
         >
           Add NPC
         </Button>
+        <InfoDialog infoFor={"Town"} linkInfo={biome} />
         <Tooltip title="Show NPCs">
           <IconButton
             className={expanded ? classes.expandOpen : classes.expand}

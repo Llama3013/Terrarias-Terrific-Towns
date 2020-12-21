@@ -104,9 +104,9 @@ export default function NPCType(props) {
         : npcPrefs.type === "Tavernkeep"
         ? iconTavern
         : npcPrefs.type === "Tax Collector"
-        ? iconTruf
-        : npcPrefs.type === "Truffle"
         ? iconTax
+        : npcPrefs.type === "Truffle"
+        ? iconTruf
         : npcPrefs.type === "Witch Doctor"
         ? iconWitch
         : npcPrefs.type === "Wizard"

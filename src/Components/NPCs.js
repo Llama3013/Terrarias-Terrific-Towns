@@ -23,6 +23,7 @@ import {
 } from "@material-ui/icons";
 import Biome from "./Biome";
 import { getNPCBackground } from "./Images";
+import InfoDialog from "./InfoDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,6 +37,14 @@ const useStyles = makeStyles((theme) => ({
   },
   typo: {
     textAlign: "left",
+    margin: "2px",
+  },
+  info: {
+    marginLeft: "auto",
+  },
+  hateLine: {
+    display: "flex",
+    alignItems: "center",
   },
   backgroundBubble: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
@@ -179,12 +188,15 @@ export default function NPCs(props) {
               {dislikes}
             </Typography>
           </Tooltip>
-          <Tooltip title="Hates">
-            <Typography className={classes.typo}>
-              <MoodBad />
-              {hates}
-            </Typography>
-          </Tooltip>
+          <div className={classes.hateLine}>
+            <Tooltip title="Hates">
+              <Typography className={classes.typo}>
+                <MoodBad />
+                {hates}
+              </Typography>
+            </Tooltip>
+            <InfoDialog infoFor={"NPC"} linkInfo={npcType} />
+          </div>
         </Paper>
       </CardContent>
     </Card>
