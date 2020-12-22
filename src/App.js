@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import { nanoid } from "nanoid";
 import {
   Paper,
@@ -18,7 +18,7 @@ import sample from "./components/data/json/sample.json";
 import prefrences from "./components/data/json/prefrences.json";
 
 const styles = {
-  paperContainer: {
+  mainBackground: {
     background: "url(" + MainBack + ") no-repeat center fixed",
     backgroundSize: "cover",
   },
@@ -29,7 +29,7 @@ const styles = {
  * a later date and maybe try to change this class. Also I might handle more of the
  * changes on the component level rather than pushing props up the component list.
  */
-export default class App extends React.Component {
+export default class App extends Component {
   /**
    * This sets the state to reflect what is inside of sample.json. This may change
    * with import and export system if implemented.
@@ -51,9 +51,10 @@ export default class App extends React.Component {
 
   /**
    * This will load or refresh the current price of the town's npcs
-   * @param {*} npcCount
-   * @param {*} settings
-   * @param {*} towns
+   * @param {*} npcCount This will count the amount of npc's and the amount of npc's
+   * of certain type in the towns
+   * @param {*} settings This stores the settings in boolean values
+   * @param {*} towns This is an array of the towns that will be loaded in
    */
   loadTowns(npcCount, settings, towns) {
     npcCount.npcAmount = 0;
@@ -405,7 +406,7 @@ export default class App extends React.Component {
       ',"towns":' +
       JSON.stringify(this.state.towns) +
       "}";
-    var blob = new Blob([JSON.stringify(exportValue)], {
+    var blob = new Blob([exportValue], {
       type: "text/plain;charset=utf-8",
     });
     saveAs(blob, "Terrarias-Terrific-Towns-data.json");
@@ -417,7 +418,7 @@ export default class App extends React.Component {
   render() {
     return (
       <ThemeProvider theme={detailedTheme}>
-        <Paper className="App" style={styles.paperContainer} square>
+        <Paper className="App" style={styles.mainBackground} square>
           <TownAppBar
             addTown={(town) => this.addTown(town)}
             multiBiomeSetting={(multiBiome) =>

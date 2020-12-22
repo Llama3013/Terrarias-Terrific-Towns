@@ -411,7 +411,7 @@
     },
     "neighbour": {
       "loves": [],
-      "likes": ["Dyrad", "Guide", "Princess"],
+      "likes": ["Dryad", "Guide", "Princess"],
       "dislikes": ["Nurse"],
       "hates": ["Truffle"]
     },

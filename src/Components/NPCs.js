@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
@@ -102,7 +102,7 @@ export default function NPCs(props) {
   });
   hates += npcPrefs.biome.hates;
   const classes = useStyles(props);
-  const [biomeSwitch, setBiomeSwitch] = React.useState(false);
+  const [biomeSwitch, setBiomeSwitch] = useState(false);
 
   const multiBiomeToggle = () => {
     props.multiBiomeSwitch(npcId, !biomeSwitch);

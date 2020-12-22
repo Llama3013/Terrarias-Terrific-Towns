@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   AppBar,
   Button,
@@ -50,13 +50,13 @@ const useStyles = makeStyles((theme) => ({
 export default function TownAppBar(props) {
   const { settings } = props;
   const classes = useStyles(props);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [infoDialogOpen, setInfoDialogOpen] = React.useState(false);
-  const [importDialogOpen, setImportDialogOpen] = React.useState(false);
-  const [exportDialogOpen, setExportDialogOpen] = React.useState(false);
-  const [importError, setImportError] = React.useState(false);
-  const [town, setTown] = React.useState("New Town");
-  const [townsData, setTownsData] = React.useState("");
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const [exportDialogOpen, setExportDialogOpen] = useState(false);
+  const [importError, setImportError] = useState(false);
+  const [town, setTown] = useState("New Town");
+  const [townsData, setTownsData] = useState("");
 
   const handleInfoDialogClose = () => {
     setInfoDialogOpen(false);
@@ -99,8 +99,8 @@ export default function TownAppBar(props) {
   };
 
   /**
-   * This will change the townsData to reflect the user's uploaded file. 
-   * @param {*} townsFile 
+   * This will change the townsData to reflect the user's uploaded file.
+   * @param {*} townsFile
    */
   const handleImportFile = (townsFile) => {
     try {

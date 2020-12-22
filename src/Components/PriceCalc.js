@@ -29,7 +29,7 @@ export default function priceCalc(town, npcType, biome, solitary) {
     };
   }
 
-  //If the npc is in any of these biomes they instantly have a price modifier of 150%
+  /*If the npc is in any of these biomes they instantly have a price modifier of 150%*/
   if (biome === "Dungeon" || biome === "Corruption" || biome === "Crimson") {
     priceNotes += "*" + prices.despises + "=" + prices.despises;
     priceModifier *= prices.despises;
@@ -47,6 +47,7 @@ export default function priceCalc(town, npcType, biome, solitary) {
       : biome === npcPrefs.biome.hates
       ? prices.hates
       : 1;
+  //console.log("biome calc: " + priceModifier);
 
   priceNotes +=
     biome === npcPrefs.biome.loves
@@ -80,6 +81,7 @@ export default function priceCalc(town, npcType, biome, solitary) {
         ? "*" + prices.hates
         : "";
     }
+    //console.log("npc likes: " + priceModifier);
   });
 
   /* Might add a input that allows the user to select other towns that maybe within
@@ -92,6 +94,7 @@ export default function priceCalc(town, npcType, biome, solitary) {
       priceModifier *= prices.extra;
     }
   }
+  //console.log("extra npcs: " + priceModifier);
 
   let variablePrice;
   if (npcType === "Princess") {

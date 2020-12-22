@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
   Dialog,
@@ -12,7 +12,7 @@ import HelpOutlinedIcon from "@material-ui/icons/HelpOutlined";
 
 export default function InfoDialog(props) {
   const { infoFor, linkInfo } = props;
-  const [infoDialogOpen, setInfoDialogOpen] = React.useState(false);
+  const [infoDialogOpen, setInfoDialogOpen] = useState(false);
 
   const handleInfoDialogClose = () => {
     setInfoDialogOpen(false);
