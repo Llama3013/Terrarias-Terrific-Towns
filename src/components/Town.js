@@ -99,7 +99,7 @@ export default function Town(props) {
   const { npcCount, settings, town } = props;
   const { townId, name, biome, pylonStatus, notes } = town;
   //Hook setup for collapse menu, checkbox(which is disabled atm) and townName change
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
   const handleExpandClick = () => {
     setExpanded((prev) => !prev);
   };

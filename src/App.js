@@ -9,10 +9,10 @@ import {
 import clipboard from "clipboard-copy";
 import { saveAs } from "file-saver";
 
-import "./App.scss";
+import "./App.css";
 import TownAppBar from "./components/TownAppBar.js";
 import Towns from "./components/Towns.js";
-import PriceCalc from "./components/PriceCalc.js";
+import PriceCalc from "./components/PriceCalc.js"
 import MainBack from "./components/data/images/Background.png";
 import sample from "./components/data/json/sample.json";
 import prefrences from "./components/data/json/prefrences.json";
