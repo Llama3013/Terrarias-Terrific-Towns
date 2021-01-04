@@ -32,12 +32,30 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     marginTop: theme.spacing(1),
   },
-  newTown: {
-    display: "flex",
-    alignItems: "center",
-  },
   newTownText: {
     margin: theme.spacing(1),
+  },
+  exportIcon: {
+    display: "flex",
+    marginLeft: "auto",
+  },
+  centerElement: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  importFileDrag: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    zIndex: "1350",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#e7e7e7",
+    borderRadius: "12px",
+    color: "#7f8e99",
+    opacity: ".9",
   },
 }));
 
@@ -56,7 +74,9 @@ export default function TownAppBar(props) {
   const [exportDialogOpen, setExportDialogOpen] = useState(false);
   const [importError, setImportError] = useState(false);
   const [town, setTown] = useState("New Town");
-  const [townsData, setTownsData] = useState("");
+  const [importData, setimportData] = useState("");
+  const [dragging, setDragging] = useState(false);
+  const drag = React.useRef(null);
 
   const handleInfoDialogClose = () => {
     setInfoDialogOpen(false);
@@ -73,11 +93,13 @@ export default function TownAppBar(props) {
   };
 
   const handleImportDialogClose = () => {
+    setimportData("");
     setImportDialogOpen(false);
   };
 
   const handleImportDialogOpen = () => {
     setAnchorEl(null);
+    setImportError(false);
     setImportDialogOpen(true);
   };
 
@@ -88,18 +110,41 @@ export default function TownAppBar(props) {
    */
   const handleImport = () => {
     try {
-      JSON.parse(townsData);
+      JSON.parse(importData);
       setImportError(false);
-      props.importTownsState(townsData);
+      props.importTownsState(importData);
       handleImportDialogClose();
-      setTownsData("");
+      setimportData("");
     } catch {
       setImportError(true);
     }
   };
 
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+
+    if (e.target !== drag.current) {
+      setDragging(true);
+    }
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+
+    if (e.target === drag.current) {
+      setDragging(false);
+    }
+  };
+
+  const handleImportDrop = (e) => {
+    e.preventDefault();
+
+    setDragging(false);
+    handleImportFile(e.dataTransfer.files);
+  };
+
   /**
-   * This will change the townsData to reflect the user's uploaded file.
+   * This will change the importData to reflect the user's uploaded file.
    * @param {*} townsFile
    */
   const handleImportFile = (townsFile) => {
@@ -108,7 +153,7 @@ export default function TownAppBar(props) {
       reader.readAsText(townsFile[0]);
 
       reader.onload = () => {
-        setTownsData(reader.result);
+        setimportData(reader.result);
       };
 
       reader.onerror = function () {
@@ -152,7 +197,7 @@ export default function TownAppBar(props) {
   const onOffSwitch = (onOff) => (onOff ? <ToggleOnIcon /> : <ToggleOffIcon />);
 
   const importErrorText = importError
-    ? "towns data is incorrect or formatted"
+    ? "towns data is incorrect or not in json format"
     : "";
   return (
     <AppBar position="static">
@@ -175,42 +220,66 @@ export default function TownAppBar(props) {
           open={Boolean(anchorEl)}
           onClose={() => setAnchorEl(null)}
         >
-          <div>
-            <MenuItem onClick={handleImportDialogOpen}>Import towns</MenuItem>
-            <Dialog
-              open={importDialogOpen}
-              onClose={handleImportDialogClose}
-              aria-labelledby="import-dialog-title"
-              aria-describedby="import-dialog-description"
+          <MenuItem onClick={handleImportDialogOpen}>Import towns</MenuItem>
+          <Dialog
+            open={importDialogOpen}
+            onClose={handleImportDialogClose}
+            aria-labelledby="import-dialog-title"
+            aria-describedby="import-dialog-description"
+          >
+            <div
+              onDrop={(e) => handleImportDrop(e)}
+              onDragOver={(e) => e.preventDefault()}
+              onDragEnter={(e) => handleDragEnter(e)}
+              onDragLeave={(e) => handleDragLeave(e)}
             >
-              <div onDrop={(e) => e.dataTransfer.files}>
-                <DialogTitle id="import-dialog-title">
-                  {"Would you like to import your towns?"}
-                </DialogTitle>
-                <DialogContent>
-                  <div>
+              {dragging && (
+                <div ref={drag} className={classes.importFileDrag}>
+                  <Typography variant="h5">Drop towns file here</Typography>
+                </div>
+              )}
+              <DialogTitle id="import-dialog-title">
+                {"Would you like to import your towns?"}
+              </DialogTitle>
+              <DialogContent>
+                <div>
+                  <label htmlFor="select-towns-file">
                     <input
-                      type="file"
                       onChange={(e) => handleImportFile(e.currentTarget.files)}
+                      id="select-towns-file"
+                      style={{ display: "none" }}
+                      type="file"
                     />
-                  </div>
-                  <div>
-                    <TextField
-                      className={classes.importText}
-                      error={importError}
-                      id="import-towns-state"
-                      label="Import"
-                      helperText={importErrorText}
-                      variant="outlined"
-                      multiline
-                      value={townsData}
-                      onChange={(e) => {
-                        setTownsData(e.currentTarget.value);
-                      }}
-                    />
-                  </div>
-                </DialogContent>
-              </div>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      component="span"
+                      className={classes.centerElement}
+                    >
+                      Drag or Select a towns file
+                    </Button>
+                  </label>
+                </div>
+                <Typography className={classes.centerElement}>
+                  -- or paste it below --
+                </Typography>
+                <div>
+                  <TextField
+                    className={classes.importText}
+                    error={importError}
+                    id="import-towns-state"
+                    label="Import"
+                    helperText={importErrorText}
+                    variant="outlined"
+                    multiline
+                    value={importData}
+                    onChange={(e) => {
+                      setimportData(e.currentTarget.value);
+                    }}
+                  />
+                </div>
+              </DialogContent>
+
               <DialogActions>
                 <Button onClick={handleImportDialogClose} color="secondary">
                   Disagree
@@ -219,8 +288,8 @@ export default function TownAppBar(props) {
                   Agree
                 </Button>
               </DialogActions>
-            </Dialog>
-          </div>
+            </div>
+          </Dialog>
           <div>
             <MenuItem onClick={handleExportDialogOpen}>Export towns</MenuItem>
             <Dialog
@@ -234,17 +303,23 @@ export default function TownAppBar(props) {
               </DialogTitle>
               <DialogContent>
                 <div className={classes.importText}>
-                  <Typography variant="h6">Copy towns to Clipboard</Typography>
+                  <Typography variant="h6">Copy towns to Clipboard:</Typography>
                   <Tooltip title="Copy">
-                    <IconButton onClick={handleExportClipboard}>
+                    <IconButton
+                      className={classes.exportIcon}
+                      onClick={handleExportClipboard}
+                    >
                       <FileCopyIcon />
                     </IconButton>
                   </Tooltip>
                 </div>
                 <div className={classes.importText}>
-                  <Typography variant="h6">Download towns</Typography>
+                  <Typography variant="h6">Download towns:</Typography>
                   <Tooltip title="Download">
-                    <IconButton onClick={handleExportFile}>
+                    <IconButton
+                      className={classes.exportIcon}
+                      onClick={handleExportFile}
+                    >
                       <GetAppIcon />
                     </IconButton>
                   </Tooltip>
@@ -300,7 +375,7 @@ export default function TownAppBar(props) {
         <Typography variant="h4" className={classes.title}>
           Terrarias Terrific Towns
         </Typography>
-        <div className={classes.newTown}>
+        <div className={classes.centerElement}>
           <TextField
             className={classes.newTownText}
             id="new-town-name"

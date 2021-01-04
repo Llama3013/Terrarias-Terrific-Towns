@@ -28,7 +28,7 @@ export default function InfoDialog(props) {
   };
   let infoContent, infoTitle;
   if (infoFor === "Town") {
-    infoTitle = "More Info Biome";
+    infoTitle = "More Biome Info";
     infoContent =
       linkInfo === "Mushroom"
         ? "https://terraria.gamepedia.com/Glowing_Mushroom_biome#NPC_happiness"
@@ -48,7 +48,7 @@ export default function InfoDialog(props) {
         ? "https://terraria.gamepedia.com/Forest#NPC_happiness"
         : "https://terraria.gamepedia.com/House#Location";
   } else {
-    infoTitle = "More Info NPC";
+    infoTitle = "More NPC Info";
     infoContent =
       linkInfo === "Angler"
         ? "https://terraria.gamepedia.com/Angler#Living_preferences"
@@ -106,7 +106,7 @@ export default function InfoDialog(props) {
   }
 
   return (
-    <div>
+    <div style={{ marginLeft: "auto" }}>
       <Tooltip title={infoTitle}>
         <IconButton onClick={handleInfoDialogOpen}>
           <HelpOutlinedIcon />

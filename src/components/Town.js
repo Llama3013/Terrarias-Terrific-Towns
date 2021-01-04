@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
   expand: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
     transform: "rotate(0deg)",
-    marginLeft: "auto",
     transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest,
     }),
@@ -43,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     backgroundColor: "rgba(123, 104, 238, 0.5)",
     transform: "rotate(180deg)",
-    marginLeft: "auto",
     transition: theme.transitions.create("transform", {
       duration: theme.transitions.duration.shortest,
     }),
