@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/Terrarias-Terrific-Towns/static/css/main.282bf587.chunk.css",
-    "main.js": "/Terrarias-Terrific-Towns/static/js/main.a1ea7b80.chunk.js",
-    "main.js.map": "/Terrarias-Terrific-Towns/static/js/main.a1ea7b80.chunk.js.map",
+    "main.css": "/Terrarias-Terrific-Towns/static/css/main.6ad3f111.chunk.css",
+    "main.js": "/Terrarias-Terrific-Towns/static/js/main.75c99420.chunk.js",
+    "main.js.map": "/Terrarias-Terrific-Towns/static/js/main.75c99420.chunk.js.map",
     "runtime-main.js": "/Terrarias-Terrific-Towns/static/js/runtime-main.7128cae1.js",
     "runtime-main.js.map": "/Terrarias-Terrific-Towns/static/js/runtime-main.7128cae1.js.map",
-    "static/js/2.a6d06d4b.chunk.js": "/Terrarias-Terrific-Towns/static/js/2.a6d06d4b.chunk.js",
-    "static/js/2.a6d06d4b.chunk.js.map": "/Terrarias-Terrific-Towns/static/js/2.a6d06d4b.chunk.js.map",
+    "static/js/2.09c39ff2.chunk.js": "/Terrarias-Terrific-Towns/static/js/2.09c39ff2.chunk.js",
+    "static/js/2.09c39ff2.chunk.js.map": "/Terrarias-Terrific-Towns/static/js/2.09c39ff2.chunk.js.map",
     "index.html": "/Terrarias-Terrific-Towns/index.html",
-    "precache-manifest.d74099cf73789574d96e68baec1db825.js": "/Terrarias-Terrific-Towns/precache-manifest.d74099cf73789574d96e68baec1db825.js",
+    "precache-manifest.677150615324261529be01c4c408f64b.js": "/Terrarias-Terrific-Towns/precache-manifest.677150615324261529be01c4c408f64b.js",
     "service-worker.js": "/Terrarias-Terrific-Towns/service-worker.js",
-    "static/css/main.282bf587.chunk.css.map": "/Terrarias-Terrific-Towns/static/css/main.282bf587.chunk.css.map",
-    "static/js/2.a6d06d4b.chunk.js.LICENSE.txt": "/Terrarias-Terrific-Towns/static/js/2.a6d06d4b.chunk.js.LICENSE.txt",
+    "static/css/main.6ad3f111.chunk.css.map": "/Terrarias-Terrific-Towns/static/css/main.6ad3f111.chunk.css.map",
+    "static/js/2.09c39ff2.chunk.js.LICENSE.txt": "/Terrarias-Terrific-Towns/static/js/2.09c39ff2.chunk.js.LICENSE.txt",
     "static/media/Background.png": "/Terrarias-Terrific-Towns/static/media/Background.3de6b5cc.png",
     "static/media/Corruption_back_1.png": "/Terrarias-Terrific-Towns/static/media/Corruption_back_1.f6f2fa42.png",
     "static/media/Crimson_back_1.png": "/Terrarias-Terrific-Towns/static/media/Crimson_back_1.39599889.png",
@@ -27,8 +27,8 @@
   },
   "entrypoints": [
     "static/js/runtime-main.7128cae1.js",
-    "static/js/2.a6d06d4b.chunk.js",
-    "static/css/main.282bf587.chunk.css",
-    "static/js/main.a1ea7b80.chunk.js"
+    "static/js/2.09c39ff2.chunk.js",
+    "static/css/main.6ad3f111.chunk.css",
+    "static/js/main.75c99420.chunk.js"
   ]
 }
