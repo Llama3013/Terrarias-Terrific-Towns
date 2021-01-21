@@ -406,7 +406,7 @@ export default class App extends Component {
       '{ "settings": ' +
       JSON.stringify(this.state.settings) +
       ',"towns":' +
-      JSON.stringify(this.state.towns) +
+      JSON.stringify(this.trimExport()) +
       "}";
     var blob = new Blob([exportValue], {
       type: "text/plain;charset=utf-8",
