@@ -12,7 +12,7 @@ import { saveAs } from "file-saver";
 import "./App.css";
 import TownAppBar from "./components/TownAppBar.js";
 import Towns from "./components/Towns.js";
-import PriceCalc from "./components/PriceCalc.js"
+import PriceCalc from "./components/PriceCalc.js";
 import MainBack from "./components/data/images/Background.png";
 import sample from "./components/data/json/sample.json";
 import prefrences from "./components/data/json/prefrences.json";
@@ -338,7 +338,7 @@ export default class App extends Component {
    */
   multiBiomeSetting(multiBiome) {
     const { npcCount, settings } = this.state;
-    const oldTowns = this.state.towns;
+    const oldTowns = [...this.state.towns];
     settings.multiBiome = multiBiome;
     const { towns } = this.loadTowns(npcCount, settings, oldTowns);
     this.setState({ settings: settings, towns: towns });
@@ -393,7 +393,7 @@ export default class App extends Component {
       '{ "settings": ' +
       JSON.stringify(this.state.settings) +
       ',"towns":' +
-      JSON.stringify(this.trimExport()) +
+      JSON.stringify(this.trimExport([...this.state.towns])) +
       "}";
     clipboard(exportValue);
   }
@@ -406,7 +406,7 @@ export default class App extends Component {
       '{ "settings": ' +
       JSON.stringify(this.state.settings) +
       ',"towns":' +
-      JSON.stringify(this.trimExport()) +
+      JSON.stringify(this.trimExport([...this.state.towns])) +
       "}";
     var blob = new Blob([exportValue], {
       type: "text/plain;charset=utf-8",
@@ -414,17 +414,24 @@ export default class App extends Component {
     saveAs(blob, "Terrarias-Terrific-Towns-data.json");
   }
 
-  trimExport() {
-    const towns = this.state.towns;
+  /**
+   * This trims the towns data to delete the unneeded data that the website
+   * generates automatically after importing
+   * @param {*} towns
+   */
+  trimExport(towns) {
+    const newTowns = [];
     towns.forEach((town) => {
-      delete town.townId;
+      const { townId, ...newTown } = town;
+      const { npcs, ...newTownNPC } = newTown;
+      newTownNPC.npcs = [];
       town.npcs.forEach((npc) => {
-        delete npc.npcId;
-        delete npc.price;
-        delete npc.priceNotes;
+        const { npcId, price, priceNotes, ...newNPC } = npc;
+        newTownNPC.npcs.push(newNPC);
       });
+      newTowns.push(newTownNPC);
     });
-    return towns;
+    return newTowns;
   }
 
   /**
