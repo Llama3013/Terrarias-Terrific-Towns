@@ -62,7 +62,9 @@ export default class App extends Component {
       npcCount[npcPrefs.type] = 0;
     });
     towns.forEach((town) => {
+      town.townId = town.townId ? undefined : nanoid();
       town.npcs.forEach((npc) => {
+        npc.npcId = npc.npcId ? undefined : nanoid();
         npc = this.changePrice(town, npc, settings);
         npcCount.npcAmount += 1;
         npcCount[npc.npcType] += 1;
@@ -391,7 +393,7 @@ export default class App extends Component {
       '{ "settings": ' +
       JSON.stringify(this.state.settings) +
       ',"towns":' +
-      JSON.stringify(this.state.towns) +
+      JSON.stringify(this.trimExport()) +
       "}";
     clipboard(exportValue);
   }
@@ -410,6 +412,19 @@ export default class App extends Component {
       type: "text/plain;charset=utf-8",
     });
     saveAs(blob, "Terrarias-Terrific-Towns-data.json");
+  }
+
+  trimExport() {
+    const towns = this.state.towns;
+    towns.forEach((town) => {
+      delete town.townId;
+      town.npcs.forEach((npc) => {
+        delete npc.npcId;
+        delete npc.price;
+        delete npc.priceNotes;
+      });
+    });
+    return towns;
   }
 
   /**
