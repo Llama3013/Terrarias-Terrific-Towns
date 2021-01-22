@@ -422,14 +422,15 @@ export default class App extends Component {
   trimExport(towns) {
     const newTowns = [];
     towns.forEach((town) => {
-      const { townId, ...newTown } = town;
-      const { npcs, ...newTownNPC } = newTown;
-      newTownNPC.npcs = [];
+      //This removes townId and all of the npcs from the town
+      const { townId, npcs, ...newTown } = town;
+      newTown.npcs = [];
       town.npcs.forEach((npc) => {
+        //This removes npcId, price and pricenotes from npc
         const { npcId, price, priceNotes, ...newNPC } = npc;
-        newTownNPC.npcs.push(newNPC);
+        newTown.npcs.push(newNPC);
       });
-      newTowns.push(newTownNPC);
+      newTowns.push(newTown);
     });
     return newTowns;
   }
